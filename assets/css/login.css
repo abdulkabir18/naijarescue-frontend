@@ -1,0 +1,163 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background: linear-gradient(135deg, #e63946, #f8f9fa);
+    padding: 20px;
+}
+
+.login-box {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.login-logo img {
+    width: 150px;
+}
+
+.login-logo h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 40px 14px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.input-wrapper label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 4px;
+    color: #777;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.input-wrapper input:focus {
+    border-color: #e63946;
+}
+
+.input-wrapper input:focus+label,
+.input-wrapper input:not(:placeholder-shown)+label {
+    top: -8px;
+    left: 8px;
+    font-size: 12px;
+    color: #e63946;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.error-message {
+    display: block;
+    margin-top: 4px;
+    color: red;
+    font-size: 13px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #e63946;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.login-btn:hover {
+    background: #c72c38;
+}
+
+.redirect-text {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.redirect-text a {
+    color: #e63946;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.redirect-text a:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaijaRescue - Login</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo/logo.png" alt="">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <section class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="assets/images/logo/logo.png" alt="">
+                <h2>Welcome Back</h2>
+            </div>
+
+            <form novalidate id="loginForm" action="#" method="POST">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" required placeholder=" ">
+                        <label for="email">Email</label>
+                    </div>
+                    <span id="emailError" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required placeholder=" ">
+                        <label for="password">Password</label>
+                        <button type="button" id="togglePassword" class="toggle-password">👁</button>
+                    </div>
+                    <span id="passwordError" class="error-message"></span>
+                </div>
+
+                <button type="submit" id="loginBtn" class="login-btn">
+                    Login
+                </button>
+            </form>
+
+            <p class="redirect-text">
+                Don't have an account? <a href="register.html">Register</a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/login.js"></script>
+</body>
+
+</html>
