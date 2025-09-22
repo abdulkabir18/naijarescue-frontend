@@ -1,107 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     const loginForm = document.getElementById("loginForm");
-
-//     loginForm.addEventListener("submit", function (e) {
-//         e.preventDefault();
-
-//         const email = document.getElementById("email").value.trim();
-//         const password = document.getElementById("password").value.trim();
-
-//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-//         let isInputValid = true;
-
-//         if (!emailRegex.test(email)) {
-//             showEmailError();
-//             isInputValid = false;
-//         }
-
-//         if (!password || password.length < 6) {
-//             showPasswordError();
-//             isInputValid = false;
-//         }
-
-//         if (isInputValid) {
-//             alert("Form is valid. Proceeding with submission...");
-//         }
-//     });
-// });
-
-// async function showEmailError() {
-//     document.getElementById("emailError").textContent = "Invalid input.";
-// }
-
-// async function showPasswordError() {
-//     document.getElementById("passwordError").textContent = "Password is required";
-// }
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const loginForm = document.getElementById("loginForm");
-//     const emailInput = document.getElementById("email");
-//     const passwordInput = document.getElementById("password");
-//     const emailError = document.getElementById("emailError");
-//     const passwordError = document.getElementById("passwordError");
-//     const togglePassword = document.getElementById("togglePassword");
-
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-//     // Real-time email validation
-//     emailInput.addEventListener("input", () => {
-//         if (!emailInput.value.trim()) {
-//             emailError.textContent = "Email is required.";
-//         } else if (!emailRegex.test(emailInput.value.trim())) {
-//             emailError.textContent = "Please enter a valid email address.";
-//         } else {
-//             emailError.textContent = "";
-//         }
-//     });
-
-//     // Real-time password validation
-//     passwordInput.addEventListener("input", () => {
-//         if (!passwordInput.value.trim()) {
-//             passwordError.textContent = "Your password cannot be empty.";
-//         } else if (passwordInput.value.trim().length < 6) {
-//             passwordError.textContent = "Password must be at least 6 characters.";
-//         } else {
-//             passwordError.textContent = "";
-//         }
-//     });
-
-//     // Form submit validation
-//     loginForm.addEventListener("submit", (e) => {
-//         e.preventDefault();
-
-//         let isValid = true;
-
-//         if (!emailRegex.test(emailInput.value.trim())) {
-//             emailError.textContent = "Please enter a valid email.";
-//             isValid = false;
-//         }
-
-//         if (!passwordInput.value.trim()) {
-//             passwordError.textContent = "Password is required.";
-//             isValid = false;
-//         }
-
-//         if (isValid) {
-//             alert("Form is valid ✅ Redirecting...");
-//             loginForm.submit();
-//         }
-//     });
-
-//     // 👁 Toggle password visibility
-//     togglePassword.addEventListener("click", () => {
-//         if (passwordInput.type === "password") {
-//             passwordInput.type = "text";
-//             togglePassword.textContent = "🔒";
-//         } else {
-//             passwordInput.type = "password";
-//             togglePassword.textContent = "👁";
-//         }
-//     });
-// });
-
-
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
@@ -151,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     togglePassword.addEventListener("click", () => {
         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
         passwordInput.setAttribute("type", type);
-        togglePassword.textContent = type === "password" ? "👁" : "🙈";
+        togglePassword.textContent = type === "password" ? "👁" : "🔒";
     });
 
     emailInput.addEventListener("input", validateEmail);
@@ -169,10 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="spinner"></div>
             <span>Logging in...</span>
         `;
+            const emailValue = emailInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+            console.log(emailValue);
 
             try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                submitLoginForm({
+                    "email": emailValue,
+                    "password": passwordValue
+                });
 
+                // await new Promise(resolve => setTimeout(resolve, 2000));
+                // alert("Login successful!");
                 console.log("Form valid. Ready to connect backend.");
             } catch (error) {
                 console.error("Error logging in:", error);
@@ -186,5 +90,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function submitLoginForm(data) {
+    try {
+        console.log(data);
+        const response = await fetch("https://localhost:7107/api/v1/Auth/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
 
+        console.log(response);
+    }
+    catch (error) {
+        console.error("Error submitting login form:", error);
+    }
 }
