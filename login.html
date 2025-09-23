@@ -49,13 +49,19 @@
                     <span id="passwordError" class="error-message"></span>
                 </div>
 
-                <button type="submit" id="loginBtn" class="login-btn">
-                    Login
+                <div id="feedback" class="feedback-message" role="status" aria-live="polite"></div>
+
+                <button type="submit" id="loginBtn" class="login-btn" aria-busy="false" aria-disabled="false">
+                    <span class="btn-text">Login</span>
+                    <span class="spinner-wrapper" aria-hidden="true">
+                        <span class="spinner"></span>
+                        <span class="spinner-text">Logging in...</span>
+                    </span>
                 </button>
             </form>
 
             <p class="redirect-text">
-                Don't have an account? <a href="register.html">Register</a>
+                Don't have an account? <a href="signup.html">Register</a>
             </p>
         </div>
     </section>

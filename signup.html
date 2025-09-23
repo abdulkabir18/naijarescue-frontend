@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaijaRescue - Signup</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/images/logo/logo.png" alt="">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <section class="auth-container">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <img src="assets/images/logo/logo.png" alt="">
+                <h2>Create an Account</h2>
+            </div>
+
+            <form id="signupForm" novalidate>
+                <!-- Personal Info -->
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="firstName" required placeholder=" ">
+                        <label for="firstName">First Name</label>
+                    </div>
+                    <span class="error-message" id="firstNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="lastName" required placeholder=" ">
+                        <label for="lastName">Last Name</label>
+                    </div>
+                    <span class="error-message" id="lastNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="userName" placeholder=" ">
+                        <label for="userName">Username</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <select id="gender" required>
+                            <option value="">Select...</option>
+                            <option value="0">Male</option>
+                            <option value="1">Female</option>
+                        </select>
+                        <label for="gender">Gender</label>
+                    </div>
+                    <span class="error-message" id="genderError"></span>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" id="email" required placeholder=" ">
+                        <label for="email">Email</label>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="tel" id="phone" required placeholder=" ">
+                        <label for="phone">Phone Number</label>
+                    </div>
+                    <span class="error-message" id="phoneError"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" required placeholder=" ">
+                        <label for="password">Password</label>
+                        <button type="button" class="toggle-password">👁</button>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" required placeholder=" ">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <button type="button" class="toggle-password">👁</button>
+                    </div>
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <!-- Address -->
+                <h3 class="section-title">Address</h3>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="street" required placeholder=" ">
+                        <label for="street">Street</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <select id="city" required>
+                            <option value="">Select City...</option>
+                        </select>
+                        <label for="city">City</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <select id="lga" required>
+                            <option value="">Select LGA...</option>
+                        </select>
+                        <label for="lga">LGA</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <select id="state" required>
+                            <option value="">Select State...</option>
+                        </select>
+                        <label for="state">State</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="country" value="Nigeria" readonly>
+                        <label for="country">Country</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="postalCode" required placeholder=" ">
+                        <label for="postalCode">Postal Code</label>
+                    </div>
+                </div>
+
+                <!-- Profile Picture -->
+                <div class="form-group">
+                    <label for="profilePicture">Profile Picture</label>
+                    <input type="file" id="profilePicture" accept="image/*">
+                </div>
+
+                <div id="feedback" class="feedback-message"></div>
+
+                <!-- Submit -->
+                <button type="submit" id="signupBtn" class="auth-btn">
+                    Sign Up
+                </button>
+            </form>
+
+            <p class="redirect-text">Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/signup.js"></script>
+</body>
+
+</html>
