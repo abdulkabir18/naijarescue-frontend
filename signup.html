@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaijaRescue - Signup</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/signup.css">
     <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <header class="navbar">
         <div class="logo">
-            <img src="assets/images/logo/logo.png" alt="">
+            <img src="assets/images/logo/logo.png" alt="NaijaRescue Logo">
             <span>NaijaRescue</span>
         </div>
         <nav id="nav-links">
@@ -23,152 +24,125 @@
         <div class="hamburger" id="hamburger">&#9776;</div>
     </header>
 
-    <section class="auth-container">
-        <div class="auth-box">
-            <div class="auth-logo">
-                <img src="assets/images/logo/logo.png" alt="">
-                <h2>Create an Account</h2>
-            </div>
+    <section class="signup-container">
+        <div class="signup-box">
+            <h2>Create Your Account</h2>
 
-            <form id="signupForm" novalidate>
-                <!-- Personal Info -->
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="firstName" required placeholder=" ">
+            <form id="signupForm" enctype="multipart/form-data" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                        <span class="error-message" id="firstNameError"></span>
                     </div>
-                    <span class="error-message" id="firstNameError"></span>
-                </div>
 
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="lastName" required placeholder=" ">
+                    <div class="form-group">
                         <label for="lastName">Last Name</label>
-                    </div>
-                    <span class="error-message" id="lastNameError"></span>
-                </div>
-
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="userName" placeholder=" ">
-                        <label for="userName">Username</label>
+                        <input type="text" id="lastName" required>
+                        <span class="error-message" id="lastNameError"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <select id="gender" required>
-                            <option value="">Select...</option>
-                            <option value="0">Male</option>
-                            <option value="1">Female</option>
-                        </select>
-                        <label for="gender">Gender</label>
-                    </div>
+                    <label for="userName">Username (optional)</label>
+                    <input type="text" id="userName">
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="">Select...</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                    </select>
                     <span class="error-message" id="genderError"></span>
                 </div>
 
-                <!-- Contact Info -->
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="email" id="email" required placeholder=" ">
-                        <label for="email">Email</label>
-                    </div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
                     <span class="error-message" id="emailError"></span>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="tel" id="phone" required placeholder=" ">
-                        <label for="phone">Phone Number</label>
-                    </div>
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
                     <span class="error-message" id="phoneError"></span>
                 </div>
 
-                <!-- Password -->
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="password" id="password" required placeholder=" ">
-                        <label for="password">Password</label>
-                        <button type="button" class="toggle-password">👁</button>
-                    </div>
+                <div class="form-group password-wrapper">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                    <button type="button" class="toggle-password">👁</button>
                     <span class="error-message" id="passwordError"></span>
                 </div>
 
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="password" id="confirmPassword" required placeholder=" ">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <button type="button" class="toggle-password">👁</button>
-                    </div>
+                <div class="form-group password-wrapper">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                    <button type="button" class="toggle-password">👁</button>
                     <span class="error-message" id="confirmPasswordError"></span>
                 </div>
 
-                <!-- Address -->
-                <h3 class="section-title">Address</h3>
+                <h3>Address</h3>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="street" required placeholder=" ">
-                        <label for="street">Street</label>
-                    </div>
+                    <label for="street">Street</label>
+                    <input type="text" id="street" required>
                 </div>
 
-                <div class="form-group">
-                    <div class="input-wrapper">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
                         <select id="city" required>
                             <option value="">Select City...</option>
                         </select>
-                        <label for="city">City</label>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="input-wrapper">
+                    <div class="form-group">
+                        <label for="lga">LGA</label>
                         <select id="lga" required>
                             <option value="">Select LGA...</option>
                         </select>
-                        <label for="lga">LGA</label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <select id="state" required>
-                            <option value="">Select State...</option>
-                        </select>
-                        <label for="state">State</label>
-                    </div>
+                    <label for="state">State</label>
+                    <select id="state" required>
+                        <option value="">Select State...</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="country" value="Nigeria" readonly>
-                        <label for="country">Country</label>
-                    </div>
+                    <label for="country">Country</label>
+                    <input type="text" id="country" value="Nigeria" readonly>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="postalCode" required placeholder=" ">
-                        <label for="postalCode">Postal Code</label>
-                    </div>
+                    <label for="postalCode">Postal Code</label>
+                    <input type="text" id="postalCode" required>
                 </div>
 
-                <!-- Profile Picture -->
                 <div class="form-group">
-                    <label for="profilePicture">Profile Picture</label>
+                    <label for="profilePicture">Profile Picture (optional)</label>
                     <input type="file" id="profilePicture" accept="image/*">
                 </div>
 
+                <!-- Feedback -->
                 <div id="feedback" class="feedback-message"></div>
 
                 <!-- Submit -->
                 <button type="submit" id="signupBtn" class="auth-btn">
-                    Sign Up
+                    <span class="btn-text">Sign Up</span>
+                    <span class="btn-loader"></span>
                 </button>
             </form>
 
-            <p class="redirect-text">Already have an account? <a href="login.html">Login</a></p>
+
+            <p class="redirect-text">
+                Already have an account? <a href="login.html">Login</a>
+            </p>
         </div>
     </section>
 
@@ -177,6 +151,7 @@
     </footer>
 
     <script src="assets/js/signup.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 
 </html>
