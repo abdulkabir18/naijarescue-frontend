@@ -1,0 +1,146 @@
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f6f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container */
+.verify-container {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    width: 100%;
+    max-width: 420px;
+}
+
+/* Title and Instructions */
+.verify-container h2 {
+    margin-bottom: 0.5rem;
+    color: #e63946;
+    font-size: 1.5rem;
+}
+
+.verify-container p {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Email Input */
+form input[type="email"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border 0.2s ease-in-out;
+}
+
+form input[type="email"]:focus {
+    border-color: #e63946;
+    outline: none;
+    box-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
+}
+
+/* Code Input Boxes */
+.code-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.code-box {
+    width: 45px;
+    height: 55px;
+    font-size: 1.6rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    background: #fafafa;
+}
+
+.code-box:focus {
+    border-color: #e63946;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
+}
+
+/* Button */
+form button {
+    width: 100%;
+    padding: 0.85rem;
+    background: #e63946;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    cursor: pointer;
+}
+
+.resend-text {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: #555;
+}
+
+#resend-link {
+    color: #e63946;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 5px;
+    user-select: none;
+}
+
+#resend-link.disabled {
+    color: #aaa;
+    cursor: not-allowed;
+    font-weight: normal;
+}
+
+
+form button:hover {
+    background: #d62839;
+}
+
+/* Message */
+#message {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    min-height: 20px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Verify Email - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/verify-email.css" />
+</head>
+<body>
+    <div class="verify-container">
+        <h2>Email Verification</h2>
+        <p>Enter the 6-digit code sent to your email.</p>
+
+        <form id="verifyForm">
+            <input type="email" name="email" placeholder="Email address" required />
+
+            <div class="code-inputs">
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+            </div>
+
+            <input type="hidden" name="code" id="fullCode" />
+            <button type="submit">Verify Email</button>
+
+            <p class="resend-text"> Didn't get the code?
+                <span id="resend-link" class="disabled">Resend code in <span id="countdown">30</span>s</span>
+            </p>
+
+            <p id="message"></p>
+        </form>
+    </div>
+
+    <script src="/assets/js/verify-email.js"></script>
+</body>
+</html>

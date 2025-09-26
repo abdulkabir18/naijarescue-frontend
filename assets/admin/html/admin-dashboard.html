@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaijaRescue Admin Dashboard</title>
+    <link rel="stylesheet" href="/assets/admin/css/admin-dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="/assets/images/logo/logo.png" alt="">
+                <h2>Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#">Dashboard</a>
+                <a href="#">Emergency Reports</a>
+                <a href="#">Agencies</a>
+                <a href="#">Users</a>
+                <a href="#">Settings</a>
+                <a href="logout.html" class="logout">Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="admin-header">
+                <h1>Dashboard Overview</h1>
+            </header>
+
+            <section class="cards">
+                <div class="card">
+                    <h3>Total Reports</h3>
+                    <p>132</p>
+                </div>
+                <div class="card">
+                    <h3>Active Emergencies</h3>
+                    <p>5</p>
+                </div>
+                <div class="card">
+                    <h3>Verified Agencies</h3>
+                    <p>12</p>
+                </div>
+                <div class="card">
+                    <h3>Users</h3>
+                    <p>546</p>
+                </div>
+            </section>
+
+            <section class="table-section">
+                <h2>Recent Emergency Reports</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1001</td>
+                            <td>JohnDoe</td>
+                            <td>Accident</td>
+                            <td><span class="badge pending">Pending</span></td>
+                            <td>Lagos</td>
+                            <td><button>View</button></td>
+                        </tr>
+                        <!-- More rows -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
