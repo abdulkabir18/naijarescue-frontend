@@ -443,6 +443,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function fetchCities(state) {
+        try {
+            const res = await fetch(`http://localhost:5084/api/v1/NigeriaData/cities/${state}`);
+            if (!res.ok) throw new Error(`Error ${res.status}`);
+            const cities = await res.json();
+            const citySelect = elems.city;
+            citySelect.innerHTML = '<option value="">Select City...</option>';
+            cities.forEach(c => {
+                const opt = document.createElement("option");
+                opt.value = c;
+                opt.textContent = c;
+                citySelect.appendChild(opt);
+            });
+            elems.lga.innerHTML = '<option value="">Select LGA...</option>';
+        } catch (err) {
+            console.error("Failed to load cities:", err);
+        }
+    }
+
     // Fetch LGAs based on selected state
     async function fetchLgas(state) {
         try {
@@ -462,12 +481,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Event listener
+    // Event listeners
     elems.state.addEventListener("change", e => {
         const state = e.target.value;
-        if (state) fetchLgas(state);
-        elems.city.innerHTML = '<option value="">Select City...</option>'; // optional if you want to clear city
+        if (state) {
+            fetchCities(state);   // still load cities
+            fetchLgas(state);     // but also load LGAs directly from state
+        }
     });
+
 
     // Initial load
     fetchStates();
@@ -513,7 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
         signupBtn.setAttribute("aria-busy", "true");
 
         try {
-            const res = await fetch("https://localhost:7107/api/v1/Auth/signup", {
+            const res = await fetch("http://localhost:5084/api/v1/Auth/signup", {
                 method: "POST",
                 body: fd
             });
