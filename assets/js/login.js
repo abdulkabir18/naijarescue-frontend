@@ -201,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     }
 
-    // show/hide password
     togglePassword.addEventListener("click", () => {
         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
         passwordInput.setAttribute("type", type);
@@ -217,9 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
         clearFeedback();
     });
 
-    // centralized function that performs fetch and returns parsed result
     async function submitLoginFormToBackend(payload) {
-        const url = "https://localhost:7107/api/v1/Auth/login"; // change if needed
+        const url = "http://localhost:5084/api/v1/Auth/login";
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -230,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const text = await response.text();
-        // try to parse JSON safely
         let json = null;
         try { json = text ? JSON.parse(text) : null; } catch (err) { json = null; }
 
@@ -282,11 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Network/backend error:", err);
             showFeedback("⚠️ Network issue. Please try again.", "error");
 
-            if(payload.email === "abdulkabirfagbohun@gmail.com" && payload.password === "Admin@1234")
-                    {
-                        setTimeout(() => window.location.href = "/verify-email.html", 500);
-                        return;
-                    }
+            if (payload.email === "abdulkabirfagbohun@gmail.com" && payload.password === "Admin@1234") {
+                setTimeout(() => window.location.href = "/verify-email.html", 500);
+                return;
+            }
         } finally {
             // reset button ONLY if not redirecting
             loginBtn.disabled = false;

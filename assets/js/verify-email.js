@@ -4,8 +4,29 @@ const boxes = document.querySelectorAll(".code-box");
 const hiddenCode = document.getElementById("fullCode");
 const resendLink = document.getElementById("resend-link");
 const countdownEl = document.getElementById("countdown");
-let countdown = 30;
+const countdownWrapper = document.getElementById("countdown-wrapper");
+
+let countdown = 60;
 let countdownTimer;
+
+boxes.forEach((box, index) => {
+    box.addEventListener("input", () => {
+        if (box.value.length === 1 && index < boxes.length - 1) {
+            boxes[index + 1].focus();
+        }
+        updateHiddenCode();
+    });
+
+    box.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !box.value && index > 0) {
+            boxes[index - 1].focus();
+        }
+    });
+});
+
+function updateHiddenCode() {
+    hiddenCode.value = Array.from(boxes).map(b => b.value).join("");
+}
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -13,17 +34,8 @@ form.addEventListener("submit", async (e) => {
     const email = form.email.value.trim();
     const code = hiddenCode.value.trim();
 
-    if (!validateEmail(email)) {
-        message.textContent = "❌ Please enter a valid email address.";
-        message.style.color = "red";
-        return;
-    }
-
-    if (code.length !== 6) {
-        message.textContent = "❌ Please enter a 6-digit code.";
-        message.style.color = "red";
-        return;
-    }
+    if (!validateEmail(email)) return showMessage("❌ Please enter a valid email address.", "red");
+    if (code.length !== 6) return showMessage("❌ Please enter a 6-digit code.", "red");
 
     const button = form.querySelector("button");
     button.disabled = true;
@@ -35,34 +47,22 @@ form.addEventListener("submit", async (e) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, code })
         });
-
         const data = await res.json();
-        if (res.ok) {
-            message.textContent = "✅ Email verified! You can now log in.";
-            message.style.color = "green";
-        } else {
-            message.textContent = "❌ " + data.error;
-            message.style.color = "red";
-        }
-    } catch (err) {
-        message.textContent = "❌ An error occurred. Please try again.";
-        message.style.color = "red";
+        if (res.ok) showMessage("✅ Email verified! You can now log in.", "green");
+        else showMessage("❌ " + data.error, "red");
+    } catch {
+        showMessage("❌ An error occurred. Please try again.", "red");
     }
 
     button.disabled = false;
-    button.innerHTML = `Verify Email`;
+    button.innerHTML = "Verify Email";
 });
-startCountdown(); // Start when page loads
 
 resendLink.addEventListener("click", async () => {
     if (resendLink.classList.contains("disabled")) return;
 
     const email = form.email.value.trim();
-    if (!validateEmail(email)) {
-        message.textContent = "❌ Please enter a valid email before resending.";
-        message.style.color = "red";
-        return;
-    }
+    if (!validateEmail(email)) return showMessage("❌ Please enter a valid email before resending.", "red");
 
     resendLink.textContent = "Sending...";
 
@@ -72,38 +72,34 @@ resendLink.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
         });
-
         const data = await res.json();
-
         if (res.ok) {
-            message.textContent = "✅ Code resent successfully.";
-            message.style.color = "green";
+            showMessage("✅ Code resent successfully.", "green");
             resetCountdown();
         } else {
-            message.textContent = "❌ " + data.error;
-            message.style.color = "red";
+            showMessage("❌ " + data.error, "red");
             resendLink.textContent = "Resend code";
         }
-    } catch (err) {
-        message.textContent = "❌ Failed to resend. Please try again.";
-        message.style.color = "red";
+    } catch {
+        showMessage("❌ Failed to resend. Please try again.", "red");
         resendLink.textContent = "Resend code";
     }
 });
 
 function startCountdown() {
     resendLink.classList.add("disabled");
-    countdown = 30;
+    countdownWrapper.style.display = "inline";
+    countdown = 60;
     updateCountdownText();
 
     countdownTimer = setInterval(() => {
         countdown--;
         updateCountdownText();
-
         if (countdown <= 0) {
             clearInterval(countdownTimer);
             resendLink.textContent = "Resend code";
             resendLink.classList.remove("disabled");
+            countdownWrapper.style.display = "none";
         }
     }, 1000);
 }
@@ -115,4 +111,14 @@ function resetCountdown() {
 
 function updateCountdownText() {
     countdownEl.textContent = countdown;
+}
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function showMessage(msg, color) {
+    message.textContent = msg;
+    message.style.color = color;
 }
