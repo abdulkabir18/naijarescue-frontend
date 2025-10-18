@@ -87,6 +87,30 @@ body {
     }
 }
 
+.alert-bar {
+    background: #b71c1c;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0.4rem 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.alert-bar p {
+    display: inline-block;
+    animation: scrollText 20s linear infinite;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
 
 #report {
     background: #e63946;
@@ -149,10 +173,283 @@ body {
     text-align: center;
 }
 
+.how-it-works {
+    background: #fff;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    color: #e63946;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.step {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.1);
+    padding: 2rem 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(230, 57, 70, 0.2);
+}
+
+.step .icon {
+    display: block;
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+}
+
+.step h4 {
+    color: #e63946;
+    margin-bottom: 0.6rem;
+}
+
+.emergency-contacts {
+    background: linear-gradient(to bottom, #e63946, #d62828);
+    color: #fff;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.emergency-contacts h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto 2rem auto;
+}
+
+.contact-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.contact-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.contact-card p {
+    font-size: 1rem;
+}
+
+.note {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.tips {
+    background: #fff8f8;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.tips h2 {
+    color: #e63946;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.tips p {
+    color: #555;
+    margin-bottom: 2.5rem;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.tip-card {
+    background: #fff;
+    border: 1px solid #f1f1f1;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.tip-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.tip-card:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.tip-card:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.tip-card:nth-child(4) {
+    animation-delay: 0.7s;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(230, 57, 70, 0.15);
+}
+
+.tip-card span.icon {
+    display: inline-block;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.tip-card h4 {
+    color: #e63946;
+    margin-bottom: 0.5rem;
+}
+
+.tip-card p {
+    color: #444;
+    font-size: 0.95rem;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 footer {
     text-align: center;
     padding: 1rem;
     background: #222;
     color: #fff;
     margin-top: 2rem;
+}
+
+.safety-scroll {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    border-top: 3px solid #e63946;
+    border-bottom: 3px solid #e63946;
+}
+
+.scroll-track {
+    display: flex;
+    gap: 1rem;
+    animation: scrollImages 40s linear infinite;
+}
+
+.tip {
+    position: relative;
+    min-width: 300px;
+    flex-shrink: 0;
+}
+
+.tip img {
+    width: 300px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.tip span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+}
+
+.safety-scroll::before,
+.safety-scroll::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 80px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.safety-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, #111 0%, transparent 100%);
+}
+
+.safety-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, #111 0%, transparent 100%);
+}
+
+.scroll-track {
+    display: flex;
+    gap: 1rem;
+    animation: scrollImages 60s linear infinite;
+    width: max-content;
+}
+
+@keyframes scrollImages {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.safety-scroll:hover .scroll-track {
+    animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+    .safety-scroll {
+        height: 150px;
+    }
+
+    .tip img {
+        width: 250px;
+        height: 150px;
+    }
 }

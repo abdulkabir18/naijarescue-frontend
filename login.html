@@ -58,6 +58,16 @@
                         <span class="spinner-text">Logging in...</span>
                     </span>
                 </button>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button type="button" id="googleLogin" class="google-btn">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                        alt="Google logo">
+                    <span>Continue with Google</span>
+                </button>
             </form>
 
             <p class="redirect-text">
@@ -72,6 +82,8 @@
 
     <script src="assets/js/script.js"></script>
     <script src="assets/js/login.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="assets/js/google-auth.js"></script>
 </body>
 
 </html>

@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function submitLoginFormToBackend(payload) {
-        const url = "http://localhost:5084/api/v1/Auth/login";
+        const url = "https://localhost:7288/api/v1/Auth/login";
         const response = await fetch(url, {
             method: "POST",
             headers: {
