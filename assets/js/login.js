@@ -1,142 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     const form = document.getElementById("loginForm");
-//     const emailInput = document.getElementById("email");
-//     const passwordInput = document.getElementById("password");
-//     const emailError = document.getElementById("emailError");
-//     const passwordError = document.getElementById("passwordError");
-//     const togglePassword = document.getElementById("togglePassword");
-//     const loginBtn = document.getElementById("loginBtn");
-
-//     const messages = {
-//         email: {
-//             required: "Please enter your email address.",
-//             invalid: "That doesn't look like a valid email."
-//         },
-//         password: {
-//             required: "Please enter your password.",
-//             short: "Password must be at least 6 characters long."
-//         }
-//     };
-
-//     function validateEmail() {
-//         const value = emailInput.value.trim();
-//         if (!value) {
-//             emailError.textContent = messages.email.required;
-//             return false;
-//         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-//             emailError.textContent = messages.email.invalid;
-//             return false;
-//         }
-//         emailError.textContent = "";
-//         return true;
-//     }
-
-//     function validatePassword() {
-//         const value = passwordInput.value.trim();
-//         if (!value) {
-//             passwordError.textContent = messages.password.required;
-//             return false;
-//         } else if (value.length < 6) {
-//             passwordError.textContent = messages.password.short;
-//             return false;
-//         }
-//         passwordError.textContent = "";
-//         return true;
-//     }
-
-//     togglePassword.addEventListener("click", () => {
-//         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-//         passwordInput.setAttribute("type", type);
-//         togglePassword.textContent = type === "password" ? "👁" : "🔒";
-//     });
-
-//     emailInput.addEventListener("input", validateEmail);
-//     passwordInput.addEventListener("input", validatePassword);
-
-//     form.addEventListener("submit", async (e) => {
-//         e.preventDefault();
-
-//         const isEmailValid = validateEmail();
-//         const isPasswordValid = validatePassword();
-
-//         if (isEmailValid && isPasswordValid) {
-//             loginBtn.disabled = true;
-//             loginBtn.innerHTML = `
-//             <div class="spinner"></div>
-//             <span>Logging in...</span>
-//         `;
-//             const emailValue = emailInput.value.trim();
-//             const passwordValue = passwordInput.value.trim();
-//             console.log(emailValue);
-
-//             try {
-//                 submitLoginForm({
-//                     "email": emailValue,
-//                     "password": passwordValue
-//                 });
-//             } catch (error) {
-//                 console.error("Error logging in:", error);
-//             } finally {
-//                 loginBtn.disabled = false;
-//                 loginBtn.innerHTML = "Login";
-//             }
-//         }
-//     });
-
-// });
-
-// async function submitLoginForm(data) {
-//     const loginBtn = document.getElementById("loginBtn");
-//     const feedback = document.getElementById("feedback");
-
-//     try {
-//         // show spinner
-//         loginBtn.disabled = true;
-//         loginBtn.innerHTML = `<div class="spinner"></div> Logging in...`;
-
-//         const response = await fetch("https://localhost:7107/api/v1/Auth/login", {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'accept': 'application/json'
-//             },
-//             body: JSON.stringify({ model: data })
-//         });
-
-//         const result = await response.json();
-//         console.log("Response:", result);
-
-//         if (!response.ok || !result.succeeded) {
-//             // show backend error
-//             feedback.textContent = result.message || "Invalid email or password.";
-//             feedback.className = "feedback-message error";
-//             feedback.style.display = "block";
-//             loginBtn.disabled = false;
-//             loginBtn.innerHTML = "Login";
-//             return;
-//         }
-
-//         // success 🎉
-//         feedback.textContent = "✅ Welcome back! Redirecting...";
-//         feedback.className = "feedback-message success";
-//         feedback.style.display = "block";
-
-//         localStorage.setItem("authToken", result.data.token);
-
-//         window.location.href = "/index.html";
-//         // setTimeout(() => {
-//         // }, 1500);
-
-//     } catch (error) {
-//         console.error("Error submitting login form:", error);
-//         feedback.textContent = "⚠️ Something went wrong. Please check your connection.";
-//         feedback.className = "feedback-message error";
-//         feedback.style.display = "block";
-//         loginBtn.disabled = false;
-//         loginBtn.innerHTML = "Login";
-//     }
-// }
-
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
@@ -146,14 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const togglePassword = document.getElementById("togglePassword");
 
     const loginBtn = document.getElementById("loginBtn");
-    const btnText = loginBtn.querySelector(".btn-text");
-    const spinner = loginBtn.querySelector(".spinner");
     const feedback = document.getElementById("feedback");
 
     const messages = {
         email: {
             required: "Please enter your email address.",
-            invalid: "That doesn't look like a valid email."
+            invalid: "That doesn't look like a valid email format."
         },
         password: {
             required: "Please enter your password.",
@@ -168,12 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
         feedback.style.display = "block";
     }
 
-    function clearFeedback() {
+    const clearFeedback = () => {
         if (!feedback) return;
-        feedback.textContent = "";
-        feedback.className = "feedback-message";
-        feedback.style.display = "none";
-    }
+        feedback.style.opacity = "0";
+        setTimeout(() => {
+            feedback.textContent = "";
+            feedback.className = "feedback-message";
+            feedback.style.display = "none";
+            feedback.style.opacity = "1";
+        }, 200);
+    };
 
     function validateEmail() {
         const value = emailInput.value.trim();
@@ -216,7 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
         clearFeedback();
     });
 
-    async function submitLoginFormToBackend(payload) {
+    passwordInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") form.dispatchEvent(new Event("submit"));
+    });
+
+    async function submitLogin(payload) {
         const url = "https://localhost:7288/api/v1/Auth/login";
         const response = await fetch(url, {
             method: "POST",
@@ -246,10 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // set loading state
         loginBtn.disabled = true;
         loginBtn.classList.add("loading");
-        loginBtn.setAttribute("aria-busy", "true");
+        // loginBtn.setAttribute("aria-busy", "true");
 
         const payload = {
             email: emailInput.value.trim(),
@@ -257,97 +123,74 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const { response, json } = await submitLoginFormToBackend(payload);
+            const { response, json } = await submitLogin(payload);
 
             if (response.ok) {
-                // ✅ Success
                 if (json?.succeeded) {
-                    showFeedback("✅ Welcome back! Redirecting...", "success");
-                    if (json.data?.token) {
-                        localStorage.setItem("authToken", json.data.token);
+                    if (json.data.isEmailVerified === false) {
+                        localStorage.setItem("EmailForVerification", payload.email);
+                        showFeedback(json?.message || "Email not verified. Redirecting...", "error");
+                        setTimeout(() => window.location.href = "/verify-email.html", 5000);
+                        return;
                     }
-                    setTimeout(() => window.location.href = "/dashboard.html", 1000);
-                    return;
+                    showFeedback("✅ Welcome back! Redirecting...", "success");
+                    // if (json.data?.token) {
+                    sessionStorage.setItem("authToken", json.data.token);
+                    const role = getRole(json.data.token);
+
+                    if (role === "Victim") {
+                        // sessionStorage.setItem("userRole", "Victim");
+                        setTimeout(() => window.location.href = "/victim-dashboard.html", 3000);
+                        return;
+                    }
+                    else if (role === "SuperAdmin") {
+                        // sessionStorage.setItem("userRole", "SuperAdmin");
+                        setTimeout(() => window.location.href = "assets/admin/html/admin-dashboard.html", 3000);
+                        return;
+                    }
+                    else if (role === "AgencyAdmin") {
+                        // sessionStorage.setItem("userRole", "AgencyAdmin");
+                        setTimeout(() => window.location.href = "/agencyadmin-dashboard.html", 3000);
+                        return;
+                    }
+                    else if (role === "Responder") {
+                        // sessionStorage.setItem("userRole", "Responder");
+                        setTimeout(() => window.location.href = "/responder-dashboard.html", 3000);
+                        return;
+                    }
+                    else {
+                        showFeedback("⚠️ Unknown user role. Contact support.", "error");
+                        window.location.href = "/login.html";
+                        return;
+                    }
+                    // }
+                    // setTimeout(() => window.location.href = "/dashboard.html", 1000);
+                    // return;
                 } else {
                     showFeedback(json?.message || "Login failed. Try again.", "error");
                 }
             } else {
-                // ❌ Handle 400, 401, etc
                 showFeedback(json?.message || `Error ${response.status}`, "error");
             }
         } catch (err) {
             console.error("Network/backend error:", err);
             showFeedback("⚠️ Network issue. Please try again.", "error");
-
-            if (payload.email === "abdulkabirfagbohun@gmail.com" && payload.password === "Admin@1234") {
-                setTimeout(() => window.location.href = "/verify-email.html", 500);
-                return;
-            }
         } finally {
-            // reset button ONLY if not redirecting
             loginBtn.disabled = false;
             loginBtn.classList.remove("loading");
-            loginBtn.setAttribute("aria-busy", "false");
+            // loginBtn.setAttribute("aria-busy", "false");
         }
     });
-
-
-    // form.addEventListener("submit", async (e) => {
-    //     e.preventDefault();
-    //     clearFeedback();
-
-    //     const isEmailValid = validateEmail();
-    //     const isPasswordValid = validatePassword();
-
-    //     if (!isEmailValid || !isPasswordValid) {
-    //         showFeedback("Please fix the highlighted fields and try again.", "error");
-    //         return;
-    //     }
-
-    //     // set loading state (CSS-driven)
-    //     loginBtn.disabled = true;
-    //     loginBtn.classList.add("loading");
-    //     loginBtn.setAttribute("aria-busy", "true");
-    //     loginBtn.setAttribute("aria-disabled", "true");
-
-    //     const payload = {
-    //         email: emailInput.value.trim(),
-    //         password: passwordInput.value.trim()
-    //     };
-
-    //     try {
-    //         const { response, json } = await submitLoginFormToBackend(payload);
-
-    //         // Backend returns JSON like: { succeeded: false, message: "...", data: null }
-    //         if (!response.ok) {
-    //             // If server returned JSON error message, show it
-    //             const message = json && json.message ? json.message : `Server returned ${response.status}`;
-    //             showFeedback(message, "error");
-    //             // optionally set specific field errors (e.g., wrong creds)
-    //         } else {
-    //             // response.ok (200). Check succeeded flag if backend uses it
-    //             if (json && json.succeeded === false) {
-    //                 showFeedback(json.message || "Invalid email or password.", "error");
-    //             } else {
-    //                 // success
-    //                 showFeedback("✅ Welcome back! Redirecting...", "success");
-    //                 if (json && json.data && json.data.token) {
-    //                     localStorage.setItem("authToken", json.data.token);
-    //                 }
-    //                 // small delay so user sees message
-    //                 setTimeout(() => window.location.href = "/dashboard.html", 900);
-    //                 return; // don't re-enable button — redirecting
-    //             }
-    //         }
-    //     } catch (err) {
-    //         console.error("Network/backend error:", err);
-    //         showFeedback("⚠️ Something went wrong. Check your network and try again.", "error");
-    //     } finally {
-    //         // ensure we reset loading state if we are not redirecting
-    //         loginBtn.disabled = false;
-    //         loginBtn.classList.remove("loading");
-    //         loginBtn.setAttribute("aria-busy", "false");
-    //         loginBtn.setAttribute("aria-disabled", "false");
-    //     }
-    // });
 });
+
+function decodeToken(token) {
+    if (!token) return null;
+    const payload = token.split('.')[1];
+    if (!payload) return null;
+    return JSON.parse(atob(payload));
+}
+
+let getRole = (token) => {
+    const decoded = decodeToken(token);
+    return decoded ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null : null;
+}

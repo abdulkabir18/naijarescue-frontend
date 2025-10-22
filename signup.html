@@ -44,8 +44,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userName">Username (optional)</label>
-                    <input type="text" id="userName">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                    <span class="error-message" id="emailError"></span>
                 </div>
 
                 <div class="form-group">
@@ -56,18 +57,6 @@
                         <option value="2">Female</option>
                     </select>
                     <span class="error-message" id="genderError"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                    <span class="error-message" id="emailError"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" required>
-                    <span class="error-message" id="phoneError"></span>
                 </div>
 
                 <div class="form-group password-wrapper">
@@ -84,58 +73,29 @@
                     <span class="error-message" id="confirmPasswordError"></span>
                 </div>
 
-                <h3>Address</h3>
-
-                <div class="form-group">
-                    <label for="street">Street</label>
-                    <input type="text" id="street" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <select id="city" required>
-                            <option value="">Select City...</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="lga">LGA</label>
-                        <select id="lga" required>
-                            <option value="">Select LGA...</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="state">State</label>
-                    <select id="state" required>
-                        <option value="">Select State...</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" id="country" value="Nigeria" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="postalCode">Postal Code</label>
-                    <input type="text" id="postalCode" required>
-                </div>
-
                 <div class="form-group">
                     <label for="profilePicture">Profile Picture (optional)</label>
                     <input type="file" id="profilePicture" accept="image/*">
                 </div>
 
-                <!-- Feedback -->
                 <div id="feedback" class="feedback-message"></div>
 
-                <!-- Submit -->
-                <button type="submit" id="signupBtn" class="auth-btn">
+                <button type="submit" id="signupBtn" class="signup-btn" aria-busy="false" aria-disabled="false">
                     <span class="btn-text">Sign Up</span>
-                    <span class="btn-loader"></span>
+                    <span class="spinner-wrapper" aria-hidden="true">
+                        <span class="spinner"></span>
+                        <span class="spinner-text">Creating account...</span>
+                    </span>
+                </button>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button type="button" id="googleLogin" class="google-btn">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                        alt="Google logo">
+                    <span>Continue with Google</span>
                 </button>
             </form>
 
@@ -150,6 +110,8 @@
         <p>© 2025 NaijaRescue. All rights reserved.</p>
     </footer>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="assets/js/google-auth.js"></script>
     <script src="assets/js/signup.js"></script>
     <script src="assets/js/script.js"></script>
 </body>

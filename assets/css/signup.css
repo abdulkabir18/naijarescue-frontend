@@ -67,6 +67,12 @@ body {
     animation: fadeIn 0.6s ease-in-out;
 }
 
+.signup-box h2 {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 50px;
+}
+
 .auth-box h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -161,7 +167,8 @@ form select:focus {
     border: 1px solid #ef9a9a;
 }
 
-.auth-btn {
+.signup-btn {
+    position: relative;
     width: 100%;
     padding: 12px 16px;
     background: #002855;
@@ -176,52 +183,117 @@ form select:focus {
     justify-content: center;
     gap: 10px;
     cursor: pointer;
-    transition: background 0.18s ease, opacity 0.18s ease, transform 0.06s ease;
+    transition: background 0.2s ease, opacity 0.2s ease, transform 0.06s ease;
 }
 
-.auth-btn:focus {
+.signup-btn:hover {
+    background: #004080;
+}
+
+.signup-btn:disabled,
+.signup-btn[aria-disabled="true"] {
+    background: #7a8ca3;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+.signup-btn:focus {
     outline: none;
     box-shadow: 0 0 0 4px rgba(0, 40, 85, 0.12);
 }
 
-.btn-loader {
+.spinner-wrapper {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.signup-btn[aria-busy="true"] .btn-text {
+    display: none;
+}
+
+.signup-btn[aria-busy="true"] .spinner-wrapper {
+    display: flex;
+}
+
+.spinner {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.55);
-    border-top: 2px solid #fff;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-top-color: #fff;
     border-radius: 50%;
-    display: none;
     animation: spin 0.8s linear infinite;
 }
 
-.auth-btn.loading .btn-loader {
-    display: inline-block;
-}
-
-.auth-btn.loading .btn-text {
-    visibility: hidden;
-}
-
-.auth-btn.loading,
-.auth-btn[aria-busy="true"] {
-    pointer-events: none;
-    opacity: 0.95;
+.spinner-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
 }
 
 @keyframes spin {
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
-.auth-btn:hover {
-    background: #004080;
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
 }
 
-.auth-btn:disabled {
-    background: #7a8ca3;
-    cursor: not-allowed;
-    opacity: 0.92;
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #ccc;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background: #fff;
+    padding: 0 10px;
+    color: #777;
+    font-size: 14px;
+}
+
+.google-btn {
+    width: 100%;
+    background: #002855;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.google-btn:hover {
+    background: #004080;
+    border-color: #999;
 }
 
 .redirect-text {

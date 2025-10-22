@@ -49,7 +49,6 @@ body {
     background: #d62839;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .report-box {
         padding: 1.5rem;

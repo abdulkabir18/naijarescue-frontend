@@ -5,47 +5,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verify Email - NaijaRescue</title>
-    <link rel="stylesheet" href="/assets/css/verify-email.css" />
+    <meta name="description" content="NaijaRescue email verification page.">
+    <link rel="stylesheet" href="assets/css/verify-email.css" />
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <div class="verify-container">
-        <h2>Email Verification</h2>
-        <p>Enter the 6-digit code sent to your email.</p>
+        <div class="verify-header">
+            <img src="assets/images/logo/logo.png" alt="NaijaRescue Logo" class="verify-logo">
+            <h2>Email Verification</h2>
+            <p>Enter the 6-digit code sent to <strong id="userEmailDisplay">your email</strong>.</p>
+        </div>
 
-        <form id="verifyForm">
-            <!-- Email Input -->
-            <input type="email" name="email" placeholder="Email address" required />
-
-            <!-- 6-digit Code Inputs -->
-            <div class="code-inputs">
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
-                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="code-box" />
+        <form id="verifyForm" novalidate>
+            <div class="form-group" hidden>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Email address" required />
             </div>
 
-            <!-- Hidden input to hold full code -->
-            <input type="hidden" name="code" id="fullCode" />
+            <fieldset class="code-fieldset">
+                <legend class="visually-hidden">Enter 6-digit verification code</legend>
+                <div class="code-inputs">
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                    <input type="text" maxlength="1" inputmode="numeric" class="code-box" required />
+                </div>
+            </fieldset>
 
-            <!-- Submit Button -->
-            <button type="submit">Verify Email</button>
+            <div id="feedback" class="feedback-message" aria-live="polite"></div>
 
-            <!-- Resend Code Section with Countdown -->
-            <p class="resend-text">
-                Didn't get the code?
-                <span id="resend-link">Resend code</span>
-                <span id="countdown-wrapper" style="display: none;">(<span id="countdown"></span>s)</span>
-            </p>
+            <div class="resend-section">
+                <span>Didn't get the code?</span>
+                <button type="button" id="resendCodeBtn" class="link-btn">Resend Code</button>
+                <small id="resendFeedback" class="feedback-message info"></small>
+            </div>
 
-            <!-- Message Display -->
-            <p id="message"></p>
+            <button type="submit" id="verifyBtn" class="verify-btn" aria-busy="false">
+                <span class="btn-text">Verify Email</span>
+                <span class="spinner-wrapper" aria-hidden="true">
+                    <span class="spinner"></span>
+                    <span class="spinner-text">Verifying...</span>
+                </span>
+            </button>
         </form>
     </div>
 
-    <script src="/assets/js/verify-email.js"></script>
+    <script src="assets/js/verify-email.js"></script>
+    <script src="assets/js/resend-code.js"></script>
 </body>
 
 </html>

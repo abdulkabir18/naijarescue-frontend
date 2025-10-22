@@ -1,124 +1,128 @@
-const form = document.getElementById("verifyForm");
-const message = document.getElementById("message");
-const boxes = document.querySelectorAll(".code-box");
-const hiddenCode = document.getElementById("fullCode");
-const resendLink = document.getElementById("resend-link");
-const countdownEl = document.getElementById("countdown");
-const countdownWrapper = document.getElementById("countdown-wrapper");
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("verifyForm");
+    const emailInput = document.getElementById("email");
+    const userEmailDisplay = document.getElementById("userEmailDisplay");
+    const codeBoxes = document.querySelectorAll(".code-box");
+    const verifyBtn = document.getElementById("verifyBtn");
+    const feedback = document.getElementById("feedback");
 
-let countdown = 60;
-let countdownTimer;
-
-boxes.forEach((box, index) => {
-    box.addEventListener("input", () => {
-        if (box.value.length === 1 && index < boxes.length - 1) {
-            boxes[index + 1].focus();
-        }
-        updateHiddenCode();
-    });
-
-    box.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !box.value && index > 0) {
-            boxes[index - 1].focus();
-        }
-    });
-});
-
-function updateHiddenCode() {
-    hiddenCode.value = Array.from(boxes).map(b => b.value).join("");
-}
-
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const email = form.email.value.trim();
-    const code = hiddenCode.value.trim();
-
-    if (!validateEmail(email)) return showMessage("❌ Please enter a valid email address.", "red");
-    if (code.length !== 6) return showMessage("❌ Please enter a 6-digit code.", "red");
-
-    const button = form.querySelector("button");
-    button.disabled = true;
-    button.innerHTML = `<span class="spinner"></span> Verifying...`;
-
-    try {
-        const res = await fetch('/api/verify-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code })
-        });
-        const data = await res.json();
-        if (res.ok) showMessage("✅ Email verified! You can now log in.", "green");
-        else showMessage("❌ " + data.error, "red");
-    } catch {
-        showMessage("❌ An error occurred. Please try again.", "red");
+    function showFeedback(message, type) {
+        feedback.textContent = message;
+        feedback.className = `feedback-message ${type}`;
     }
 
-    button.disabled = false;
-    button.innerHTML = "Verify Email";
-});
+    function toggleLoading(isLoading) {
+        verifyBtn.disabled = isLoading;
+        verifyBtn.classList.toggle("loading", isLoading);
+        verifyBtn.setAttribute("aria-busy", isLoading ? "true" : "false");
+    }
 
-resendLink.addEventListener("click", async () => {
-    if (resendLink.classList.contains("disabled")) return;
+    function setupEventListeners() {
+        codeBoxes.forEach((box, index) => {
+            box.addEventListener("input", (e) => {
+                e.target.value = e.target.value.replace(/\D/g, "");
 
-    const email = form.email.value.trim();
-    if (!validateEmail(email)) return showMessage("❌ Please enter a valid email before resending.", "red");
+                if (box.value.length === 1 && index < codeBoxes.length - 1) {
+                    codeBoxes[index + 1].focus();
+                }
 
-    resendLink.textContent = "Sending...";
+                if (index === codeBoxes.length - 1 && box.value.length === 1) {
+                    form.requestSubmit(verifyBtn);
+                }
+            });
 
-    try {
-        const res = await fetch("/api/resend-code", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
+            box.addEventListener("keydown", (e) => {
+                if (e.key === "Backspace" && !box.value && index > 0) {
+                    codeBoxes[index - 1].focus();
+                }
+            });
+
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').trim();
+
+                if (/^\d{6}$/.test(pasteData)) {
+                    pasteData.split('').forEach((char, i) => {
+                        if (codeBoxes[i]) {
+                            codeBoxes[i].value = char;
+                        }
+                    });
+                    form.requestSubmit(verifyBtn);
+                }
+            });
         });
-        const data = await res.json();
-        if (res.ok) {
-            showMessage("✅ Code resent successfully.", "green");
-            resetCountdown();
+
+        form.addEventListener("submit", handleFormSubmit);
+    }
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+        showFeedback("", "");
+
+        const email = emailInput.value.trim();
+        const code = Array.from(codeBoxes).map(b => b.value).join("");
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return showFeedback("A valid email is required for verification.", "error");
+        }
+        if (code.length !== 6) {
+            return showFeedback("Please enter the complete 6-digit code.", "error");
+        }
+
+        toggleLoading(true);
+
+        try {
+            const payload = {
+                email: email,
+                code: code
+            };
+
+            const res = await fetch("https://localhost:7288/api/v1/Auth/verify-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ model: payload })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.succeeded) {
+                showFeedback("✅ Email verified successfully! Redirecting to login...", "success");
+                localStorage.removeItem("EmailForVerification");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+            } else {
+                showFeedback(`❌ ${data.message || "Verification failed. Please check the code and try again."}`, "error");
+                toggleLoading(false);
+            }
+        } catch (error) {
+            console.error("Verification error:", error);
+            showFeedback("❌ Network error. Please check your connection and try again.", "error");
+            toggleLoading(false);
+        }
+    }
+
+    function initialize() {
+        const storedEmail = localStorage.getItem("EmailForVerification");
+        if (storedEmail) {
+            emailInput.value = storedEmail;
+            userEmailDisplay.textContent = storedEmail;
         } else {
-            showMessage("❌ " + data.error, "red");
-            resendLink.textContent = "Resend code";
+            userEmailDisplay.textContent = "your email";
+            showFeedback("Could not find an email to verify. Please start from the signup or login page.", "error");
         }
-    } catch {
-        showMessage("❌ Failed to resend. Please try again.", "red");
-        resendLink.textContent = "Resend code";
+
+        localStorage.setItem("EmailForVerification", storedEmail);
+
+        if (codeBoxes.length > 0) {
+            codeBoxes[0].focus();
+        }
+
+        setupEventListeners();
     }
+
+    initialize();
 });
-
-function startCountdown() {
-    resendLink.classList.add("disabled");
-    countdownWrapper.style.display = "inline";
-    countdown = 60;
-    updateCountdownText();
-
-    countdownTimer = setInterval(() => {
-        countdown--;
-        updateCountdownText();
-        if (countdown <= 0) {
-            clearInterval(countdownTimer);
-            resendLink.textContent = "Resend code";
-            resendLink.classList.remove("disabled");
-            countdownWrapper.style.display = "none";
-        }
-    }, 1000);
-}
-
-function resetCountdown() {
-    clearInterval(countdownTimer);
-    startCountdown();
-}
-
-function updateCountdownText() {
-    countdownEl.textContent = countdown;
-}
-
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-}
-
-function showMessage(msg, color) {
-    message.textContent = msg;
-    message.style.color = color;
-}

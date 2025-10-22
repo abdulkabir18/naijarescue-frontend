@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password | NaijaRescue</title>
+    <meta name="description" content="NaijaRescue password reset confirmation page.">
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/verify-reset.css">
+</head>
+
+<body class="auth-page">
+
+    <section class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <img src="assets/images/logo/logo.png" alt="NaijaRescue Logo" class="auth-logo">
+                <h2>Reset Your Password</h2>
+                <p class="auth-subtext">Enter your reset code, and new password below.</p>
+            </div>
+
+            <form id="confirmResetForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address (for verification)</label>
+                    <input type="email" id="email" placeholder="Enter your email" required autocomplete="email" />
+                </div>
+
+                <fieldset class="code-fieldset" id="codeInputs">
+                    <legend class="visually-hidden">Enter 6-digit verification code</legend>
+                    <label for="code-box-0" class="form-group-label">Verification Code</label>
+                    <div class="code-inputs">
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            autocomplete="one-time-code" id="code-box-0" />
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            id="code-box-1" />
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            id="code-box-2" />
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            id="code-box-3" />
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            id="code-box-4" />
+                        <input type="text" maxlength="1" inputmode="numeric" class="code-box" required
+                            id="code-box-5" />
+                    </div>
+                </fieldset>
+
+                <div class="resend-section">
+                    <button type="button" id="resendCodeBtn" class="link-btn">Resend Code</button>
+                    <small id="resendFeedback" class="feedback-message info"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="newPassword" placeholder="Enter new password" required />
+                        <button type="button" class="toggle-password">👁</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" placeholder="Re-enter new password" required />
+                        <button type="button" class="toggle-password">👁</button>
+                    </div>
+                </div>
+
+                <small class="error-message" id="formError"></small>
+                <div id="feedback" class="feedback-message" aria-live="polite"></div>
+
+                <button id="resetBtn" class="auth-btn" type="submit" aria-busy="false">
+                    <span class="btn-text">Reset Password</span>
+                    <span class="spinner-wrapper" aria-hidden="true">
+                        <span class="spinner"></span>
+                        <span class="spinner-text">Processing...</span>
+                    </span>
+                </button>
+
+                <div class="redirect-text">
+                    <p>Back to <a href="login.html">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="auth-footer">
+        <p>&copy; 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/confirm-forgot-password.js"></script>
+    <script src="assets/js/resend-code.js"></script>
+</body>
+
+</html>
