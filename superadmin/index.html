@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super Admin Dashboard | NaijaRescue</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="superadmin-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <span>NaijaRescue</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#">Dashboard</a></li>
+                <li><a href="agencies.html">Agencies</a></li>
+                <li><a href="#">Responders</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Incidents</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#" class="logout-btn">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="hamburger" id="hamburger">&#9776;</div>
+                <div class="search-box">
+                    <input type="text" placeholder="Search..." />
+                </div>
+                <div class="topbar-right">
+                    <span class="notification">🔔</span>
+                </div>
+            </header>
+
+            <section class="dashboard">
+                <h1>Dashboard Overview</h1>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Total Agencies</h3>
+                        <p>25</p>
+                    </div>
+                    <div class="card">
+                        <h3>Active Responders</h3>
+                        <p>147</p>
+                    </div>
+                    <div class="card">
+                        <h3>Open Incidents</h3>
+                        <p>34</p>
+                    </div>
+                    <div class="card">
+                        <h3>Registered Users</h3>
+                        <p>1,202</p>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h2>Recent Incidents</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Reported At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#A102</td>
+                                <td>Fire</td>
+                                <td>Lagos</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>03 Nov 2025</td>
+                            </tr>
+                            <tr>
+                                <td>#A103</td>
+                                <td>Flood</td>
+                                <td>Port Harcourt</td>
+                                <td><span class="status resolved">Resolved</span></td>
+                                <td>02 Nov 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

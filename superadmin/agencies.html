@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agencies | NaijaRescue Super Admin</title>
+    <link rel="stylesheet" href="css/agencies.css" />
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="superadmin-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <h2>NaijaRescue</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li class="active"><a href="agencies.html">Agencies</a></li>
+                <li><a href="#">Responders</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Incidents</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <h1>Agency Management</h1>
+                <button id="addAgencyBtn" class="btn">+ New Agency</button>
+            </header>
+
+            <section class="content">
+                <table class="agency-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agencyList">
+                        <tr>
+                            <td>NEMA</td>
+                            <td>National Emergency</td>
+                            <td>Abuja</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>02 Nov 2025</td>
+                            <td>
+                                <button class="edit">Edit</button>
+                                <button class="delete">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <div id="agencyModal" class="modal">
+        <div class="modal-content">
+            <h2>Add New Agency</h2>
+            <form id="agencyForm">
+                <label>Name</label>
+                <input type="text" id="agencyName" required />
+
+                <label>Type</label>
+                <input type="text" id="agencyType" required />
+
+                <label>Location</label>
+                <input type="text" id="agencyLocation" required />
+
+                <label>Status</label>
+                <select id="agencyStatus">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn save">Save</button>
+                    <button type="button" id="closeModal" class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/agencies.js"></script>
+</body>
+
+</html>
