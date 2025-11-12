@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Report Details - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/report-details.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="my-reports.html" class="active">My Reports</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="details-container" role="main">
+        <a href="my-reports.html" class="back-link">&larr; Back to Reports</a>
+
+        <section id="reportDetails" class="report-details">
+            <!-- populated by JS -->
+            <div id="detailsLoading" class="loading" aria-live="polite">Loading report...</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/report-details.js"></script>
+</body>
+
+</html>

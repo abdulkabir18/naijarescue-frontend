@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/emergency-contacts.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="contacts-container" role="main">
+        <a href="victim-dashboard.html" class="back-link">&larr; Back to Dashboard</a>
+
+        <div class="contacts-header">
+            <h1>Emergency Contacts</h1>
+            <p>Quick access to emergency services and your personal contacts</p>
+        </div>
+
+        <div class="contacts-content">
+            <!-- Official Emergency Services -->
+            <section class="contacts-section">
+                <h2><i class="ri-alert-line"></i> Official Emergency Services</h2>
+                <div id="officialContacts" class="contacts-list">
+                    <!-- populated by JS -->
+                </div>
+            </section>
+
+            <!-- Personal Emergency Contacts -->
+            <section class="contacts-section">
+                <div class="section-header">
+                    <h2><i class="ri-contacts-line"></i> My Emergency Contacts</h2>
+                    <button id="addContactBtn" class="btn-secondary">
+                        <i class="ri-add-line"></i> Add Contact
+                    </button>
+                </div>
+
+                <div id="personalContacts" class="contacts-list">
+                    <!-- populated by JS -->
+                </div>
+
+                <div id="emptyPersonal" class="empty-state" style="display: none;">
+                    <i class="ri-contacts-line"></i>
+                    <p>No personal contacts added yet</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Add Contact Modal -->
+        <div id="addContactModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Emergency Contact</h3>
+                    <button class="modal-close" aria-label="Close modal">&times;</button>
+                </div>
+                <form id="addContactForm" novalidate>
+                    <div class="form-group">
+                        <label for="contactName">Name *</label>
+                        <input type="text" id="contactName" required placeholder="e.g., Mom, Sister">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Phone Number *</label>
+                        <input type="tel" id="contactPhone" required placeholder="+234...">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactRelation">Relationship</label>
+                        <input type="text" id="contactRelation" placeholder="e.g., Mother, Friend">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancelAddBtn">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Contact</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/emergency-contacts.js"></script>
+</body>
+
+</html>

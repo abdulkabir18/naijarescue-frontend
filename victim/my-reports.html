@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reports - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/my-reports.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="my-reports.html" class="active">My Reports</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <section class="reports-container">
+        <div class="reports-header">
+            <div>
+                <h1><i class="ri-file-list-3-line"></i> My Emergency Reports</h1>
+                <p>View and track all your emergency incident reports</p>
+            </div>
+            <a href="report.html" class="btn-primary">
+                <i class="ri-add-circle-line"></i>
+                New Report
+            </a>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="stats-summary">
+            <div class="stat-box pending">
+                <div class="stat-icon">
+                    <i class="ri-time-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="pendingCount">0</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+            <div class="stat-box progress">
+                <div class="stat-icon">
+                    <i class="ri-loader-4-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="progressCount">0</h3>
+                    <p>In Progress</p>
+                </div>
+            </div>
+            <div class="stat-box resolved">
+                <div class="stat-icon">
+                    <i class="ri-checkbox-circle-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="resolvedCount">0</h3>
+                    <p>Resolved</p>
+                </div>
+            </div>
+            <div class="stat-box total">
+                <div class="stat-icon">
+                    <i class="ri-file-list-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalCount">0</h3>
+                    <p>Total Reports</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="filters-section">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" id="searchInput" placeholder="Search reports by location...">
+            </div>
+
+            <div class="filter-group">
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sortFilter">Sort By:</label>
+                <select id="sortFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Reports List -->
+        <div class="reports-list-container">
+            <div class="loading-state" id="loadingState">
+                <div class="spinner-large"></div>
+                <p>Loading your reports...</p>
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="ri-file-list-line"></i>
+                <h3>No Reports Found</h3>
+                <p>You haven't reported any emergencies yet.</p>
+                <a href="report.html" class="btn-primary">
+                    <i class="ri-add-circle-line"></i>
+                    Create First Report
+                </a>
+            </div>
+
+            <div class="no-results-state" id="noResultsState" style="display: none;">
+                <i class="ri-search-line"></i>
+                <h3>No Matching Reports</h3>
+                <p>Try adjusting your filters or search term.</p>
+            </div>
+
+            <div id="reportsListContainer" class="reports-list">
+                <!-- Reports will be dynamically loaded here -->
+            </div>
+
+            <!-- Pagination -->
+            <div id="paginationContainer" class="pagination" style="display: none;">
+                <button id="prevPage" class="page-btn" disabled>
+                    <i class="ri-arrow-left-s-line"></i>
+                    Previous
+                </button>
+                <div class="page-info">
+                    Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                </div>
+                <button id="nextPage" class="page-btn">
+                    Next
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/my-reports.js"></script>
+</body>
+
+</html>

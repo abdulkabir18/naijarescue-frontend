@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Emergency - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="#" class="active">Report</a>
+            <a href="#">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <section class="report-container">
+        <div class="report-header">
+            <h1>Report Emergency</h1>
+            <p>Fill in the details below. Your location and proof are required for verification.</p>
+        </div>
+
+        <div class="report-content">
+            <form id="reportForm" novalidate>
+                <div class="form-section">
+                    <h3><i class="ri-map-pin-line"></i> Location Information</h3>
+                    <p class="section-description">We need your exact location to dispatch help quickly</p>
+
+                    <div class="location-buttons">
+                        <button type="button" id="useCurrentLocation" class="location-btn">
+                            <i class="ri-crosshair-line"></i>
+                            Use Current Location
+                        </button>
+                        <button type="button" id="enterManually" class="location-btn secondary">
+                            <i class="ri-edit-line"></i>
+                            Enter Coordinates
+                        </button>
+                    </div>
+
+                    <div id="locationDisplay" class="location-display">
+                        <i class="ri-map-pin-2-fill"></i>
+                        <span id="locationText">No location selected</span>
+                    </div>
+
+                    <input type="hidden" id="latitude">
+                    <input type="hidden" id="longitude">
+
+                    <div id="manualLocationFields" class="manual-location" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="manualLat">Latitude *</label>
+                                <input type="number" id="manualLat" placeholder="e.g., 6.5244" step="any">
+                            </div>
+                            <div class="form-group">
+                                <label for="manualLng">Longitude *</label>
+                                <input type="number" id="manualLng" placeholder="e.g., 3.3792" step="any">
+                            </div>
+                        </div>
+                        <button type="button" id="setManualLocation" class="location-btn secondary"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="ri-check-line"></i>
+                            Set Location
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="form-section">
+                    <h3><i class="ri-image-line"></i> Upload Proof *</h3>
+                    <p class="section-description">Upload a photo or video as evidence of the incident (Required)</p>
+
+                    <div class="upload-area">
+                        <input type="file" id="proveUpload" accept="image/*,video/*" hidden required>
+                        <input type="file" id="photoCapture" accept="image/*" capture="environment" hidden>
+                        <input type="file" id="videoCapture" accept="video/*" capture="environment" hidden>
+
+                        <div class="upload-options">
+                            <label for="photoCapture" class="upload-btn">
+                                <i class="ri-camera-fill"></i>
+                                <span>Take Photo</span>
+                            </label>
+                            <label for="videoCapture" class="upload-btn">
+                                <i class="ri-vidicon-fill"></i>
+                                <span>Record Video</span>
+                            </label>
+                        </div>
+
+                        <label for="proveUpload" class="upload-drop-area">
+                            <i class="ri-upload-cloud-2-line"></i>
+                            <span class="upload-text">Or click to browse files</span>
+                            <small>Max 10MB (JPG, PNG, MP4)</small>
+                        </label>
+                    </div>
+
+                    <div class="camera-container" style="display:none; margin-top:1.5rem;">
+                        <video id="cameraPreview" autoplay playsinline
+                            style="width:100%; border-radius:8px; background:#000;"></video>
+
+                        <div class="camera-controls" style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:1rem;">
+                            <button type="button" id="capturePhoto" class="location-btn">
+                                <i class="ri-camera-3-fill"></i> Capture Photo
+                            </button>
+
+                            <button type="button" id="startRecording" class="location-btn secondary">
+                                <i class="ri-record-circle-fill"></i> Start Recording
+                            </button>
+
+                            <button type="button" id="stopRecording" class="location-btn secondary"
+                                style="display:none;">
+                                <i class="ri-stop-circle-fill"></i> Stop Recording
+                            </button>
+
+                            <button type="button" id="closeCamera" class="location-btn secondary">
+                                <i class="ri-close-line"></i> Close Camera
+                            </button>
+                        </div>
+
+                        <canvas id="photoCanvas" style="display:none;"></canvas>
+                    </div>
+
+                    <div id="uploadedFile" class="uploaded-file"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="ri-calendar-line"></i> Incident Time</h3>
+                    <div class="form-group">
+                        <label for="occurredAt">When did this happen? *</label>
+                        <input type="datetime-local" id="occurredAt" required>
+                    </div>
+                </div>
+
+                <div id="feedback" class="feedback-message"></div>
+
+                <button type="submit" id="submitBtn" class="submit-btn">
+                    <span class="btn-text">
+                        <i class="ri-alarm-warning-line"></i>
+                        Submit Emergency Report
+                    </span>
+                    <span class="spinner-wrapper">
+                        <span class="spinner"></span>
+                        <span class="spinner-text">Submitting...</span>
+                    </span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/report.js"></script>
+</body>
+
+</html>

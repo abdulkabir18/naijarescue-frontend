@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html" class="active">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <section class="profile-container">
+        <div class="profile-header">
+            <h1><i class="ri-user-settings-line"></i> My Profile</h1>
+            <p>Manage your personal information and account settings</p>
+        </div>
+
+        <div class="profile-content">
+            <!-- Profile Picture Section -->
+            <div class="profile-card">
+                <h2><i class="ri-image-edit-line"></i> Profile Picture</h2>
+
+                <div class="profile-picture-section">
+                    <div class="profile-picture-display">
+                        <img id="profilePicturePreview" src="/assets/images/default-avatar.png" alt="Profile Picture">
+                        <div class="picture-overlay">
+                            <i class="ri-camera-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="picture-actions">
+                        <input type="file" id="profilePictureInput" accept="image/*" hidden>
+                        <button type="button" id="uploadPictureBtn" class="btn-primary">
+                            <i class="ri-upload-2-line"></i>
+                            Upload New Photo
+                        </button>
+                        <button type="button" id="removePictureBtn" class="btn-secondary">
+                            <i class="ri-delete-bin-line"></i>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+
+                <div id="pictureFeedback" class="feedback-message"></div>
+            </div>
+
+            <!-- Personal Information Section -->
+            <div class="profile-card">
+                <h2><i class="ri-user-line"></i> Personal Information</h2>
+
+                <form id="personalInfoForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" required>
+                            <span class="error-message" id="firstNameError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" required>
+                            <span class="error-message" id="lastNameError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" readonly disabled>
+                        <small class="field-note">Email cannot be changed</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" disabled>
+                            <option value="">Select gender</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                        <small class="field-note">Gender cannot be changed</small>
+                    </div>
+
+                    <div id="personalInfoFeedback" class="feedback-message"></div>
+
+                    <button type="submit" id="updatePersonalInfoBtn" class="btn-primary">
+                        <span class="btn-text">
+                            <i class="ri-save-line"></i>
+                            Save Changes
+                        </span>
+                        <span class="spinner-wrapper">
+                            <span class="spinner"></span>
+                            <span>Saving...</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Address Section -->
+            <div class="profile-card">
+                <h2><i class="ri-map-pin-line"></i> Address Information</h2>
+
+                <form id="addressForm" novalidate>
+                    <div class="form-group">
+                        <label for="street">Street Address</label>
+                        <input type="text" id="street" placeholder="Enter street address">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" placeholder="City">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" placeholder="State">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lga">LGA</label>
+                            <input type="text" id="lga" placeholder="Local Government Area">
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Postal Code</label>
+                            <input type="text" id="postalCode" placeholder="Postal code">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" placeholder="Country" value="Nigeria" readonly>
+                    </div>
+
+                    <div id="addressFeedback" class="feedback-message"></div>
+
+                    <button type="submit" id="updateAddressBtn" class="btn-primary">
+                        <span class="btn-text">
+                            <i class="ri-save-line"></i>
+                            Update Address
+                        </span>
+                        <span class="spinner-wrapper">
+                            <span class="spinner"></span>
+                            <span>Updating...</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Change Password Section -->
+            <div class="profile-card">
+                <h2><i class="ri-lock-password-line"></i> Change Password</h2>
+
+                <form id="passwordForm" novalidate>
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="currentPassword" required>
+                            <button type="button" class="toggle-password" data-target="currentPassword">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="currentPasswordError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword">New Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="newPassword" required>
+                            <button type="button" class="toggle-password" data-target="newPassword">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="newPasswordError"></span>
+                        <small class="field-note">At least 8 characters, 1 uppercase, 1 number</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" required>
+                            <button type="button" class="toggle-password" data-target="confirmPassword">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="confirmPasswordError"></span>
+                    </div>
+
+                    <div id="passwordFeedback" class="feedback-message"></div>
+
+                    <button type="submit" id="changePasswordBtn" class="btn-danger">
+                        <span class="btn-text">
+                            <i class="ri-lock-line"></i>
+                            Change Password
+                        </span>
+                        <span class="spinner-wrapper">
+                            <span class="spinner"></span>
+                            <span>Changing...</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Account Actions -->
+            <div class="profile-card account-actions">
+                <h2><i class="ri-settings-3-line"></i> Account Actions</h2>
+
+                <div class="action-buttons">
+                    <button type="button" id="deactivateAccountBtn" class="btn-danger-outline">
+                        <i class="ri-user-unfollow-line"></i>
+                        Deactivate Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html" class="active">Dashboard</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="emergency-banner">
+            <div class="banner-content">
+                <i class="ri-alarm-warning-line"></i>
+                <div>
+                    <h3>Need Help Now?</h3>
+                    <p>Report an emergency and get immediate assistance</p>
+                </div>
+            </div>
+            <a href="report.html" class="emergency-btn">
+                <i class="ri-add-circle-line"></i>
+                Report Emergency
+            </a>
+        </div>
+
+        <div class="welcome-section">
+            <div>
+                <h1>Welcome back, <span id="userName">User</span>!</h1>
+                <p class="text-muted">Here's an overview of your emergency reports and account activity.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="ri-time-line"></i>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Active Reports</p>
+                    <h2 class="stat-value" id="activeReports">-</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon progress">
+                    <i class="ri-loader-4-line"></i>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">In Progress</p>
+                    <h2 class="stat-value" id="inProgressReports">-</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon resolved">
+                    <i class="ri-checkbox-circle-line"></i>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Resolved</p>
+                    <h2 class="stat-value" id="resolvedReports">-</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="ri-file-list-3-line"></i>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Total Reports</p>
+                    <h2 class="stat-value" id="totalReports">-</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Recent Reports</h2>
+                <a href="my-reports.html" class="view-all-link">View All <i class="ri-arrow-right-line"></i></a>
+            </div>
+
+            <div id="reportsContainer" class="reports-list">
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner-large"></div>
+                    <p>Loading your reports...</p>
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="ri-file-list-line"></i>
+                    <h3>No Reports Yet</h3>
+                    <p>You haven't reported any emergencies. Click the button above to create your first report.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+                <a href="report.html" class="action-card">
+                    <i class="ri-alarm-warning-fill"></i>
+                    <span>Report Emergency</span>
+                </a>
+                <a href="my-reports.html" class="action-card">
+                    <i class="ri-history-line"></i>
+                    <span>View History</span>
+                </a>
+                <a href="profile.html" class="action-card">
+                    <i class="ri-user-settings-line"></i>
+                    <span>Update Profile</span>
+                </a>
+                <a href="emergency-contacts.html" class="action-card">
+                    <i class="ri-phone-line"></i>
+                    <span>Emergency Contacts</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <h3><i class="ri-lightbulb-line"></i> Safety Tips</h3>
+            <div class="tips-carousel">
+                <div class="tip-item">
+                    <p>📍 Always share your live location during emergencies for faster response</p>
+                </div>
+                <div class="tip-item">
+                    <p>🚨 Save emergency hotlines: Police (112), Fire (119), Ambulance (122)</p>
+                </div>
+                <div class="tip-item">
+                    <p>📸 Attach photos or videos to your reports for better context</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
