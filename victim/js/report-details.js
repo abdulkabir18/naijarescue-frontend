@@ -1,49 +1,112 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    const token = sessionStorage.getItem("authToken");
+
+    // 🔴 TESTING: Comment out redirect for testing
+    // if (!token) {
+    //     window.location.href = "/login.html";
+    //     return;
+    // }
+
+    // Initialize notification system
+    await window.notificationManager.initialize(token);
+
+    // Logout handler
+    document.getElementById("logoutBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.notificationManager.disconnect();
+        sessionStorage.removeItem("authToken");
+        window.location.href = "/login.html";
+    });
+
+    // Load report details
     const container = document.getElementById("reportDetails");
     const loadingEl = document.getElementById("detailsLoading");
 
     function getReportId() {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get("id") || sessionStorage.getItem("selectedReportId");
+        return urlParams.get("id");
     }
 
     const id = getReportId();
     if (!id) {
         container.innerHTML = `<div class="error">No report selected. Go back to <a href="my-reports.html">My Reports</a>.</div>`;
+        if (loadingEl) loadingEl.remove();
         return;
     }
 
-    // Mock fetch or replace with real API
+    // 🔴 TESTING: Mock fetch matching your DTO structure
     function fetchReportMock(reportId) {
-        // sample record - in production fetch from API using token
         const mock = {
-            id: reportId,
-            type: "Accident",
-            status: "InProgress",
-            location: "Lekki, Lagos",
-            coordinate: { latitude: 6.4474, longitude: 3.5405 },
-            occurredAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-            proofUrl: "/assets/images/sample-accident.jpg", // or mp4
-            responder: {
-                name: "Dispatch Team A",
-                phone: "+234800000000",
-                eta: "10 mins"
-            },
-            timeline: [
-                { time: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), status: "Reported" },
-                { time: new Date(Date.now() - 90 * 60 * 1000).toISOString(), status: "Acknowledged" },
-                { time: new Date(Date.now() - 30 * 60 * 1000).toISOString(), status: "Responder Dispatched" },
-            ]
+            succeeded: true,
+            data: {
+                id: reportId,
+                title: "Road accident at Lekki toll gate - Multiple vehicles involved",
+                type: "Accident",
+                confidence: 0.92,
+                status: "InProgress",
+                coordinates: { latitude: 6.4474, longitude: 3.5405 },
+                address: {
+                    street: "Lekki-Epe Expressway",
+                    city: "Lagos",
+                    state: "Lagos",
+                    lga: "Eti-Osa",
+                    country: "Nigeria",
+                    postalCode: "101245"
+                },
+                occurredAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                userId: "user-123",
+                media: [
+                    {
+                        url: "https://res.cloudinary.com/dqsvw7scd/image/upload/v1762328140/ChatGPT_Image_Nov_5_2025_08_34_56_AM_aqtyml.png",
+                        type: "Image"
+                    }
+                ],
+                assignedResponders: [
+                    {
+                        id: "resp-assign-1",
+                        responderId: "resp-001",
+                        userId: "user-resp-1",
+                        role: "Primary",
+                        responderName: "Emergency Response Team Alpha"
+                    },
+                    {
+                        id: "resp-assign-2",
+                        responderId: "resp-002",
+                        userId: "user-resp-2",
+                        role: "Backup",
+                        responderName: "Medical Support Unit"
+                    }
+                ]
+            }
         };
         return Promise.resolve(mock);
     }
 
     try {
-        const report = await fetchReportMock(id);
-        renderReport(report);
+        /* 🟢 PRODUCTION: Uncomment this when connected to backend
+        const response = await fetch(`https://localhost:7288/api/v1/Incident/${id}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+        */
+
+        const result = await fetchReportMock(id);
+
+        if (result.succeeded && result.data) {
+            renderReport(result.data);
+        } else {
+            throw new Error("Failed to load report data");
+        }
     } catch (err) {
-        container.innerHTML = `<div class="error">Failed to load report.</div>`;
+        container.innerHTML = `<div class="error">Failed to load report. Please try again.</div>`;
         console.error(err);
     } finally {
         if (loadingEl) loadingEl.remove();
@@ -79,102 +142,162 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         new google.maps.Marker({
             position: { lat, lng },
-            map
+            map,
+            title: "Incident Location"
         });
     }
 
     function renderReport(r) {
         const occurred = new Date(r.occurredAt).toLocaleString();
-        const created = new Date(r.createdAt).toLocaleString();
-        const mapUrl = r.coordinate
-            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.coordinate.latitude + ',' + r.coordinate.longitude)}`
+
+        // Format address using utility function
+        const fullAddress = formatAddress(r.address);
+
+        const mapUrl = r.coordinates
+            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.coordinates.latitude + ',' + r.coordinates.longitude)}`
             : '';
+
+        // Get status class and display text using utility functions
+        const statusClass = getStatusClass(r.status);
+        const statusDisplay = getStatusDisplay(r.status);
+
+        const displayTitle = r.title || `${r.type} Emergency`;
 
         container.innerHTML = `
             <div class="details-card">
                 <div class="details-head">
                     <div class="type">
                         <i class="ri-map-pin-2-fill"></i>
-                        <h2>${escapeHtml(r.type)} Emergency</h2>
-                        <span class="badge ${escapeHtml(r.status || '').toLowerCase()}">${escapeHtml(r.status)}</span>
+                        <h2>${escapeHtml(displayTitle)}</h2>
+                        <span class="badge ${statusClass}">${escapeHtml(statusDisplay)}</span>
                     </div>
                     <div class="meta">
                         <div><strong>Occurred:</strong> ${occurred}</div>
-                        <div><strong>Reported:</strong> ${created}</div>
+                        <div><strong>Type:</strong> ${escapeHtml(r.type)}</div>
+                        ${r.confidence ? `<div><strong>AI Confidence:</strong> ${formatConfidence(r.confidence)}%</div>` : ''}
                     </div>
                 </div>
 
                 <div class="details-body">
                     <div class="left">
                         <h3>Location</h3>
-                        <p class="location-text">${escapeHtml(r.location || 'Location recorded')}</p>
-                        ${r.coordinate ? `<a class="btn" target="_blank" rel="noopener" href="${mapUrl}">Open in Google Maps</a>` : ''}
-                        ${r.coordinate ? `<div id="map" class="map" aria-label="Report location map"></div>` : ''}
+                        <p class="location-text">${escapeHtml(fullAddress)}</p>
+                        ${r.coordinates ? `<a class="btn" target="_blank" rel="noopener" href="${mapUrl}">
+                            <i class="ri-map-pin-line"></i> Open in Google Maps
+                        </a>` : ''}
+                        ${r.coordinates ? `<div id="map" class="map" aria-label="Report location map"></div>` : ''}
 
-                        <h3 style="margin-top:1.25rem;">Proof</h3>
-                        <div id="proofPreview" class="proof-preview" aria-live="polite"></div>
+                        <h3 style="margin-top:1.25rem;">Evidence</h3>
+                        <div id="mediaPreview" class="media-preview" aria-live="polite"></div>
 
-                        <h3 style="margin-top:1.25rem;">Responder</h3>
-                        <div class="responder">
-                            <p><strong>${escapeHtml(r.responder?.name || 'Not assigned')}</strong></p>
-                            ${r.responder?.phone ? `<p>Phone: <a href="tel:${encodeURIComponent(r.responder.phone)}">${escapeHtml(r.responder.phone)}</a></p>` : ''}
-                            ${r.responder?.eta ? `<p>ETA: ${escapeHtml(r.responder.eta)}</p>` : ''}
-                        </div>
+                        <h3 style="margin-top:1.25rem;">Assigned Responders</h3>
+                        <div id="respondersContainer" class="responders-container"></div>
                     </div>
 
                     <div class="right">
-                        <h3>Status Timeline</h3>
-                        <ul class="timeline">
-                            ${r.timeline.map(t => `<li><time>${new Date(t.time).toLocaleString()}</time><div class="stage">${escapeHtml(t.status)}</div></li>`).join("")}
-                        </ul>
+                        <h3>Incident Details</h3>
+                        <div class="details-info">
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value badge-inline ${statusClass}">${escapeHtml(statusDisplay)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Type:</span>
+                                <span class="detail-value">${escapeHtml(r.type)}</span>
+                            </div>
+                            ${r.confidence ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Confidence:</span>
+                                <span class="detail-value">${formatConfidence(r.confidence)}%</span>
+                            </div>` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
         `;
 
-        // Render proof safely (create elements)
-        const preview = document.getElementById("proofPreview");
-        preview.innerHTML = "";
-        if (r.proofUrl) {
-            const url = r.proofUrl;
-            if (/\.(mp4|webm|ogg)$/i.test(url)) {
-                const video = document.createElement("video");
-                video.controls = true;
-                video.src = url;
-                video.className = "proof-video";
-                video.setAttribute("title", "Uploaded video proof");
-                preview.appendChild(video);
-            } else {
-                const img = document.createElement("img");
-                img.src = url;
-                img.alt = "Uploaded proof image";
-                img.className = "proof-image";
-                preview.appendChild(img);
-            }
-        } else {
-            preview.textContent = "No proof uploaded";
-        }
+        // Render media
+        renderMedia(r.media);
+
+        // Render responders
+        renderResponders(r.assignedResponders);
 
         // Initialize Google map if coordinates exist
-        if (r.coordinate && r.coordinate.latitude && r.coordinate.longitude) {
-            const API_KEY = "Your Google Maps API key"; // <-- replace with your Google Maps JS API key
+        if (r.coordinates && r.coordinates.latitude && r.coordinates.longitude) {
+            const API_KEY = "AIzaSyAUqbDPvfPNZAjQFD50PlnYPRhIcNGABEE"; // Replace with your actual API key
             loadGoogleMapsApi(API_KEY)
-                .then(() => initMap(r.coordinate, "map"))
+                .then(() => initMap(r.coordinates, "map"))
                 .catch(err => {
                     console.warn("Google Maps not loaded:", err);
-                    // Map link is provided as a fallback
                 });
         }
     }
 
-    // small safe-escape helper
-    function escapeHtml(str) {
-        if (!str && str !== 0) return "";
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+    function renderMedia(mediaList) {
+        const preview = document.getElementById("mediaPreview");
+        preview.innerHTML = "";
+
+        if (!mediaList || mediaList.length === 0) {
+            preview.innerHTML = '<p class="no-media">No evidence uploaded</p>';
+            return;
+        }
+
+        mediaList.forEach(media => {
+            const mediaEl = document.createElement("div");
+            mediaEl.className = "media-item";
+
+            if (media.type === "Image") {
+                const img = document.createElement("img");
+                img.src = media.url;
+                img.alt = "Evidence image";
+                img.className = "proof-image";
+                mediaEl.appendChild(img);
+            } else if (media.type === "Video") {
+                const video = document.createElement("video");
+                video.controls = true;
+                video.src = media.url;
+                video.className = "proof-video";
+                video.setAttribute("title", "Evidence video");
+                mediaEl.appendChild(video);
+            } else if (media.type === "Audio") {
+                const audio = document.createElement("audio");
+                audio.controls = true;
+                audio.src = media.url;
+                audio.className = "proof-audio";
+                mediaEl.appendChild(audio);
+            }
+
+            preview.appendChild(mediaEl);
+        });
+    }
+
+    function renderResponders(responders) {
+        const container = document.getElementById("respondersContainer");
+        container.innerHTML = "";
+
+        if (!responders || responders.length === 0) {
+            container.innerHTML = '<p class="no-responders">No responders assigned yet</p>';
+            return;
+        }
+
+        responders.forEach(responder => {
+            const responderCard = document.createElement("div");
+            responderCard.className = "responder-card";
+
+            const roleClass = responder.role.toLowerCase();
+            const roleIcon = RESPONDER_ROLE_ICONS[responder.role] || RESPONDER_ROLE_ICONS["Support"];
+
+            responderCard.innerHTML = `
+                <div class="responder-header">
+                    <i class="${roleIcon}"></i>
+                    <span class="responder-role ${roleClass}">${escapeHtml(responder.role)}</span>
+                </div>
+                <div class="responder-info">
+                    <p class="responder-name">${escapeHtml(responder.responderName || 'Response Team')}</p>
+                </div>
+            `;
+
+            container.appendChild(responderCard);
+        });
     }
 });

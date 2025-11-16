@@ -1,0 +1,230 @@
+.notifications-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: calc(100vh - 200px);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-header h1 i {
+    color: #e63946;
+}
+
+.btn-mark-all {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-mark-all:hover {
+    background: #d62828;
+    transform: translateY(-2px);
+}
+
+.btn-mark-all:active {
+    transform: translateY(0);
+}
+
+.notification-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.filter-tab {
+    background: #fff;
+    border: 2px solid #e5e5e5;
+    color: #666;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-tab:hover {
+    border-color: #e63946;
+    color: #e63946;
+}
+
+.filter-tab.active {
+    background: #e63946;
+    border-color: #e63946;
+    color: #fff;
+}
+
+.filter-count {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+.filter-tab.active .filter-count {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.notifications-content {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.full-notifications-list {
+    min-height: 400px;
+}
+
+.loading-state-full {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+}
+
+.empty-state-full {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+}
+
+.empty-state-full i {
+    font-size: 4rem;
+    color: #ddd;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.empty-state-full h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Override notification item for full page */
+.full-notifications-list .notification-item {
+    border-bottom: 1px solid #f0f0f0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0;
+}
+
+.full-notifications-list .notification-item:first-child {
+    border-top: none;
+}
+
+.full-notifications-list .notification-item:last-child {
+    border-bottom: none;
+}
+
+.full-notifications-list .notification-item.unread {
+    border-left: 4px solid #e63946;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+    background: #f8f8f8;
+}
+
+.pagination-btn {
+    background: #fff;
+    border: 2px solid #e5e5e5;
+    color: #333;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    border-color: #e63946;
+    color: #e63946;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: #666;
+    font-weight: 600;
+}
+
+/* Date Separators */
+.date-separator {
+    padding: 1rem 1.25rem;
+    background: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
+    font-weight: 600;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .notifications-page-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-mark-all {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .notification-filters {
+        gap: 0.5rem;
+    }
+
+    .filter-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}

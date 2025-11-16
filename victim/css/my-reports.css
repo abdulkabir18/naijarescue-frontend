@@ -479,3 +479,44 @@
         justify-content: center;
     }
 }
+
+/* Status badges for all status types */
+.status-pending,
+.report-status.status-pending {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.status-progress,
+.status-inprogress,
+.report-status.status-inprogress {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-resolved,
+.report-status.status-resolved {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.status-escalated {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status-cancelled,
+.status-invalid {
+    background: #f5f5f5;
+    color: #666;
+}
+
+/* AI Confidence indicator */
+.report-meta span[title="AI Confidence"] {
+    color: #7b1fa2;
+    font-weight: 600;
+}
+
+.report-meta span[title="AI Confidence"] i {
+    color: #7b1fa2;
+}

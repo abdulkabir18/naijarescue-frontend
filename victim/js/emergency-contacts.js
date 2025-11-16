@@ -1,5 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const token = sessionStorage.getItem("authToken");
+
+    await window.notificationManager.initialize(token);
+
+    document.getElementById("logoutBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        // Disconnect notifications
+        window.notificationManager.disconnect();
+
+        sessionStorage.removeItem("authToken");
+        window.location.href = "/login.html";
+    });
 
     // Official emergency services (hardcoded, can be fetched from API)
     const officialServices = [

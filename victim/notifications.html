@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Notifications - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+            <span>NaijaRescue</span>
+        </div>
+        <nav id="nav-links">
+            <a href="victim-dashboard.html">Dashboard</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html">Profile</a>
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read" id="markAllRead">
+                            <i class="ri-check-double-line"></i> Mark all as read
+                        </button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="loading-notifications">
+                            <div class="spinner-small"></div>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="notifications.html">View All Notifications</a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </header>
+
+    <div class="notifications-page-container">
+        <div class="page-header">
+            <div>
+                <h1><i class="ri-notification-3-line"></i> All Notifications</h1>
+                <p class="text-muted">Stay updated with all your emergency reports and system alerts</p>
+            </div>
+            <button class="btn-mark-all" id="markAllReadPage">
+                <i class="ri-check-double-line"></i>
+                Mark All as Read
+            </button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="notification-filters">
+            <button class="filter-tab active" data-filter="all">
+                All <span class="filter-count" id="countAll">0</span>
+            </button>
+            <button class="filter-tab" data-filter="unread">
+                Unread <span class="filter-count" id="countUnread">0</span>
+            </button>
+            <button class="filter-tab" data-filter="alert">
+                <i class="ri-alarm-warning-line"></i> Alerts
+            </button>
+            <button class="filter-tab" data-filter="system">
+                <i class="ri-settings-3-line"></i> System
+            </button>
+            <button class="filter-tab" data-filter="success">
+                <i class="ri-checkbox-circle-line"></i> Success
+            </button>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notifications-content">
+            <div id="notificationsContainer" class="full-notifications-list">
+                <div class="loading-state-full">
+                    <div class="spinner-large"></div>
+                    <p>Loading all notifications...</p>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyNotifications" class="empty-state-full" style="display: none;">
+                <i class="ri-notification-off-line"></i>
+                <h3>No Notifications</h3>
+                <p>You're all caught up! Check back later for new updates.</p>
+            </div>
+
+            <!-- Pagination -->
+            <div id="paginationContainer" class="pagination" style="display: none;">
+                <button class="pagination-btn" id="prevPage" disabled>
+                    <i class="ri-arrow-left-s-line"></i> Previous
+                </button>
+                <div class="pagination-info">
+                    Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                </div>
+                <button class="pagination-btn" id="nextPage">
+                    Next <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 NaijaRescue. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
+    <script src="js/notifications.js"></script>
+</body>
+
+</html>

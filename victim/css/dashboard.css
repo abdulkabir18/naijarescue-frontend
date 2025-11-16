@@ -407,3 +407,21 @@
         transform: rotate(360deg);
     }
 }
+
+/* AI Confidence indicator */
+.report-meta span[title="AI Confidence"] {
+    color: #7b1fa2;
+    font-weight: 600;
+}
+
+.report-meta span[title="AI Confidence"] i {
+    color: #7b1fa2;
+}
+
+.report-item {
+    cursor: pointer;
+}
+
+.report-item:active {
+    transform: translateX(2px);
+}

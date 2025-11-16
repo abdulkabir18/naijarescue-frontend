@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Emergency - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="css/report.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
@@ -19,8 +20,31 @@
         </div>
         <nav id="nav-links">
             <a href="victim-dashboard.html">Dashboard</a>
-            <a href="#" class="active">Report</a>
-            <a href="#">Profile</a>
+            <a href="report.html" class="active">Report</a>
+            <a href="profile.html">Profile</a>
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read" id="markAllRead">
+                            <i class="ri-check-double-line"></i> Mark all as read
+                        </button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="loading-notifications">
+                            <div class="spinner-small"></div>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a id="footer-text" href="notifications.html">View All Notifications</a>
+                    </div>
+                </div>
+            </div>
             <a href="#" id="logoutBtn">Logout</a>
         </nav>
         <div class="hamburger" id="hamburger">&#9776;</div>
@@ -29,54 +53,64 @@
     <section class="report-container">
         <div class="report-header">
             <h1>Report Emergency</h1>
-            <p>Fill in the details below. Your location and proof are required for verification.</p>
+            <p>We'll automatically detect your location. Upload proof and submit to get help immediately.</p>
         </div>
 
         <div class="report-content">
             <form id="reportForm" novalidate>
+                <!-- Location Section -->
                 <div class="form-section">
-                    <h3><i class="ri-map-pin-line"></i> Location Information</h3>
-                    <p class="section-description">We need your exact location to dispatch help quickly</p>
+                    <h3><i class="ri-map-pin-line"></i> Your Location *</h3>
+                    <p class="section-description">
+                        We're detecting your location automatically. You can adjust the pin on the map if needed.
+                    </p>
 
-                    <div class="location-buttons">
-                        <button type="button" id="useCurrentLocation" class="location-btn">
-                            <i class="ri-crosshair-line"></i>
-                            Use Current Location
-                        </button>
-                        <button type="button" id="enterManually" class="location-btn secondary">
-                            <i class="ri-edit-line"></i>
-                            Enter Coordinates
-                        </button>
+                    <!-- Location Status -->
+                    <div class="location-status" id="locationStatus">
+                        <i class="ri-loader-4-line spinning"></i>
+                        <span id="statusText">Detecting your location...</span>
                     </div>
 
-                    <div id="locationDisplay" class="location-display">
-                        <i class="ri-map-pin-2-fill"></i>
-                        <span id="locationText">No location selected</span>
-                    </div>
-
-                    <input type="hidden" id="latitude">
-                    <input type="hidden" id="longitude">
-
-                    <div id="manualLocationFields" class="manual-location" style="display: none;">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="manualLat">Latitude *</label>
-                                <input type="number" id="manualLat" placeholder="e.g., 6.5244" step="any">
-                            </div>
-                            <div class="form-group">
-                                <label for="manualLng">Longitude *</label>
-                                <input type="number" id="manualLng" placeholder="e.g., 3.3792" step="any">
-                            </div>
+                    <!-- Search Box (Alternative) -->
+                    <div class="location-search-wrapper">
+                        <div class="location-search">
+                            <i class="ri-search-line"></i>
+                            <input type="text" id="locationSearch"
+                                placeholder="Or search for a location (e.g., Lekki Phase 1, Lagos)..."
+                                autocomplete="off">
                         </div>
-                        <button type="button" id="setManualLocation" class="location-btn secondary"
-                            style="width: 100%; margin-top: 0.5rem;">
-                            <i class="ri-check-line"></i>
-                            Set Location
-                        </button>
+                        <div id="searchSuggestions" class="search-suggestions"></div>
                     </div>
+
+                    <!-- Interactive Map -->
+                    <div id="locationMap" class="location-map">
+                        <div class="map-placeholder">
+                            <i class="ri-map-2-line"></i>
+                            <p>Loading map...</p>
+                        </div>
+                    </div>
+
+                    <!-- Address Display -->
+                    <div class="detected-address" id="detectedAddressBox" style="display: none;">
+                        <i class="ri-map-pin-2-fill"></i>
+                        <div class="address-content">
+                            <p class="address-label">Selected Location:</p>
+                            <p id="detectedAddress" class="address-value">--</p>
+                        </div>
+                    </div>
+
+                    <!-- Retry Button -->
+                    <button type="button" id="retryLocation" class="location-btn secondary" style="display: none;">
+                        <i class="ri-refresh-line"></i>
+                        Can't detect location? Click to retry
+                    </button>
+
+                    <!-- Hidden fields for coordinates -->
+                    <input type="hidden" id="latitude" required>
+                    <input type="hidden" id="longitude" required>
                 </div>
 
-
+                <!-- Upload Proof Section -->
                 <div class="form-section">
                     <h3><i class="ri-image-line"></i> Upload Proof *</h3>
                     <p class="section-description">Upload a photo or video as evidence of the incident (Required)</p>
@@ -104,11 +138,11 @@
                         </label>
                     </div>
 
+                    <!-- Camera Container -->
                     <div class="camera-container" style="display:none; margin-top:1.5rem;">
-                        <video id="cameraPreview" autoplay playsinline
-                            style="width:100%; border-radius:8px; background:#000;"></video>
+                        <video id="cameraPreview" autoplay playsinline></video>
 
-                        <div class="camera-controls" style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:1rem;">
+                        <div class="camera-controls">
                             <button type="button" id="capturePhoto" class="location-btn">
                                 <i class="ri-camera-3-fill"></i> Capture Photo
                             </button>
@@ -133,11 +167,14 @@
                     <div id="uploadedFile" class="uploaded-file"></div>
                 </div>
 
+                <!-- Incident Time Section -->
                 <div class="form-section">
-                    <h3><i class="ri-calendar-line"></i> Incident Time</h3>
+                    <h3><i class="ri-calendar-line"></i> Incident Time *</h3>
                     <div class="form-group">
-                        <label for="occurredAt">When did this happen? *</label>
+                        <label for="occurredAt">When did this happen?</label>
                         <input type="datetime-local" id="occurredAt" required>
+                        <small class="help-text">Defaults to current time. Adjust if the incident happened
+                            earlier.</small>
                     </div>
                 </div>
 
@@ -161,7 +198,9 @@
         <p>© 2025 NaijaRescue. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
     <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
     <script src="js/report.js"></script>
 </body>
 

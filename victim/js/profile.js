@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const token = sessionStorage.getItem("authToken");
 
+    await window.notificationManager.initialize(token);
+
     // 🔴 TESTING: Comment out redirect for testing
     // if (!token) {
     //     window.location.href = "/login.html";
@@ -9,6 +11,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
+
+        // Disconnect notifications
+        window.notificationManager.disconnect();
+
         sessionStorage.removeItem("authToken");
         window.location.href = "/login.html";
     });
