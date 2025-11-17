@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const GOOGLE_CLIENT_ID = "88984039780-g17q7897o6fsec1oimirdbjv3otoor2e.apps.googleusercontent.com";
     const googleLoginBtn = document.getElementById("googleLogin");
     const feedback = document.getElementById("feedback");
 
     const client = google.accounts.oauth2.initCodeClient({
-        client_id: GOOGLE_CLIENT_ID,
+        // Use the client ID from the global config file
+        client_id: AppConfig.GOOGLE_CLIENT_ID,
         scope: "email profile openid",
         ux_mode: "popup",
         callback: async (response) => {
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 googleLoginBtn.classList.add("loading");
 
                 try {
-                    const res = await fetch("https://localhost:7288/api/v1/Auth/continue-with-google", {
+                    const res = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/continue-with-google`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ accessToken: credential })
@@ -73,15 +73,3 @@ document.addEventListener("DOMContentLoaded", () => {
         client.requestCode();
     });
 });
-
-function decodeToken(token) {
-    if (!token) return null;
-    const payload = token.split('.')[1];
-    if (!payload) return null;
-    return JSON.parse(atob(payload));
-}
-
-let getRole = (token) => {
-    const decoded = decodeToken(token);
-    return decoded ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null : null;
-}

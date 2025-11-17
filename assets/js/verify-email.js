@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 code: code
             };
 
-            const res = await fetch("https://localhost:7288/api/v1/Auth/verify-email", {
+            const res = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/verify-email`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

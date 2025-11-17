@@ -1,22 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
+    const token = protectPage();
+    // if (!token) return;
 
-    await window.notificationManager.initialize(token);
-
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-
-        // Disconnect notifications
-        window.notificationManager.disconnect();
-
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 
     await loadUserProfile(token);
@@ -31,8 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadUserProfile(token) {
     // 🔴 TESTING: Mock user data
     const mockUser = {
-        firstName: "John",
-        lastName: "Doe",
+        fullName: "John Doe",
         email: "john.doe@example.com",
         gender: "1",
         profilePictureUrl: null,
@@ -71,8 +62,12 @@ async function loadUserProfile(token) {
 }
 
 function populateUserData(user) {
-    document.getElementById("firstName").value = user.firstName || "";
-    document.getElementById("lastName").value = user.lastName || "";
+    const nameParts = (user.fullName || "").split(' ');
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(' ') || "";
+
+    document.getElementById("firstName").value = firstName;
+    document.getElementById("lastName").value = lastName;
     document.getElementById("email").value = user.email || "";
     document.getElementById("gender").value = user.gender || "";
 
@@ -81,8 +76,7 @@ function populateUserData(user) {
     if (user.profilePictureUrl && user.profilePictureUrl.trim() !== "") {
         preview.src = user.profilePictureUrl;
     } else {
-        const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
-        preview.src = generateInitialsAvatar(fullName);
+        preview.src = generateInitialsAvatar(user.fullName || "");
     }
 
 
@@ -131,8 +125,11 @@ function initializeProfilePicture(token) {
 
     removeBtn.addEventListener("click", async () => {
         if (confirm("Are you sure you want to remove your profile picture?")) {
-            preview.src = "/assets/images/default-avatar.png";
+            // Generate initials avatar instead of using a non-existent file
+            const fullName = `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim();
+            preview.src = generateInitialsAvatar(fullName);
             showFeedback("pictureFeedback", "Profile picture removed successfully.", "success");
+            // TODO: Add API call here to remove the picture on the backend
         }
     });
 }
@@ -410,22 +407,6 @@ function initializeAccountActions() {
 }
 
 // === UTILITY FUNCTIONS ===
-function showFeedback(elementId, message, type) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-
-    element.textContent = message;
-    element.className = `feedback-message ${type}`;
-    element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Auto-hide success messages after 5 seconds
-    if (type === 'success') {
-        setTimeout(() => {
-            element.className = 'feedback-message';
-        }, 5000);
-    }
-}
-
 function showFieldError(errorId, message) {
     const element = document.getElementById(errorId);
     if (element) {
@@ -438,23 +419,4 @@ function clearFieldError(errorId) {
     if (element) {
         element.textContent = "";
     }
-}
-
-function generateInitialsAvatar(name) {
-    const colors = ["#1F7A8C", "#E67E22", "#9B59B6", "#27AE60", "#C0392B", "#2980B9"];
-    const index = name ? name.charCodeAt(0) % colors.length : 0;
-    const bgColor = colors[index];
-    const initials = name
-        ? name.split(" ").map(n => n[0].toUpperCase()).slice(0, 2).join("")
-        : "??";
-
-    const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-      <circle cx="128" cy="128" r="120" fill="${bgColor}" />
-      <text x="50%" y="52%" font-family="Arial, Helvetica, sans-serif"
-            font-size="96" fill="#ffffff" font-weight="700"
-            text-anchor="middle" dominant-baseline="middle">${initials}</text>
-    </svg>
-    `;
-    return `data:image/svg+xml;base64,${btoa(svg)}`;
 }

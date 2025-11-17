@@ -4,16 +4,12 @@ let itemsPerPage = 20;
 let allNotifications = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
+    const token = protectPage();
+    // if (!token) return;
 
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
-
-    // Initialize notification manager for the bell icon
-    await window.notificationManager.initialize(token);
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     // Load all notifications for this page
     await loadAllNotifications(token);
@@ -32,9 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Logout
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-        window.notificationManager.disconnect();
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 });
 

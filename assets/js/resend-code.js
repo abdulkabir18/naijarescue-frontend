@@ -64,7 +64,7 @@ resendBtn.addEventListener("click", async () => {
     resendFeedback.className = "feedback-message info";
 
     try {
-        const response = await fetch("https://localhost:7288/api/v1/Auth/resend-verification", {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/resend-verification`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

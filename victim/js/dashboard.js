@@ -473,57 +473,64 @@
 // }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
+    const token = protectPage();
+    // if (!token) return;
 
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
+
 
     loadUserInfo(token);
     await loadReports(token);
 
-    // Initialize notification system
-    await window.notificationManager.initialize(token);
-
-    // Logout
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-
-        // Disconnect notifications
-        window.notificationManager.disconnect();
-
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 });
 
-function decodeToken(token) {
-    if (!token) return null;
-    try {
-        const payload = token.split('.')[1];
-        return JSON.parse(atob(payload));
-    } catch (e) {
-        return null;
+async function loadUserInfo(token) {
+    const userNameEl = document.getElementById("userName");
+    userNameEl.textContent = "User"; // Set a default name initially
+
+    // 🔴 TESTING: Mock user data based on your UserProfileDto
+    const mockUser = {
+        succeeded: true,
+        data: {
+            fullName: "John Doe"
+        }
+    };
+
+    if (mockUser.succeeded && mockUser.data) {
+        // Display the first name from the full name
+        userNameEl.textContent = mockUser.data.fullName?.split(' ')[0] || "User";
     }
-}
 
-function loadUserInfo(token) {
-    // 🔴 TESTING: Hardcoded user name
-    const firstName = "John";
+    /* 🟢 PRODUCTION: Uncomment for real API call
+    try {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/json"
+            }
+        });
 
-    /* 🟢 PRODUCTION: Uncomment this when connected to backend
-    const decoded = decodeToken(token);
-    if (decoded) {
-        const firstName = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] ||
-            decoded['given_name'] ||
-            decoded['name'] ||
-            'User';
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.succeeded && result.data) {
+            // Display the first name from the full name
+            userNameEl.textContent = result.data.fullName?.split(' ')[0] || "User";
+        }
+    } catch (error) {
+        console.error("Failed to load user profile for dashboard:", error);
+        // The name will remain "User" as a fallback
     }
     */
-
-    document.getElementById("userName").textContent = firstName;
 }
 
 async function loadReports(token) {
@@ -633,7 +640,7 @@ async function loadReports(token) {
 
         /* 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Incident/my-reports", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/my-reports`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Accept": "application/json"

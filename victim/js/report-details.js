@@ -1,21 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
-
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
-
-    // Initialize notification system
-    await window.notificationManager.initialize(token);
+    const token = protectPage();
+    // if (!token) return;
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     // Logout handler
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-        window.notificationManager.disconnect();
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 
     // Load report details
@@ -84,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         /* 🟢 PRODUCTION: Uncomment this when connected to backend
-        const response = await fetch(`https://localhost:7288/api/v1/Incident/${id}`, {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/json"
@@ -224,8 +217,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Initialize Google map if coordinates exist
         if (r.coordinates && r.coordinates.latitude && r.coordinates.longitude) {
-            const API_KEY = "AIzaSyAUqbDPvfPNZAjQFD50PlnYPRhIcNGABEE"; // Replace with your actual API key
-            loadGoogleMapsApi(API_KEY)
+            // Use the key from the global config file
+            loadGoogleMapsApi(AppConfig.GOOGLE_MAPS_API_KEY)
                 .then(() => initMap(r.coordinates, "map"))
                 .catch(err => {
                     console.warn("Google Maps not loaded:", err);

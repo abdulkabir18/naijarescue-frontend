@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         forgotBtn.setAttribute("aria-busy", "true");
 
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Auth/forgot-password", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/forgot-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email })

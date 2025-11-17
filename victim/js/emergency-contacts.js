@@ -1,16 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
-
-    await window.notificationManager.initialize(token);
+    const token = protectPage();
+    // if (!token) return;
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-
-        // Disconnect notifications
-        window.notificationManager.disconnect();
-
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 
     // Official emergency services (hardcoded, can be fetched from API)
@@ -164,25 +161,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         form.reset();
     });
 
-    // Logout handler
-    document.getElementById("logoutBtn").addEventListener("click", (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
-    });
-
     // Initialize
     renderOfficialContacts();
     renderPersonalContacts();
-
-    // Helper
-    function escapeHtml(str) {
-        if (!str && str !== 0) return "";
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
 });

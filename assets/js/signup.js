@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         signupBtn.setAttribute("aria-busy", "true");
 
         try {
-            const res = await fetch("https://localhost:7288/api/v1/Auth/signup", {
+            const res = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/signup`, {
                 method: "POST",
                 body: fd
             });

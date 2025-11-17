@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agencies Management - NaijaRescue</title>
+    <title>Responders Management - NaijaRescue</title>
     <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="css/superadmin-dashboard.css">
-    <link rel="stylesheet" href="css/agencies.css">
+    <link rel="stylesheet" href="css/responders.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -70,11 +70,11 @@
                     <i class="ri-dashboard-3-line"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="agencies.html" class="nav-item active">
+                <a href="agencies.html" class="nav-item">
                     <i class="ri-building-line"></i>
                     <span>Agencies</span>
                 </a>
-                <a href="responders.html" class="nav-item">
+                <a href="responders.html" class="nav-item active">
                     <i class="ri-user-star-line"></i>
                     <span>Responders</span>
                 </a>
@@ -106,12 +106,12 @@
             <!-- Page Header -->
             <div class="page-header">
                 <div>
-                    <h1><i class="ri-building-line"></i> Agencies Management</h1>
-                    <p>Create and manage emergency response agencies</p>
+                    <h1><i class="ri-user-star-line"></i> Responders Management</h1>
+                    <p>Create and manage emergency responders</p>
                 </div>
                 <div class="page-actions">
-                    <button class="btn-primary" id="createAgencyBtn">
-                        <i class="ri-add-line"></i> Create New Agency
+                    <button class="btn-primary" id="createResponderBtn">
+                        <i class="ri-add-line"></i> Add New Responder
                     </button>
                 </div>
             </div>
@@ -120,17 +120,16 @@
             <div class="filter-section">
                 <div class="search-box">
                     <i class="ri-search-line"></i>
-                    <input type="text" id="searchInput" placeholder="Search agencies by name, email, or phone...">
+                    <input type="text" id="searchInput" placeholder="Search responders by name or email...">
                 </div>
                 <div class="filter-group">
-                    <select id="incidentTypeFilter" class="filter-select">
-                        <option value="">All Incident Types</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Security">Security</option>
-                        <option value="Medical">Medical</option>
-                        <option value="NaturalDisaster">Natural Disaster</option>
-                        <option value="Accident">Accident</option>
-                        <option value="Other">Other</option>
+                    <select id="agencyFilter" class="filter-select">
+                        <option value="">All Agencies</option>
+                    </select>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                     </select>
                     <button class="btn-secondary" id="resetFiltersBtn">
                         <i class="ri-filter-off-line"></i> Reset
@@ -138,169 +137,51 @@
                 </div>
             </div>
 
-            <!-- Agencies Grid -->
-            <div id="agenciesContainer" class="agencies-grid">
+            <!-- Responders Grid -->
+            <div id="respondersContainer" class="responders-grid">
                 <div class="loading-container">
                     <div class="spinner-large"></div>
-                    <p>Loading agencies...</p>
+                    <p>Loading responders...</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Create/Edit Agency Modal -->
-    <div class="modal" id="agencyModal">
+    <!-- Create/Edit Responder Modal -->
+    <div class="modal" id="responderModal">
         <div class="modal-content large">
             <div class="modal-header">
                 <h2 id="modalTitle">
-                    <i class="ri-building-line"></i> Create New Agency
+                    <i class="ri-user-add-line"></i> Add New Responder
                 </h2>
                 <button class="modal-close" id="closeModal">
                     <i class="ri-close-line"></i>
                 </button>
             </div>
 
-            <form id="agencyForm" enctype="multipart/form-data">
+            <form id="responderForm" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <!-- Agency Information Section -->
+                    <!-- Personal Information Section -->
                     <div class="form-section">
-                        <h3>Agency Information</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="agencyName">Agency Name *</label>
-                                <input type="text" id="agencyName" name="agencyName" required
-                                    placeholder="e.g., Lagos Fire Service">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="agencyEmail">Agency Email *</label>
-                                <input type="email" id="agencyEmail" name="agencyEmail" required
-                                    placeholder="contact@agency.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="agencyPhoneNumber">Phone Number *</label>
-                                <input type="tel" id="agencyPhoneNumber" name="agencyPhoneNumber" required
-                                    placeholder="+234 XXX XXX XXXX">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="agencyLogo">Agency Logo</label>
-                            <div class="file-upload-wrapper">
-                                <input type="file" id="agencyLogo" name="agencyLogo" accept="image/*" hidden>
-                                <label for="agencyLogo" class="file-upload-btn">
-                                    <i class="ri-image-add-line"></i>
-                                    <span id="logoFileName">Choose logo image</span>
-                                </label>
-                                <div id="logoPreview" class="image-preview"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Address Section -->
-                    <div class="form-section">
-                        <h3>Agency Address</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="street">Street</label>
-                                <input type="text" id="street" name="street" placeholder="Street address">
-                            </div>
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                <input type="text" id="city" name="city" placeholder="City">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="state">State</label>
-                                <input type="text" id="state" name="state" placeholder="State">
-                            </div>
-                            <div class="form-group">
-                                <label for="country">Country</label>
-                                <input type="text" id="country" name="country" value="Nigeria">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Supported Incidents Section -->
-                    <div class="form-section">
-                        <h3>Supported Incident Types *</h3>
-                        <p class="section-description">Select the types of incidents this agency can respond to</p>
-
-                        <div class="checkbox-grid">
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="Fire">
-                                <div class="checkbox-content">
-                                    <i class="ri-fire-line"></i>
-                                    <span>Fire</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="Security">
-                                <div class="checkbox-content">
-                                    <i class="ri-shield-line"></i>
-                                    <span>Security</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="Medical">
-                                <div class="checkbox-content">
-                                    <i class="ri-heart-pulse-line"></i>
-                                    <span>Medical</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="NaturalDisaster">
-                                <div class="checkbox-content">
-                                    <i class="ri-typhoon-line"></i>
-                                    <span>Natural Disaster</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="Accident">
-                                <div class="checkbox-content">
-                                    <i class="ri-car-line"></i>
-                                    <span>Accident</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="supportedIncidents" value="Other">
-                                <div class="checkbox-content">
-                                    <i class="ri-more-line"></i>
-                                    <span>Other</span>
-                                </div>
-                            </label>
-                        </div>
-                        <small class="help-text">Select at least one incident type</small>
-                    </div>
-
-                    <!-- Admin User Section -->
-                    <div class="form-section">
-                        <h3>Agency Administrator</h3>
-                        <p class="section-description">Create the admin user account for this agency</p>
+                        <h3>Personal Information</h3>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name *</label>
                                 <input type="text" id="firstName" name="firstName" required
-                                    placeholder="Admin first name">
+                                    placeholder="Responder first name">
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required placeholder="Admin last name">
+                                <input type="text" id="lastName" name="lastName" required
+                                    placeholder="Responder last name">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="adminEmail">Admin Email *</label>
-                                <input type="email" id="adminEmail" name="adminEmail" required
-                                    placeholder="admin@agency.com">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required placeholder="responder@agency.com">
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender *</label>
@@ -337,7 +218,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="profilePicture">Admin Profile Picture</label>
+                            <label for="profilePicture">Profile Picture</label>
                             <div class="file-upload-wrapper">
                                 <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
                                 <label for="profilePicture" class="file-upload-btn">
@@ -349,6 +230,93 @@
                         </div>
                     </div>
 
+                    <!-- Agency Assignment Section -->
+                    <div class="form-section">
+                        <h3>Agency Assignment</h3>
+                        <p class="section-description">Select the agency this responder will be assigned to</p>
+
+                        <div class="form-group">
+                            <label for="agencySearch">Search Agency *</label>
+                            <div class="agency-search-wrapper">
+                                <input type="text" id="agencySearch" placeholder="Type to search agencies..."
+                                    autocomplete="off">
+                                <div id="agencySearchResults" class="search-results"></div>
+                            </div>
+                            <input type="hidden" id="agencyId" name="agencyId" required>
+                        </div>
+
+                        <!-- Selected Agency Display -->
+                        <div id="selectedAgencyDisplay" class="selected-agency" style="display: none;">
+                            <div class="agency-info">
+                                <div class="agency-icon">
+                                    <i class="ri-building-fill"></i>
+                                </div>
+                                <div class="agency-details">
+                                    <h4 id="selectedAgencyName">--</h4>
+                                    <p id="selectedAgencyEmail">--</p>
+                                    <div id="selectedAgencyIncidents" class="incident-badges"></div>
+                                </div>
+                            </div>
+                            <button type="button" class="remove-selection" id="removeAgency">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Assigned Location Section -->
+                    <div class="form-section">
+                        <h3>Assigned Location (Optional)</h3>
+                        <p class="section-description">Set the responder's base location or patrol area</p>
+
+                        <!-- Location Actions -->
+                        <div class="location-actions">
+                            <button type="button" class="location-btn" id="useCurrentLocation">
+                                <i class="ri-map-pin-user-line"></i> Use Current Location
+                            </button>
+                            <button type="button" class="location-btn secondary" id="skipLocation">
+                                <i class="ri-skip-forward-line"></i> Skip (Set Later)
+                            </button>
+                        </div>
+
+                        <!-- Location Status -->
+                        <div class="location-status" id="locationStatus" style="display: none;">
+                            <i class="ri-loader-4-line spinning"></i>
+                            <span id="statusText">Detecting location...</span>
+                        </div>
+
+                        <!-- Location Search -->
+                        <div class="location-search-wrapper">
+                            <div class="location-search">
+                                <i class="ri-search-line"></i>
+                                <input type="text" id="locationSearch"
+                                    placeholder="Search for a location (e.g., Lekki Phase 1, Lagos)..."
+                                    autocomplete="off">
+                            </div>
+                            <div id="searchSuggestions" class="search-suggestions"></div>
+                        </div>
+
+                        <!-- Interactive Map -->
+                        <div id="locationMap" class="location-map">
+                            <div class="map-placeholder">
+                                <i class="ri-map-2-line"></i>
+                                <p>Map will load when needed</p>
+                            </div>
+                        </div>
+
+                        <!-- Address Display -->
+                        <div class="detected-address" id="detectedAddressBox" style="display: none;">
+                            <i class="ri-map-pin-2-fill"></i>
+                            <div class="address-content">
+                                <p class="address-label">Selected Location:</p>
+                                <p id="detectedAddress" class="address-value">--</p>
+                            </div>
+                        </div>
+
+                        <!-- Hidden fields for coordinates -->
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+                    </div>
+
                     <!-- Feedback Message -->
                     <div id="formFeedback" class="form-feedback"></div>
                 </div>
@@ -357,7 +325,7 @@
                     <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
                     <button type="submit" class="btn-primary" id="submitBtn">
                         <span class="btn-text">
-                            <i class="ri-save-line"></i> Create Agency
+                            <i class="ri-save-line"></i> Create Responder
                         </span>
                         <span class="spinner-wrapper">
                             <span class="spinner"></span>
@@ -376,7 +344,7 @@
     <script src="/assets/js/ui-utils.js"></script>
     <script src="/assets/js/notification-manager.js"></script>
     <script src="js/admin-utils.js"></script>
-    <script src="js/agencies.js"></script>
+    <script src="js/responders.js"></script>
 </body>
 
 </html>

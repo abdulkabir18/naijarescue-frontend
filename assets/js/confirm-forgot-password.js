@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 newPassword: newPassword,
                 confirmPassword: confirmPassword
             };
-            const res = await fetch("https://localhost:7288/api/v1/Auth/confirm-forgot-password", {
+            const res = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/confirm-forgot-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Accept": "application/json" },
                 body: JSON.stringify({ model: payload })

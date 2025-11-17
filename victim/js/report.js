@@ -358,16 +358,11 @@
 // });
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
-
-    await window.notificationManager.initialize(token);
-
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     alert("Please login to report an emergency.");
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
+    const token = protectPage();
+    // if (!token) return;
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     const form = document.getElementById("reportForm");
     const submitBtn = document.getElementById("submitBtn");
@@ -415,9 +410,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            window.notificationManager.disconnect();
-            sessionStorage.removeItem("authToken");
-            window.location.href = "/login.html";
+            logoutUser();
         });
     }
 
@@ -444,9 +437,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            const API_KEY = "AIzaSyAUqbDPvfPNZAjQFD50PlnYPRhIcNGABEE"; // Replace with your actual API key
             const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${AppConfig.GOOGLE_MAPS_API_KEY}&libraries=places`;
             script.async = true;
             script.defer = true;
             script.onload = resolve;
@@ -596,7 +588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         service.getPlacePredictions(
             {
                 input: query,
-                componentRestrictions: { country: "ng" }, 
+                componentRestrictions: { country: "ng" },
                 types: ["geocode", "establishment"]
             },
             (predictions, status) => {
@@ -726,12 +718,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showFeedback("File removed.", "error");
     };
 
-    function escapeHtml(str) {
-        const div = document.createElement("div");
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
     // ==================== CAMERA HANDLING ====================
 
     const isMobileDevice = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -841,20 +827,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         startRecordingBtn.style.display = "inline-flex";
         stopRecordingBtn.style.display = "none";
     }
-    // ==================== FEEDBACK MESSAGES ====================
-
-    function showFeedback(message, type) {
-        feedback.textContent = message;
-        feedback.className = `feedback-message ${type}`;
-        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-        if (type === 'success') {
-            setTimeout(() => {
-                feedback.className = 'feedback-message';
-            }, 4000);
-        }
-    }
-
     // ==================== FORM SUBMISSION ====================
 
     form.addEventListener("submit", async (e) => {
@@ -862,18 +834,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Validation
         if (!currentLocation) {
-            showFeedback("❌ Please select your location on the map.", "error");
+            showFeedback("feedback", "❌ Please select your location on the map.", "error");
             locationStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
 
         if (!proveFile) {
-            showFeedback("❌ Please upload proof (photo or video) of the incident.", "error");
+            showFeedback("feedback", "❌ Please upload proof (photo or video) of the incident.", "error");
             return;
         }
 
         if (!occurredAtInput.value) {
-            showFeedback("❌ Please select when the incident occurred.", "error");
+            showFeedback("feedback", "❌ Please select when the incident occurred.", "error");
             return;
         }
 
@@ -897,7 +869,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // 🔴 TESTING: Mock successful submission
         setTimeout(() => {
-            showFeedback("✅ Emergency reported successfully! Help is on the way. Redirecting...", "success");
+            showFeedback("feedback", "✅ Emergency reported successfully! Help is on the way. Redirecting...", "success");
             setTimeout(() => {
                 window.location.href = "victim-dashboard.html";
             }, 2000);
@@ -905,7 +877,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         /* 🟢 PRODUCTION: Uncomment this for real API call
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Incident/create", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/create`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`

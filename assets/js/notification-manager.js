@@ -22,7 +22,7 @@ class NotificationManager {
     async initializeSignalR(token) {
         try {
             // 🟢 PRODUCTION: Use your actual SignalR hub URL
-            const hubUrl = "https://localhost:7288/hubs/notification";
+            const hubUrl = `${AppConfig.API_BASE_URL}/hubs/notification`;
 
             this.connection = new signalR.HubConnectionBuilder()
                 .withUrl(hubUrl, {
@@ -131,7 +131,7 @@ class NotificationManager {
 
             /* 🟢 PRODUCTION: Uncomment this when connected to backend
             try {
-                const response = await fetch("https://localhost:7288/api/v1/Notification/my-notifications", {
+                const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/my-notifications`, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Accept": "application/json"
@@ -445,7 +445,7 @@ class NotificationManager {
 
         /* 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch(`https://localhost:7288/api/v1/Notification/${notificationId}/mark-read`, {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/${notificationId}/mark-read`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -469,7 +469,7 @@ class NotificationManager {
 
         /* 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Notification/mark-all-read", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/mark-all-read`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,

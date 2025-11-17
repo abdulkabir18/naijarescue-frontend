@@ -379,21 +379,16 @@
 // };
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = sessionStorage.getItem("authToken");
+    const token = protectPage();
+    // if (!token) return;
 
-    await window.notificationManager.initialize(token);
-
-    // 🔴 TESTING: Comment out redirect for testing
-    // if (!token) {
-    //     window.location.href = "/login.html";
-    //     return;
-    // }
+    if (token) {
+        await window.notificationManager.initialize(token);
+    }
 
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
-        window.notificationManager.disconnect();
-        sessionStorage.removeItem("authToken");
-        window.location.href = "/login.html";
+        logoutUser();
     });
 
     await initializeReportsPage(token);

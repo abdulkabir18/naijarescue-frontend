@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/superadmin-dashboard.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <span>NaijaRescue <span class="admin-badge">Super Admin</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read" id="markAllRead">
+                            <i class="ri-check-double-line"></i> Mark all as read
+                        </button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="loading-notifications">
+                            <div class="spinner-small"></div>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a id="footer-text" href="notifications.html">View All Notifications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-profile">
+                <img alt="Admin" id="adminAvatar">
+                <div class="profile-info">
+                    <span class="admin-name" id="adminName">Super Admin</span>
+                    <span class="admin-role">System Administrator</span>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="ri-logout-box-line"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <nav class="sidebar-nav">
+                <a href="superadmin-dashboard.html" class="nav-item active">
+                    <i class="ri-dashboard-3-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="agencies.html" class="nav-item">
+                    <i class="ri-building-line"></i>
+                    <span>Agencies</span>
+                </a>
+                <a href="responders.html" class="nav-item">
+                    <i class="ri-user-star-line"></i>
+                    <span>Responders</span>
+                </a>
+                <a href="incidents.html" class="nav-item">
+                    <i class="ri-alarm-warning-line"></i>
+                    <span>Incidents</span>
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="ri-group-line"></i>
+                    <span>Users</span>
+                </a>
+                <a href="send-notification.html" class="nav-item">
+                    <i class="ri-notification-2-line"></i>
+                    <span>Send Notifications</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i class="ri-file-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1>Dashboard Overview</h1>
+                    <p>Welcome back! Here's what's happening with your system today.</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn-secondary" id="refreshBtn">
+                        <i class="ri-refresh-line"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon incidents">
+                        <i class="ri-alarm-warning-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalIncidents">---</h3>
+                        <p>Total Incidents</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i> <span id="incidentsTrend">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <i class="ri-flashlight-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="activeIncidents">---</h3>
+                        <p>Active Incidents</p>
+                    </div>
+                    <div class="stat-badge urgent">Needs Attention</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon responders">
+                        <i class="ri-user-star-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalResponders">---</h3>
+                        <p>Total Responders</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i> <span id="respondersTrend">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon agencies">
+                        <i class="ri-building-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalAgencies">---</h3>
+                        <p>Active Agencies</p>
+                    </div>
+                    <div class="stat-trend neutral">
+                        <i class="ri-subtract-line"></i> <span>Stable</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon users">
+                        <i class="ri-group-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">---</h3>
+                        <p>Registered Users</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i> <span id="usersTrend">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon response">
+                        <i class="ri-time-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="avgResponseTime">---</h3>
+                        <p>Avg Response Time</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-down-line"></i> <span>Improved</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2><i class="ri-flashlight-line"></i> Quick Actions</h2>
+                <div class="actions-grid">
+                    <a href="agencies.html?action=create" class="action-card">
+                        <i class="ri-building-line"></i>
+                        <h3>Create Agency</h3>
+                        <p>Add a new emergency agency</p>
+                    </a>
+                    <a href="responders.html?action=create" class="action-card">
+                        <i class="ri-user-add-line"></i>
+                        <h3>Add Responder</h3>
+                        <p>Register a new responder</p>
+                    </a>
+                    <a href="send-notification.html" class="action-card">
+                        <i class="ri-notification-2-line"></i>
+                        <h3>Send Notification</h3>
+                        <p>Broadcast to all users</p>
+                    </a>
+                    <a href="incidents.html" class="action-card">
+                        <i class="ri-eye-line"></i>
+                        <h3>View All Incidents</h3>
+                        <p>Monitor emergency reports</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Incidents -->
+            <div class="data-section">
+                <div class="section-header">
+                    <h2><i class="ri-alarm-warning-line"></i> Recent Incidents</h2>
+                    <a href="incidents.html" class="view-all-link">View All <i class="ri-arrow-right-line"></i></a>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="data-table" id="recentIncidentsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Location</th>
+                                <th>Reporter</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incidentsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading-row">
+                                    <div class="spinner-small"></div>
+                                    <span>Loading incidents...</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- System Activity -->
+            <div class="data-section">
+                <div class="section-header">
+                    <h2><i class="ri-pulse-line"></i> System Activity</h2>
+                </div>
+                <div class="activity-feed" id="activityFeed">
+                    <div class="loading-row">
+                        <div class="spinner-small"></div>
+                        <span>Loading activity...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/auth-utils.js"></script>
+    <script src="/assets/js/ui-utils.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
+    <script src="js/admin-utils.js"></script>
+    <script src="js/superadmin-dashboard.js"></script>
+</body>
+
+</html>

@@ -84,8 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function submitLogin(payload) {
-        const url = "https://localhost:7288/api/v1/Auth/login";
-        const response = await fetch(url, {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -182,15 +181,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-
-function decodeToken(token) {
-    if (!token) return null;
-    const payload = token.split('.')[1];
-    if (!payload) return null;
-    return JSON.parse(atob(payload));
-}
-
-let getRole = (token) => {
-    const decoded = decodeToken(token);
-    return decoded ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null : null;
-}
