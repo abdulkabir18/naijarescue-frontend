@@ -495,19 +495,19 @@ async function loadUserInfo(token) {
     userNameEl.textContent = "User"; // Set a default name initially
 
     // 🔴 TESTING: Mock user data based on your UserProfileDto
-    const mockUser = {
-        succeeded: true,
-        data: {
-            fullName: "John Doe"
-        }
-    };
+    // const mockUser = {
+    //     succeeded: true,
+    //     data: {
+    //         fullName: "John Doe"
+    //     }
+    // };
 
-    if (mockUser.succeeded && mockUser.data) {
-        // Display the first name from the full name
-        userNameEl.textContent = mockUser.data.fullName?.split(' ')[0] || "User";
-    }
+    // if (mockUser.succeeded && mockUser.data) {
+    //     // Display the first name from the full name
+    //     userNameEl.textContent = mockUser.data.fullName?.split(' ')[0] || "User";
+    // }
 
-    /* 🟢 PRODUCTION: Uncomment for real API call
+    // 🟢 PRODUCTION: Uncomment for real API call
     try {
         const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile`, {
             headers: {
@@ -530,7 +530,7 @@ async function loadUserInfo(token) {
         console.error("Failed to load user profile for dashboard:", error);
         // The name will remain "User" as a fallback
     }
-    */
+
 }
 
 async function loadReports(token) {
@@ -539,111 +539,111 @@ async function loadReports(token) {
     const reportsContainer = document.getElementById("reportsContainer");
 
     // 🔴 TESTING: Hardcoded mock data matching your DTO
-    const mockData = {
-        succeeded: true,
-        data: [
-            {
-                id: "550e8400-e29b-41d4-a716-446655440001",
-                title: "Fire outbreak at residential building",
-                type: "Fire",
-                confidence: 0.95,
-                status: "InProgress",
-                coordinates: { latitude: 6.5244, longitude: 3.3792 },
-                address: {
-                    street: "15 Admiralty Way",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Eti-Osa",
-                    country: "Nigeria",
-                    postalCode: "101241"
-                },
-                occurredAt: new Date().toISOString(),
-                userId: "user-123",
-                media: [
-                    { url: "https://example.com/fire.jpg", type: "Image" }
-                ],
-                assignedResponders: [
-                    {
-                        id: "resp-1",
-                        responderId: "resp-001",
-                        userId: "user-resp-1",
-                        role: "Primary",
-                        responderName: "Fire Team Alpha"
-                    }
-                ]
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440002",
-                title: "Medical emergency - cardiac arrest",
-                type: "Medical",
-                confidence: 0.88,
-                status: "Resolved",
-                coordinates: { latitude: 6.4541, longitude: 3.3947 },
-                address: {
-                    street: "Allen Avenue",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Ikeja",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 86400000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440003",
-                title: "Road accident at Lekki toll gate",
-                type: "Accident",
-                confidence: 0.92,
-                status: "Resolved",
-                coordinates: { latitude: 6.4474, longitude: 3.5405 },
-                address: {
-                    street: "Lekki-Epe Expressway",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Eti-Osa",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 172800000).toISOString(),
-                userId: "user-123",
-                media: [
-                    { url: "https://example.com/accident.jpg", type: "Image" }
-                ],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440004",
-                title: "Security threat reported",
-                type: "Security",
-                confidence: 0.75,
-                status: "Pending",
-                coordinates: { latitude: 6.5027, longitude: 3.3700 },
-                address: {
-                    street: "Herbert Macaulay Way",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Yaba",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 259200000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            }
-        ]
-    };
+    // const mockData = {
+    //     succeeded: true,
+    //     data: [
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440001",
+    //             title: "Fire outbreak at residential building",
+    //             type: "Fire",
+    //             confidence: 0.95,
+    //             status: "InProgress",
+    //             coordinates: { latitude: 6.5244, longitude: 3.3792 },
+    //             address: {
+    //                 street: "15 Admiralty Way",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Eti-Osa",
+    //                 country: "Nigeria",
+    //                 postalCode: "101241"
+    //             },
+    //             occurredAt: new Date().toISOString(),
+    //             userId: "user-123",
+    //             media: [
+    //                 { url: "https://example.com/fire.jpg", type: "Image" }
+    //             ],
+    //             assignedResponders: [
+    //                 {
+    //                     id: "resp-1",
+    //                     responderId: "resp-001",
+    //                     userId: "user-resp-1",
+    //                     role: "Primary",
+    //                     responderName: "Fire Team Alpha"
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440002",
+    //             title: "Medical emergency - cardiac arrest",
+    //             type: "Medical",
+    //             confidence: 0.88,
+    //             status: "Resolved",
+    //             coordinates: { latitude: 6.4541, longitude: 3.3947 },
+    //             address: {
+    //                 street: "Allen Avenue",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Ikeja",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 86400000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440003",
+    //             title: "Road accident at Lekki toll gate",
+    //             type: "Accident",
+    //             confidence: 0.92,
+    //             status: "Resolved",
+    //             coordinates: { latitude: 6.4474, longitude: 3.5405 },
+    //             address: {
+    //                 street: "Lekki-Epe Expressway",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Eti-Osa",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 172800000).toISOString(),
+    //             userId: "user-123",
+    //             media: [
+    //                 { url: "https://example.com/accident.jpg", type: "Image" }
+    //             ],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440004",
+    //             title: "Security threat reported",
+    //             type: "Security",
+    //             confidence: 0.75,
+    //             status: "Pending",
+    //             coordinates: { latitude: 6.5027, longitude: 3.3700 },
+    //             address: {
+    //                 street: "Herbert Macaulay Way",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Yaba",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 259200000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         }
+    //     ]
+    // };
 
     // Simulate loading delay
-    setTimeout(() => {
-        const data = mockData;
+    setTimeout(async () => {
+        // const data = mockData;
 
-        /* 🟢 PRODUCTION: Uncomment this when connected to backend
+        // 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/my-reports`, {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/me?pageNumber=1&pageSize=10`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Accept": "application/json"
+                    "Accept": "text/plain"
                 }
             });
 
@@ -651,36 +651,45 @@ async function loadReports(token) {
                 throw new Error(`HTTP ${response.status}`);
             }
 
+
             const data = await response.json();
-        */
 
-        loadingState.style.display = "none";
+            if (data.message === "No incidents found.") {
+                console.info("No incidents found.");
+                loadingState.innerHTML = $`
+                <i class="ri-error-warning-line" style="display:block;font-size:3rem;color:#ddd;margin-bottom:1rem"></i>
+                <p>{data.message}</p>
+            `;
+            }
 
-        if (!data.data || data.data.length === 0) {
-            emptyState.style.display = "block";
-            updateStats(0, 0, 0, 0);
-            return;
-        }
 
-        // Calculate stats based on your IncidentStatus enum
-        const pending = data.data.filter(r =>
-            r.status === "Pending" || r.status === "Reported"
-        ).length;
+            loadingState.style.display = "none";
 
-        const inProgress = data.data.filter(r =>
-            r.status === "InProgress" || r.status === "Analyzed"
-        ).length;
+            if (!data.data || data.data.length === 0) {
+                emptyState.style.display = "block";
+                updateStats(0, 0, 0, 0);
+                return;
+            }
 
-        const resolved = data.data.filter(r =>
-            r.status === "Resolved"
-        ).length;
+            // Calculate stats based on your IncidentStatus enum
+            const pending = data.data.filter(r =>
+                r.status === "Pending" || r.status === "Reported"
+            ).length;
 
-        const total = data.data.length;
+            const inProgress = data.data.filter(r =>
+                r.status === "InProgress" || r.status === "Analyzed"
+            ).length;
 
-        updateStats(pending, inProgress, resolved, total);
-        displayReports(data.data.slice(0, 5));
+            const resolved = data.data.filter(r =>
+                r.status === "Resolved"
+            ).length;
 
-        /* 🟢 PRODUCTION: Uncomment error handling
+            const total = data.data.length;
+
+            updateStats(pending, inProgress, resolved, total);
+            displayReports(data.data.slice(0, 5));
+
+            // 🟢 PRODUCTION: Uncomment error handling
         } catch (error) {
             console.error("Failed to load reports:", error);
             loadingState.innerHTML = `
@@ -688,7 +697,6 @@ async function loadReports(token) {
                 <p>Failed to load reports. Please refresh the page.</p>
             `;
         }
-        */
     }, 1000);
 }
 

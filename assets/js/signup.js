@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
         email: document.getElementById("email"),
         password: document.getElementById("password"),
         confirmPassword: document.getElementById("confirmPassword"),
-        profilePicture: document.getElementById("profilePicture")
+        profilePicture: document.getElementById("profilePicture"),
+        profileFileName: document.getElementById("profileFileName"),
+        profilePreview: document.getElementById("profilePreview")
     };
 
     function showFieldError(fieldId, message) {
@@ -51,6 +53,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function handleFilePreview(file, fileNameEl, previewEl, type) {
+        if (!file) {
+            fileNameEl.textContent = "Choose profile picture (optional)";
+            previewEl.innerHTML = "";
+            previewEl.classList.remove("show");
+            return;
+        }
+
+        fileNameEl.textContent = file.name;
+
+        if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewEl.innerHTML = `<img src="${e.target.result}" alt="${type} preview">`;
+                previewEl.classList.add("show");
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+
     Object.keys(elems).forEach(key => {
         const el = elems[key];
         if (!el) return;
@@ -65,17 +88,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    elems.profilePicture.addEventListener("change", (e) => {
+        handleFilePreview(e.target.files[0], elems.profileFileName, elems.profilePreview, "profile");
+    });
+
     document.querySelectorAll(".toggle-password").forEach(btn => {
-        btn.addEventListener("click", ev => {
-            ev.preventDefault();
-            const wrapper = btn.closest(".password-wrapper") || btn.parentElement;
-            if (!wrapper) return;
-            const input = wrapper.querySelector("input[type='password'], input[type='text']");
-            if (!input) return;
-            const isPwd = input.getAttribute("type") === "password";
-            input.setAttribute("type", isPwd ? "text" : "password");
-            btn.textContent = isPwd ? "🔒" : "👁";
-            btn.setAttribute("aria-pressed", isPwd ? "true" : "false");
+        btn.addEventListener("click", () => {
+            const targetId = btn.dataset.target;
+            const input = document.getElementById(targetId);
+            const icon = btn.querySelector("i");
+
+            if (input) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.className = "ri-eye-off-line";
+                } else {
+                    input.type = "password";
+                    icon.className = "ri-eye-line";
+                }
+            }
         });
     });
 
@@ -225,4 +256,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // });
 
     // fetchStates();
-

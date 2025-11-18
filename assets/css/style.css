@@ -460,6 +460,25 @@ footer {
     animation-play-state: paused;
 }
 
+/* Reusable password toggle button style */
+.toggle-password {
+    transition: color 0.2s ease;
+}
+
+.toggle-password:hover i {
+    color: #e63946;
+    /* Main brand color for hover */
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .toggle-password {
+    position: absolute;
+}
+
+
 @media (max-width: 768px) {
     .safety-scroll {
         height: 150px;

@@ -44,11 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.querySelectorAll(".toggle-password").forEach(btn => {
             btn.addEventListener("click", () => {
-                const wrapper = btn.closest(".password-wrapper");
-                const input = wrapper.querySelector("input");
-                const isPassword = input.type === "password";
-                input.type = isPassword ? "text" : "password";
-                btn.textContent = isPassword ? "👁" : "🔒";
+                const targetId = btn.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = btn.querySelector("i");
+
+                if (input) {
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.className = "ri-eye-off-line";
+                    } else {
+                        input.type = "password";
+                        icon.className = "ri-eye-line";
+                    }
+                }
             });
         });
 

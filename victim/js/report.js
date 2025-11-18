@@ -359,7 +359,7 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = protectPage();
-    // if (!token) return;
+    if (!token) return;
     if (token) {
         await window.notificationManager.initialize(token);
     }
@@ -857,27 +857,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         const formData = new FormData();
 
         // Add coordinates
-        formData.append("Coordinate.Latitude", currentLocation.latitude);
-        formData.append("Coordinate.Longitude", currentLocation.longitude);
+        formData.append("Model.Coordinate.Latitude", currentLocation.latitude);
+        formData.append("Model.Coordinate.Longitude", currentLocation.longitude);
 
         // Add proof file
-        formData.append("Prove", proveFile);
+        formData.append("Model.Prove", proveFile);
 
         // Add occurred time
         const occurredAt = new Date(occurredAtInput.value).toISOString();
-        formData.append("OccurredAt", occurredAt);
-
+        formData.append("Model.OccurredAt", occurredAt);
         // 🔴 TESTING: Mock successful submission
-        setTimeout(() => {
-            showFeedback("feedback", "✅ Emergency reported successfully! Help is on the way. Redirecting...", "success");
-            setTimeout(() => {
-                window.location.href = "victim-dashboard.html";
-            }, 2000);
-        }, 1500);
+        // setTimeout(() => {
+        //     showFeedback("feedback", "✅ Emergency reported successfully! Help is on the way. Redirecting...", "success");
+        //     setTimeout(() => {
+        //         window.location.href = "victim-dashboard.html";
+        //     }, 2000);
+        // }, 1500);
 
-        /* 🟢 PRODUCTION: Uncomment this for real API call
+        // 🟢 PRODUCTION: Uncomment this for real API call
         try {
-            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/create`, {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/panic-alert`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -885,9 +884,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 },
                 body: formData
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok && data.succeeded) {
                 showFeedback("✅ Emergency reported successfully! Help is on the way.", "success");
                 setTimeout(() => {
@@ -905,6 +904,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             submitBtn.disabled = false;
             submitBtn.classList.remove("loading");
         }
-        */
     });
 });

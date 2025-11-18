@@ -1,5 +1,9 @@
 // notification-manager.js - Reusable notification system
 
+const notificationSound = new Audio(
+    "https://assets.mixkit.co/sfx/preview/mixkit-notification-bell-590.mp3"
+);
+notificationSound.preload = "auto";
 class NotificationManager {
     constructor() {
         this.connection = null;
@@ -22,7 +26,7 @@ class NotificationManager {
     async initializeSignalR(token) {
         try {
             // 🟢 PRODUCTION: Use your actual SignalR hub URL
-            const hubUrl = `${AppConfig.API_BASE_URL}/hubs/notification`;
+            const hubUrl = `${AppConfig.API_BASE_URL}/hubs/notifications`;
 
             this.connection = new signalR.HubConnectionBuilder()
                 .withUrl(hubUrl, {
@@ -82,56 +86,58 @@ class NotificationManager {
 
     async loadNotifications(token) {
         // 🔴 TESTING: Hardcoded mock notifications
-        const mockNotifications = {
-            succeeded: true,
-            data: [
-                {
-                    id: "1",
-                    title: "Report Acknowledged",
-                    message: "Your fire incident report has been acknowledged by emergency services",
-                    type: "System",
-                    isRead: false,
-                    createdAt: new Date(Date.now() - 300000).toISOString(),
-                    targetId: "1",
-                    targetType: "Incident"
-                },
-                {
-                    id: "2",
-                    title: "Responder Assigned",
-                    message: "A responder has been assigned to your medical emergency",
-                    type: "Alert",
-                    isRead: false,
-                    createdAt: new Date(Date.now() - 1800000).toISOString(),
-                    targetId: "2",
-                    targetType: "Incident"
-                },
-                {
-                    id: "3",
-                    title: "Incident Resolved",
-                    message: "Your accident report has been marked as resolved",
-                    type: "Success",
-                    isRead: true,
-                    createdAt: new Date(Date.now() - 86400000).toISOString(),
-                    targetId: "3",
-                    targetType: "Incident"
-                },
-                {
-                    id: "4",
-                    title: "System Maintenance",
-                    message: "Scheduled maintenance will occur on Sunday at 2:00 AM",
-                    type: "Broadcast",
-                    isRead: false,
-                    createdAt: new Date(Date.now() - 172800000).toISOString()
-                }
-            ]
-        };
+        // const mockNotifications = {
+        //     succeeded: true,
+        //     data: [
+        //         {
+        //             id: "1",
+        //             title: "Report Acknowledged",
+        //             message: "Your fire incident report has been acknowledged by emergency services",
+        //             type: "System",
+        //             isRead: false,
+        //             createdAt: new Date(Date.now() - 300000).toISOString(),
+        //             targetId: "1",
+        //             targetType: "Incident"
+        //         },
+        //         {
+        //             id: "2",
+        //             title: "Responder Assigned",
+        //             message: "A responder has been assigned to your medical emergency",
+        //             type: "Alert",
+        //             isRead: false,
+        //             createdAt: new Date(Date.now() - 1800000).toISOString(),
+        //             targetId: "2",
+        //             targetType: "Incident"
+        //         },
+        //         {
+        //             id: "3",
+        //             title: "Incident Resolved",
+        //             message: "Your accident report has been marked as resolved",
+        //             type: "Success",
+        //             isRead: true,
+        //             createdAt: new Date(Date.now() - 86400000).toISOString(),
+        //             targetId: "3",
+        //             targetType: "Incident"
+        //         },
+        //         {
+        //             id: "4",
+        //             title: "System Maintenance",
+        //             message: "Scheduled maintenance will occur on Sunday at 2:00 AM",
+        //             type: "Broadcast",
+        //             isRead: false,
+        //             createdAt: new Date(Date.now() - 172800000).toISOString()
+        //         }
+        //     ]
+        // };
 
-        setTimeout(() => {
-            const data = mockNotifications;
+        setTimeout(async () => {
+            // const data = mockNotifications;
 
-            /* 🟢 PRODUCTION: Uncomment this when connected to backend
+            const userId = getId(token);
+
+            //  🟢 PRODUCTION: Uncomment this when connected to backend
             try {
-                const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/my-notifications`, {
+                const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/user/${userId}`, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Accept": "application/json"
@@ -143,18 +149,18 @@ class NotificationManager {
                 }
 
                 const data = await response.json();
-            */
 
-            if (data.succeeded && data.data) {
-                this.displayNotifications(data.data);
-                this.updateNotificationBadge(data.data.filter(n => !n.isRead).length);
-            }
 
-            /* 🟢 PRODUCTION: Uncomment error handling
+                if (data.succeeded && data.data) {
+                    this.displayNotifications(data.data);
+                    this.updateNotificationBadge(data.data.filter(n => !n.isRead).length);
+                }
+
+                // 🟢 PRODUCTION: Uncomment error handling
             } catch (error) {
                 console.error("Failed to load notifications:", error);
             }
-            */
+
         }, 800);
     }
 
@@ -285,13 +291,21 @@ class NotificationManager {
 
     playNotificationSound() {
         try {
-            const audio = new Audio("/assets/sounds/notification.mp3");
-            audio.volume = 0.3;
-            audio.play().catch(err => console.log("Could not play sound:", err));
-        } catch (error) {
-            // Ignore if sound file doesn't exist
-        }
+            notificationSound.currentTime = 0;
+            notificationSound.volume = 0.4;
+            notificationSound.play();
+        } catch { }
     }
+
+    // playNotificationSound() {
+    //     try {
+    //         const audio = new Audio("/assets/sounds/notification.mp3");
+    //         audio.volume = 0.3;
+    //         audio.play().catch(err => console.log("Could not play sound:", err));
+    //     } catch (error) {
+    //         // Ignore if sound file doesn't exist
+    //     }
+    // }
 
     showBrowserNotification(notification) {
         if (!("Notification" in window)) {
@@ -443,10 +457,10 @@ class NotificationManager {
     async markNotificationAsRead(notificationId) {
         const token = sessionStorage.getItem("authToken");
 
-        /* 🟢 PRODUCTION: Uncomment this when connected to backend
+        // 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/${notificationId}/mark-read`, {
-                method: "PUT",
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/${notificationId}/read`, {
+                method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Accept": "application/json"
@@ -459,7 +473,7 @@ class NotificationManager {
         } catch (error) {
             console.error("Failed to mark notification as read:", error);
         }
-        */
+
 
         console.log(`Marking notification ${notificationId} as read`);
     }

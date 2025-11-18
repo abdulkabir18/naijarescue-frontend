@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const res = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Auth/verify-email`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    "Accept": "text/plain",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ model: payload })
             });

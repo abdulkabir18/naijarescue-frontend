@@ -8,6 +8,7 @@
     <meta name="description" content="NaijaRescue password reset confirmation page.">
     <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/verify-reset.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body class="auth-page">
@@ -54,7 +55,8 @@
                     <label for="newPassword">New Password</label>
                     <div class="password-wrapper">
                         <input type="password" id="newPassword" placeholder="Enter new password" required />
-                        <button type="button" class="toggle-password">👁</button>
+                        <button type="button" class="toggle-password" data-target="newPassword"><i
+                                class="ri-eye-line"></i></button>
                     </div>
                 </div>
 
@@ -62,7 +64,8 @@
                     <label for="confirmPassword">Confirm New Password</label>
                     <div class="password-wrapper">
                         <input type="password" id="confirmPassword" placeholder="Re-enter new password" required />
-                        <button type="button" class="toggle-password">👁</button>
+                        <button type="button" class="toggle-password" data-target="confirmPassword"><i
+                                class="ri-eye-line"></i></button>
                     </div>
                 </div>
 

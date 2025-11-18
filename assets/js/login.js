@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("password");
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
-    const togglePassword = document.getElementById("togglePassword");
+    const passwordToggles = document.querySelectorAll(".toggle-password");
 
     const loginBtn = document.getElementById("loginBtn");
     const feedback = document.getElementById("feedback");
@@ -64,10 +64,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     }
 
-    togglePassword.addEventListener("click", () => {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
-        togglePassword.textContent = type === "password" ? "👁" : "🔒";
+    passwordToggles.forEach(toggle => {
+        toggle.addEventListener("click", () => {
+            const targetId = toggle.dataset.target;
+            const input = document.getElementById(targetId);
+            const icon = toggle.querySelector("i");
+
+            if (input) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.className = "ri-eye-off-line";
+                } else {
+                    input.type = "password";
+                    icon.className = "ri-eye-line";
+                }
+            }
+        });
     });
 
     emailInput.addEventListener("input", () => {
@@ -114,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         loginBtn.disabled = true;
         loginBtn.classList.add("loading");
-        // loginBtn.setAttribute("aria-busy", "true");
 
         const payload = {
             email: emailInput.value.trim(),
@@ -133,28 +144,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     }
                     showFeedback("✅ Welcome back! Redirecting...", "success");
-                    // if (json.data?.token) {
+
                     sessionStorage.setItem("authToken", json.data.token);
                     const role = getRole(json.data.token);
 
                     if (role === "Victim") {
-                        // sessionStorage.setItem("userRole", "Victim");
-                        setTimeout(() => window.location.href = "/victim-dashboard.html", 3000);
+                        setTimeout(() => window.location.href = "victim/victim-dashboard.html", 3000);
                         return;
                     }
                     else if (role === "SuperAdmin") {
-                        // sessionStorage.setItem("userRole", "SuperAdmin");
-                        setTimeout(() => window.location.href = "assets/admin/html/admin-dashboard.html", 3000);
+                        setTimeout(() => window.location.href = "superadmin/superadmin-dashboard.html", 3000);
                         return;
                     }
                     else if (role === "AgencyAdmin") {
-                        // sessionStorage.setItem("userRole", "AgencyAdmin");
-                        setTimeout(() => window.location.href = "/agencyadmin-dashboard.html", 3000);
+                        setTimeout(() => window.location.href = "agencyadmin/agencyadmin-dashboard.html", 3000);
                         return;
                     }
                     else if (role === "Responder") {
-                        // sessionStorage.setItem("userRole", "Responder");
-                        setTimeout(() => window.location.href = "/responder-dashboard.html", 3000);
+                        setTimeout(() => window.location.href = "responder/responder-dashboard.html", 3000);
                         return;
                     }
                     else {
@@ -162,9 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.location.href = "/login.html";
                         return;
                     }
-                    // }
-                    // setTimeout(() => window.location.href = "/dashboard.html", 1000);
-                    // return;
                 } else {
                     showFeedback(json?.message || "Login failed. Try again.", "error");
                 }
@@ -177,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
             loginBtn.disabled = false;
             loginBtn.classList.remove("loading");
-            // loginBtn.setAttribute("aria-busy", "false");
         }
     });
 });

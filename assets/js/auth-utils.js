@@ -15,6 +15,11 @@ function getRole(token) {
     return decoded ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null : null;
 }
 
+function getId(token) {
+    const decoded = decodeToken(token);
+    return decoded ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || null : null;
+}
+
 function logoutUser() {
     console.log("Logging out user...");
     if (window.notificationManager && typeof window.notificationManager.disconnect === 'function') {
@@ -27,7 +32,7 @@ function logoutUser() {
 function protectPage() {
     const token = sessionStorage.getItem("authToken");
     if (!token) {
-        // window.location.href = "/login.html";
+        window.location.href = "/login.html";
         return null;
     }
     return token;

@@ -341,3 +341,109 @@
         width: 100%;
     }
 }
+
+/* ==================== ACTION SECTION ==================== */
+.action-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.action-section h3 {
+    color: #222;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.btn-cancel {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: #fff;
+    border: 2px solid #e63946;
+    border-radius: 8px;
+    color: #e63946;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover:not(:disabled) {
+    background: #e63946;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+}
+
+.btn-cancel:disabled {
+    background: #f5f5f5;
+    border-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-cancel i {
+    font-size: 1.2rem;
+}
+
+.cancel-info {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #856404;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.5;
+}
+
+.cancel-info i {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    margin-top: 0.1rem;
+}
+
+/* Spinner for cancel button */
+.spinner-small {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(230, 57, 70, 0.3);
+    border-top-color: #e63946;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Status badge updates */
+.badge.cancelled,
+.badge-inline.cancelled {
+    background: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .action-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .cancel-info {
+        font-size: 0.8rem;
+    }
+}
