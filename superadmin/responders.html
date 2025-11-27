@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="css/superadmin-dashboard.css">
     <link rel="stylesheet" href="css/responders.css">
+    <link rel="stylesheet" href="css/agencies.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -110,9 +111,12 @@
                     <p>Create and manage emergency responders</p>
                 </div>
                 <div class="page-actions">
-                    <button class="btn-primary" id="createResponderBtn">
+                    <a href="responders-map.html" class="btn-secondary">
+                        <i class="ri-map-2-line"></i> View on Map
+                    </a>
+                    <a href="create-responder.html" class="btn-primary">
                         <i class="ri-add-line"></i> Add New Responder
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -128,8 +132,11 @@
                     </select>
                     <select id="statusFilter" class="filter-select">
                         <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="available">Available</option>
+                        <option value="onduty">On Duty</option>
+                        <option value="busy">Busy</option>
+                        <option value="offduty">Off Duty</option>
+                        <option value="unreachable">Unreachable</option>
                     </select>
                     <button class="btn-secondary" id="resetFiltersBtn">
                         <i class="ri-filter-off-line"></i> Reset
@@ -144,197 +151,12 @@
                     <p>Loading responders...</p>
                 </div>
             </div>
-        </main>
-    </div>
 
-    <!-- Create/Edit Responder Modal -->
-    <div class="modal" id="responderModal">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h2 id="modalTitle">
-                    <i class="ri-user-add-line"></i> Add New Responder
-                </h2>
-                <button class="modal-close" id="closeModal">
-                    <i class="ri-close-line"></i>
-                </button>
+            <!-- Pagination -->
+            <div class="pagination-container" id="paginationContainer">
+                <!-- Pagination controls will be injected here by JavaScript -->
             </div>
-
-            <form id="responderForm" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <!-- Personal Information Section -->
-                    <div class="form-section">
-                        <h3>Personal Information</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required
-                                    placeholder="Responder first name">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required
-                                    placeholder="Responder last name">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input type="email" id="email" name="email" required placeholder="responder@agency.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="gender">Gender *</label>
-                                <select id="gender" name="gender" required>
-                                    <option value="">Select gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="password">Password *</label>
-                                <div class="password-input">
-                                    <input type="password" id="password" name="password" required
-                                        placeholder="Min. 8 characters" minlength="8">
-                                    <button type="button" class="toggle-password" data-target="password">
-                                        <i class="ri-eye-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">Confirm Password *</label>
-                                <div class="password-input">
-                                    <input type="password" id="confirmPassword" name="confirmPassword" required
-                                        placeholder="Re-enter password" minlength="8">
-                                    <button type="button" class="toggle-password" data-target="confirmPassword">
-                                        <i class="ri-eye-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="profilePicture">Profile Picture</label>
-                            <div class="file-upload-wrapper">
-                                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
-                                <label for="profilePicture" class="file-upload-btn">
-                                    <i class="ri-user-add-line"></i>
-                                    <span id="profileFileName">Choose profile picture</span>
-                                </label>
-                                <div id="profilePreview" class="image-preview"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Agency Assignment Section -->
-                    <div class="form-section">
-                        <h3>Agency Assignment</h3>
-                        <p class="section-description">Select the agency this responder will be assigned to</p>
-
-                        <div class="form-group">
-                            <label for="agencySearch">Search Agency *</label>
-                            <div class="agency-search-wrapper">
-                                <input type="text" id="agencySearch" placeholder="Type to search agencies..."
-                                    autocomplete="off">
-                                <div id="agencySearchResults" class="search-results"></div>
-                            </div>
-                            <input type="hidden" id="agencyId" name="agencyId" required>
-                        </div>
-
-                        <!-- Selected Agency Display -->
-                        <div id="selectedAgencyDisplay" class="selected-agency" style="display: none;">
-                            <div class="agency-info">
-                                <div class="agency-icon">
-                                    <i class="ri-building-fill"></i>
-                                </div>
-                                <div class="agency-details">
-                                    <h4 id="selectedAgencyName">--</h4>
-                                    <p id="selectedAgencyEmail">--</p>
-                                    <div id="selectedAgencyIncidents" class="incident-badges"></div>
-                                </div>
-                            </div>
-                            <button type="button" class="remove-selection" id="removeAgency">
-                                <i class="ri-close-line"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Assigned Location Section -->
-                    <div class="form-section">
-                        <h3>Assigned Location (Optional)</h3>
-                        <p class="section-description">Set the responder's base location or patrol area</p>
-
-                        <!-- Location Actions -->
-                        <div class="location-actions">
-                            <button type="button" class="location-btn" id="useCurrentLocation">
-                                <i class="ri-map-pin-user-line"></i> Use Current Location
-                            </button>
-                            <button type="button" class="location-btn secondary" id="skipLocation">
-                                <i class="ri-skip-forward-line"></i> Skip (Set Later)
-                            </button>
-                        </div>
-
-                        <!-- Location Status -->
-                        <div class="location-status" id="locationStatus" style="display: none;">
-                            <i class="ri-loader-4-line spinning"></i>
-                            <span id="statusText">Detecting location...</span>
-                        </div>
-
-                        <!-- Location Search -->
-                        <div class="location-search-wrapper">
-                            <div class="location-search">
-                                <i class="ri-search-line"></i>
-                                <input type="text" id="locationSearch"
-                                    placeholder="Search for a location (e.g., Lekki Phase 1, Lagos)..."
-                                    autocomplete="off">
-                            </div>
-                            <div id="searchSuggestions" class="search-suggestions"></div>
-                        </div>
-
-                        <!-- Interactive Map -->
-                        <div id="locationMap" class="location-map">
-                            <div class="map-placeholder">
-                                <i class="ri-map-2-line"></i>
-                                <p>Map will load when needed</p>
-                            </div>
-                        </div>
-
-                        <!-- Address Display -->
-                        <div class="detected-address" id="detectedAddressBox" style="display: none;">
-                            <i class="ri-map-pin-2-fill"></i>
-                            <div class="address-content">
-                                <p class="address-label">Selected Location:</p>
-                                <p id="detectedAddress" class="address-value">--</p>
-                            </div>
-                        </div>
-
-                        <!-- Hidden fields for coordinates -->
-                        <input type="hidden" id="latitude" name="latitude">
-                        <input type="hidden" id="longitude" name="longitude">
-                    </div>
-
-                    <!-- Feedback Message -->
-                    <div id="formFeedback" class="form-feedback"></div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-                    <button type="submit" class="btn-primary" id="submitBtn">
-                        <span class="btn-text">
-                            <i class="ri-save-line"></i> Create Responder
-                        </span>
-                        <span class="spinner-wrapper">
-                            <span class="spinner"></span>
-                            <span class="spinner-text">Creating...</span>
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
+        </main>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>

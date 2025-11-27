@@ -4,11 +4,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Agency Dashboard - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/superadmin/css/superadmin-dashboard.css">
+    <link rel="stylesheet" href="css/agency-admin-dashboard.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <span>NaijaRescue <span class="admin-badge agency-badge">Agency Admin</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read" id="markAllRead">
+                            <i class="ri-check-double-line"></i> Mark all as read
+                        </button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="loading-notifications">
+                            <div class="spinner-small"></div>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a id="footer-text" href="notifications.html">View All Notifications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-profile">
+                <img alt="Admin" id="adminAvatar">
+                <div class="profile-info">
+                    <span class="admin-name" id="adminName">Agency Admin</span>
+                    <span class="admin-role" id="agencyName">Loading...</span>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="ri-logout-box-line"></i>
+            </button>
+        </div>
+    </header>
 
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <nav class="sidebar-nav">
+                <a href="agency-admin-dashboard.html" class="nav-item active">
+                    <i class="ri-dashboard-3-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="agency-responders.html" class="nav-item">
+                    <i class="ri-user-star-line"></i>
+                    <span>My Responders</span>
+                </a>
+                <a href="agency-incidents.html" class="nav-item">
+                    <i class="ri-alarm-warning-line"></i>
+                    <span>Assigned Incidents</span>
+                </a>
+                <a href="agency-profile.html" class="nav-item">
+                    <i class="ri-building-line"></i>
+                    <span>Agency Profile</span>
+                </a>
+                <a href="agency-reports.html" class="nav-item">
+                    <i class="ri-file-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="agency-settings.html" class="nav-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="welcomeName">Admin</span></h1>
+                    <p id="welcomeMessage">Here's what's happening with your agency today</p>
+                </div>
+                <div class="quick-actions">
+                    <a href="agency-create-responder.html?action=create" class="btn-primary">
+                        <i class="ri-user-add-line"></i> Add Responder
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon responders">
+                        <i class="ri-user-star-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Responders</span>
+                        <span class="stat-value" id="totalResponders">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon available">
+                        <i class="ri-checkbox-circle-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Available</span>
+                        <span class="stat-value" id="availableResponders">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active-incidents">
+                        <i class="ri-alarm-warning-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Active Incidents</span>
+                        <span class="stat-value" id="activeIncidents">--</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon resolved">
+                        <i class="ri-check-double-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Resolved (This Month)</span>
+                        <span class="stat-value" id="resolvedIncidents">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Content -->
+            <div class="dashboard-grid">
+                <!-- Recent Incidents -->
+                <div class="dashboard-section recent-incidents-section">
+                    <div class="section-header">
+                        <h2><i class="ri-alarm-warning-line"></i> Recent Incidents</h2>
+                        <a href="agency-incidents.html" class="view-all-link">View All <i
+                                class="ri-arrow-right-line"></i></a>
+                    </div>
+                    <div id="recentIncidents" class="incidents-list">
+                        <div class="loading-state">
+                            <div class="spinner-small"></div>
+                            <p>Loading incidents...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Responders -->
+                <div class="dashboard-section responders-section">
+                    <div class="section-header">
+                        <h2><i class="ri-user-star-line"></i> Active Responders</h2>
+                        <a href="agency-responders.html" class="view-all-link">View All <i
+                                class="ri-arrow-right-line"></i></a>
+                    </div>
+                    <div id="activeResponders" class="responders-list">
+                        <div class="loading-state">
+                            <div class="spinner-small"></div>
+                            <p>Loading responders...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Overview -->
+            <div class="data-section">
+                <div class="section-header">
+                    <h2><i class="ri-line-chart-line"></i> Performance Overview</h2>
+                </div>
+                <div class="performance-grid">
+                    <div class="performance-card">
+                        <div class="performance-header">
+                            <h4>Response Time</h4>
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <div class="performance-value" id="avgResponseTime">--</div>
+                        <div class="performance-label">Average (This Month)</div>
+                    </div>
+
+                    <div class="performance-card">
+                        <div class="performance-header">
+                            <h4>Completion Rate</h4>
+                            <i class="ri-percent-line"></i>
+                        </div>
+                        <div class="performance-value" id="completionRate">--</div>
+                        <div class="performance-label">Incidents Resolved</div>
+                    </div>
+
+                    <div class="performance-card">
+                        <div class="performance-header">
+                            <h4>Responder Efficiency</h4>
+                            <i class="ri-star-line"></i>
+                        </div>
+                        <div class="performance-value" id="responderEfficiency">--</div>
+                        <div class="performance-label">Average Rating</div>
+                    </div>
+
+                    <div class="performance-card">
+                        <div class="performance-header">
+                            <h4>Total Handled</h4>
+                            <i class="ri-file-list-line"></i>
+                        </div>
+                        <div class="performance-value" id="totalHandled">--</div>
+                        <div class="performance-label">All Time</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/auth-utils.js"></script>
+    <script src="/assets/js/ui-utils.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
+    <script src="/victim/js/incident-utils.js"></script>
+    <script src="js/agency-admin-utils.js"></script>
+    <script src="js/agency-admin-dashboard.js"></script>
 </body>
 
 </html>

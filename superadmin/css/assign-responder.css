@@ -1,0 +1,124 @@
+/* Incident Summary Card */
+.incident-summary-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #e63946;
+}
+
+.incident-summary-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.summary-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    color: #495057;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.summary-item i {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* Responder List */
+.responders-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.responder-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.responder-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.responder-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.responder-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.responder-name {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.25rem;
+}
+
+.responder-agency {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.status-badge-small {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.status-badge-small.available {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.assign-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 110px;
+    justify-content: center;
+}
+
+.spinner-small-white {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Loading and Empty States */
+.loading-state,
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ced4da;
+}

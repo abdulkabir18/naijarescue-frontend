@@ -298,18 +298,16 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = protectPage();
-    // if (!token) return;
+    if (!token) return;
     if (token) {
         await window.notificationManager.initialize(token);
     }
 
-    // Logout handler
     document.getElementById("logoutBtn").addEventListener("click", (e) => {
         e.preventDefault();
         logoutUser();
     });
 
-    // Load report details
     const container = document.getElementById("reportDetails");
     const loadingEl = document.getElementById("detailsLoading");
 
@@ -388,7 +386,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (loadingEl) loadingEl.remove();
     }
 
-    // Load Google Maps JS API dynamically
     function loadGoogleMapsApi(apiKey) {
         return new Promise((resolve, reject) => {
             if (window.google && window.google.maps) return resolve(window.google.maps);
@@ -426,18 +423,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderReport(r) {
         const occurred = new Date(r.occurredAt).toLocaleString();
 
-        // Format address using utility function
         const fullAddress = formatAddress(r.address);
 
         const mapUrl = r.coordinates
             ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.coordinates.latitude + ',' + r.coordinates.longitude)}`
             : '';
 
-        // Get status class and display text using utility functions
         const statusClass = getStatusClass(r.status);
         const statusDisplay = getStatusDisplay(r.status);
 
-        // Check if cancel is allowed based on status
         const canCancel = canCancelIncident(r.status);
 
         const displayTitle = r.title || `${r.type} Emergency`;
@@ -508,13 +502,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
         `;
 
-        // Render media
         renderMedia(r.media);
 
-        // Render responders
         renderResponders(r.assignedResponders);
 
-        // Add cancel button handler if button exists
         if (canCancel) {
             const cancelBtn = document.getElementById("cancelIncidentBtn");
             if (cancelBtn) {
@@ -522,7 +513,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        // Initialize Google map if coordinates exist
         if (r.coordinates && r.coordinates.latitude && r.coordinates.longitude) {
             loadGoogleMapsApi(AppConfig.GOOGLE_MAPS_API_KEY)
                 .then(() => initMap(r.coordinates, "map"))
@@ -600,16 +590,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ==================== CANCEL INCIDENT ====================
-    function canCancelIncident(status) {
-        // Based on your entity: Cannot cancel if resolved
-        // Can cancel: Pending, Reported, Analyzed, InProgress (if no responders assigned)
-        const cancelableStatuses = ['Pending', 'Reported', 'Analyzed', 'InProgress'];
-        return cancelableStatuses.includes(status);
-    }
-
     async function handleCancelIncident(incidentId) {
-        // Show confirmation dialog
         const confirmed = confirm(
             'Are you sure you want to cancel this incident?\n\n' +
             'This action cannot be undone. The incident will be marked as cancelled.'
@@ -625,12 +606,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
             // 🔴 TESTING: Mock API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // await new Promise(resolve => setTimeout(resolve, 1500));
 
-            alert('✅ Incident cancelled successfully!');
-            window.location.reload(); // Reload to show updated status
+            // alert('✅ Incident cancelled successfully!');
+            // window.location.reload(); // Reload to show updated status
 
-            /* 🟢 PRODUCTION: Uncomment for real API
+            // 🟢 PRODUCTION: Uncomment for real API
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/${incidentId}/cancel`, {
                 method: 'POST',
                 headers: {
@@ -643,17 +624,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok && result.succeeded) {
                 alert('✅ Incident cancelled successfully!');
-                window.location.reload(); // Reload to show updated status
+                window.location.reload();
             } else {
                 const errorMsg = result.message || result.errors?.join(', ') || 'Failed to cancel incident';
                 alert(`❌ ${errorMsg}`);
-                
+
                 if (cancelBtn) {
                     cancelBtn.disabled = false;
                     cancelBtn.innerHTML = '<i class="ri-close-circle-line"></i> Cancel Incident';
                 }
             }
-            */
         } catch (error) {
             console.error('Cancel incident error:', error);
             alert('⚠️ Network error. Please try again.');

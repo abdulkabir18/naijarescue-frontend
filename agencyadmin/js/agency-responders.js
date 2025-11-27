@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = protectPage();
+    const token = protectPage('AgencyAdmin');
     if (!token) return;
 
-    if (token) {
-        await window.notificationManager.initialize(token);
+    const profile = await loadAgencyAdminProfile(token);
+    if (!profile || !profile.agencyId) {
+        console.error("Could not determine agency ID.");
+        return;
     }
-    await loadAdminProfile(token);
+    const agencyId = profile.agencyId;
+    await loadAgencyInfo(agencyId, token);
 
     // DOM Elements
     const menuToggle = document.getElementById("menuToggle");
@@ -13,17 +16,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutBtn = document.getElementById("logoutBtn");
     const respondersContainer = document.getElementById("respondersContainer");
     const searchInput = document.getElementById("searchInput");
-    const agencyFilter = document.getElementById("agencyFilter");
     const statusFilter = document.getElementById("statusFilter");
     const resetFiltersBtn = document.getElementById("resetFiltersBtn");
     const paginationContainer = document.getElementById("paginationContainer");
 
     // State
-    let allResponders = [];
-    let allAgencies = [];
     let currentPage = 1;
     let totalPages = 1;
-    const itemsPerPage = 12; // Or any number you prefer
+    const itemsPerPage = 12;
 
     // Event Listeners
     menuToggle.addEventListener("click", () => adminSidebar.classList.toggle("collapsed"));
@@ -32,19 +32,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         logoutUser();
     });
 
-    // Filter Listeners
     searchInput.addEventListener("input", debounce(() => { currentPage = 1; loadResponders(); }, 300));
-    agencyFilter.addEventListener("change", () => { currentPage = 1; loadResponders(); });
     statusFilter.addEventListener("change", () => { currentPage = 1; loadResponders(); });
     resetFiltersBtn.addEventListener("click", () => {
         searchInput.value = "";
-        agencyFilter.value = "";
         statusFilter.value = "";
         currentPage = 1;
         loadResponders();
     });
 
-    // Debounce function
     function debounce(func, delay) {
         let timeout;
         return function (...args) {
@@ -53,42 +49,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
     }
 
-    // --- Utility Functions ---
     function escapeHtml(unsafe) {
         if (typeof unsafe !== 'string') return '';
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // --- Data Loading ---
+    async function loadAgencyInfo(agencyId, token) {
+        const agencyNameEl = document.getElementById("agencyName");
+        try {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Agency/${agencyId}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (!response.ok) throw new Error('Failed to load agency');
+            const result = await response.json();
+
+            if (result.succeeded && result.data) {
+                agencyNameEl.textContent = result.data.name;
+            }
+        } catch (error) {
+            console.error('Error loading agency:', error);
+            agencyNameEl.textContent = 'Agency';
+        }
+    }
+
     async function loadResponders() {
         respondersContainer.innerHTML = `<div class="loading-container"><div class="spinner-large"></div><p>Loading responders...</p></div>`;
         paginationContainer.innerHTML = '';
 
         const searchTerm = searchInput.value.toLowerCase().trim();
-        const selectedAgencyId = agencyFilter.value;
         const selectedStatus = statusFilter.value;
 
-        let url = `${AppConfig.API_BASE_URL}/api/v1/Responder/all?pageNumber=${currentPage}&pageSize=${itemsPerPage}`;
+        let url = `${AppConfig.API_BASE_URL}/api/v1/Responder/agency/${agencyId}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`;
         if (searchTerm) url += `&keyword=${encodeURIComponent(searchTerm)}`;
-        if (selectedAgencyId) url += `&agencyId=${selectedAgencyId}`;
         if (selectedStatus) url += `&status=${selectedStatus}`;
 
         try {
-            const respondersRes = await fetch(url, { headers: { "Authorization": `Bearer ${token}` } });
-            const respondersResult = await respondersRes.json();
+            const response = await fetch(url, { headers: { "Authorization": `Bearer ${token}` } });
+            const result = await response.json();
 
-            if (respondersResult.succeeded) {
-                allResponders = respondersResult.data || []; // Correctly access the nested array
-                totalPages = respondersResult.data.totalPages; // Correctly access totalPages
-                displayResponders(allResponders);
+            if (result.succeeded && result.data) {
+                totalPages = result.data.totalPages;
+                displayResponders(result.data);
                 renderPagination();
             } else {
-                throw new Error('Failed to load responders');
+                throw new Error(result.message || 'Failed to load responders');
             }
         } catch (error) {
             console.error("Error loading responders:", error);
@@ -96,28 +101,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    async function loadAgencies() {
-        const agenciesRes = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Agency/all?pageSize=1000`, { headers: { "Authorization": `Bearer ${token}` } });
-        const agenciesResult = await agenciesRes.json();
-        if (agenciesResult.succeeded) {
-            allAgencies = agenciesResult.data || [];
-            populateAgencyFilter();
-        }
-    }
-
-    function populateAgencyFilter() {
-        agencyFilter.innerHTML = '<option value="">All Agencies</option>';
-        allAgencies.forEach(agency => {
-            const option = document.createElement('option');
-            option.value = agency.id;
-            option.textContent = agency.name;
-            agencyFilter.appendChild(option);
-        });
-    }
-
     function displayResponders(responders) {
-        if (responders.length === 0) {
-            respondersContainer.innerHTML = `<div class="empty-state"><p>No responders found matching your criteria.</p></div>`;
+        if (!responders || responders.length === 0) {
+            respondersContainer.innerHTML = `<div class="empty-state"><p>No responders found in your agency.</p></div>`;
             return;
         }
 
@@ -127,25 +113,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             return `
                 <div class="responder-card" data-responder-id="${responder.id}">
                     <div class="responder-card-header">
-                        <img src="${avatarSrc}" alt="${responder.userFullName}" class="responder-avatar">
+                        <img src="${avatarSrc}" alt="${escapeHtml(responder.userFullName)}" class="responder-avatar">
                         <div class="responder-info">
                             <h3 title="${escapeHtml(responder.userFullName)}">${escapeHtml(responder.userFullName)}</h3>
                             <p>${escapeHtml(responder.email)}</p>
                         </div>
-                        <span class="status-badge ${responder.status.toLowerCase()}">${responder.status}</span>
-                    </div>
-                    <div class="responder-card-body">
-                        <p class="agency-info"><i class="ri-building-line"></i> ${escapeHtml(responder.agencyName)}</p>
+                        <span class="status-badge ${statusClass}">${responder.status}</span>
                     </div>
                     <div class="responder-card-footer">
-                        <a href="responder-details.html?id=${responder.id}" class="btn-secondary">View Details</a>
+                        <a href="agency-responder-details.html?id=${responder.id}" class="btn-secondary">View Details</a>
                     </div>
                 </div>
             `;
         }).join('');
     }
 
-    // --- Pagination Logic ---
     function renderPagination() {
         if (totalPages <= 1) {
             paginationContainer.innerHTML = '';
@@ -155,7 +137,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let paginationHtml = '';
         const maxVisibleButtons = 5;
 
-        // Previous button
         paginationHtml += `<button class="pagination-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>&laquo; Prev</button>`;
 
         let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
@@ -183,7 +164,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             paginationHtml += `<button class="pagination-btn" data-page="${totalPages}">${totalPages}</button>`;
         }
 
-        // Next button
         paginationHtml += `<button class="pagination-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Next &raquo;</button>`;
 
         paginationContainer.innerHTML = paginationHtml;
@@ -196,10 +176,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Initial Load
-    async function initializePage() {
-        await loadAgencies();
-        await loadResponders();
-    }
-
-    initializePage();
+    loadResponders();
 });

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder Details - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/superadmin-dashboard.css">
+    <link rel="stylesheet" href="css/responder-details.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle"><i class="ri-menu-line"></i></button>
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <span>NaijaRescue <span class="admin-badge">Super Admin</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown"></div>
+            </div>
+            <div class="admin-profile">
+                <img alt="Admin" id="adminAvatar">
+                <div class="profile-info">
+                    <span class="admin-name" id="adminName">Super Admin</span>
+                    <span class="admin-role">System Administrator</span>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn"><i class="ri-logout-box-line"></i></button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <nav class="sidebar-nav">
+                <a href="superadmin-dashboard.html" class="nav-item"><i
+                        class="ri-dashboard-3-line"></i><span>Dashboard</span></a>
+                <a href="agencies.html" class="nav-item"><i class="ri-building-line"></i><span>Agencies</span></a>
+                <a href="responders.html" class="nav-item active"><i
+                        class="ri-user-star-line"></i><span>Responders</span></a>
+                <a href="incidents.html" class="nav-item"><i
+                        class="ri-alarm-warning-line"></i><span>Incidents</span></a>
+                <a href="users.html" class="nav-item"><i class="ri-group-line"></i><span>Users</span></a>
+                <a href="send-notification.html" class="nav-item"><i class="ri-notification-2-line"></i><span>Send
+                        Notifications</span></a>
+                <a href="reports.html" class="nav-item"><i class="ri-file-chart-line"></i><span>Reports</span></a>
+                <a href="settings.html" class="nav-item"><i class="ri-settings-3-line"></i><span>Settings</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <a href="responders.html" class="back-link"><i class="ri-arrow-left-line"></i> Back to
+                        Responders</a>
+                    <h1>Responder Details</h1>
+                    <p id="responderRefName">Loading...</p>
+                </div>
+            </div>
+
+            <div id="detailsContainer" class="details-loading">
+                <div class="spinner-large"></div>
+                <p>Loading responder details...</p>
+            </div>
+
+            <div id="responderContent" class="details-grid" style="display: none;">
+                <!-- Left Column -->
+                <div class="details-col-left">
+                    <!-- Profile Card -->
+                    <div class="card" id="profileCard">
+                        <!-- Content will be injected by JS -->
+                    </div>
+
+                    <!-- Status Management -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="ri-loader-4-line"></i> Manage Status</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="statusForm">
+                                <div class="form-group">
+                                    <label for="responderStatus">Update Responder Status</label>
+                                    <select id="responderStatus" name="status">
+                                        <option value="Available">Available</option>
+                                        <option value="OnDuty">On Duty</option>
+                                        <option value="Busy">Busy</option>
+                                        <option value="OffDuty">Off Duty</option>
+                                        <option value="Unreachable">Unreachable</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary" id="saveStatusBtn">
+                                    <span class="btn-text"><i class="ri-save-line"></i> Save Status</span>
+                                    <span class="spinner-wrapper"><span class="spinner"></span></span>
+                                </button>
+                                <div id="statusFormFeedback" class="form-feedback"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="details-col-right">
+                    <!-- Location Management -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="ri-map-pin-line"></i> Manage Location</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="locationForm">
+                                <div class="form-group">
+                                    <label for="locationSearch">Search for a new location</label>
+                                    <div class="location-search">
+                                        <i class="ri-search-line"></i>
+                                        <input type="text" id="locationSearch" placeholder="Search for a location...">
+                                    </div>
+                                </div>
+
+                                <div id="locationMap" class="location-map">
+                                    <div class="map-placeholder">
+                                        <i class="ri-map-2-line"></i>
+                                        <p>Map will be displayed here</p>
+                                    </div>
+                                </div>
+
+                                <div class="detected-address" id="detectedAddressBox" style="display: none;">
+                                    <i class="ri-map-pin-2-fill"></i>
+                                    <p id="detectedAddress">--</p>
+                                </div>
+
+                                <input type="hidden" id="latitude" name="latitude">
+                                <input type="hidden" id="longitude" name="longitude">
+
+                                <button type="submit" class="btn-primary" id="saveLocationBtn">
+                                    <span class="btn-text"><i class="ri-save-line"></i> Save Location</span>
+                                    <span class="spinner-wrapper"><span class="spinner"></span></span>
+                                </button>
+                                <div id="locationFormFeedback" class="form-feedback"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/auth-utils.js"></script>
+    <script src="/assets/js/ui-utils.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
+    <script src="js/admin-utils.js"></script>
+    <script src="js/responder-details.js"></script>
+</body>
+
+</html>

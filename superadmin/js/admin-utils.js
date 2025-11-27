@@ -12,25 +12,25 @@ async function loadAdminProfile(token) {
     };
 
     // 🔴 TESTING: Mock admin profile
-    const mockProfile = {
-        succeeded: true,
-        data: {
-            fullName: "Admin User",
-            profilePictureUrl: null // or a URL like "https://example.com/avatar.png"
-        }
-    };
+    // const mockProfile = {
+    //     succeeded: true,
+    //     data: {
+    //         fullName: "Admin User",
+    //         profilePictureUrl: null // or a URL like "https://example.com/avatar.png"
+    //     }
+    // };
 
-    if (mockProfile.succeeded && mockProfile.data) {
-        const profile = mockProfile.data;
-        adminNameEl.textContent = profile.fullName || "Super Admin";
-        if (profile.profilePictureUrl) {
-            adminAvatarEl.src = profile.profilePictureUrl;
-        } else {
-            adminAvatarEl.src = generateInitialsAvatar(profile.fullName);
-        }
-    }
+    // if (mockProfile.succeeded && mockProfile.data) {
+    //     const profile = mockProfile.data;
+    //     adminNameEl.textContent = profile.fullName || "Super Admin";
+    //     if (profile.profilePictureUrl) {
+    //         adminAvatarEl.src = profile.profilePictureUrl;
+    //     } else {
+    //         adminAvatarEl.src = generateInitialsAvatar(profile.fullName);
+    //     }
+    // }
 
-    /* 🟢 PRODUCTION: Uncomment for real API call
+    // 🟢 PRODUCTION: Uncomment for real API call
     try {
         const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile`, {
             headers: { "Authorization": `Bearer ${token}` }
@@ -39,10 +39,9 @@ async function loadAdminProfile(token) {
         if (result.succeeded && result.data) {
             const profile = result.data;
             adminNameEl.textContent = profile.fullName || "Super Admin";
-            adminAvatarEl.src = profile.profilePictureUrl || generateInitialsAvatar(profile.fullName);
+            adminAvatarEl.src = profile.profilePictureUrl ? `${AppConfig.API_BASE_URL}${profile.profilePictureUrl}` : generateInitialsAvatar(profile.fullName);
         }
     } catch (error) {
         console.error("Failed to load admin profile:", error);
     }
-    */
 }

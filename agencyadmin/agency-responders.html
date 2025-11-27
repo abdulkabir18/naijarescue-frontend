@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agencies Management - NaijaRescue</title>
+    <title>My Responders - NaijaRescue</title>
     <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="css/superadmin-dashboard.css">
-    <link rel="stylesheet" href="css/agencies.css">
+    <link rel="stylesheet" href="/superadmin/css/superadmin-dashboard.css">
+    <link rel="stylesheet" href="css/agency-admin-dashboard.css">
+    <link rel="stylesheet" href="css/agency-responders.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -22,7 +23,7 @@
             </button>
             <div class="logo">
                 <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
-                <span>NaijaRescue <span class="admin-badge">Super Admin</span></span>
+                <span>NaijaRescue <span class="admin-badge agency-badge">Agency Admin</span></span>
             </div>
         </div>
         <div class="header-right">
@@ -31,29 +32,13 @@
                     <i class="ri-notification-3-line"></i>
                     <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
                 </button>
-                <div class="notification-dropdown" id="notificationDropdown">
-                    <div class="notification-header">
-                        <h3>Notifications</h3>
-                        <button class="mark-all-read" id="markAllRead">
-                            <i class="ri-check-double-line"></i> Mark all as read
-                        </button>
-                    </div>
-                    <div class="notification-list" id="notificationList">
-                        <div class="loading-notifications">
-                            <div class="spinner-small"></div>
-                            <p>Loading notifications...</p>
-                        </div>
-                    </div>
-                    <div class="notification-footer">
-                        <a id="footer-text" href="notifications.html">View All Notifications</a>
-                    </div>
-                </div>
+                <div class="notification-dropdown" id="notificationDropdown"></div>
             </div>
             <div class="admin-profile">
                 <img alt="Admin" id="adminAvatar">
                 <div class="profile-info">
-                    <span class="admin-name" id="adminName">Super Admin</span>
-                    <span class="admin-role">System Administrator</span>
+                    <span class="admin-name" id="adminName">Agency Admin</span>
+                    <span class="admin-role" id="agencyName">Loading...</span>
                 </div>
             </div>
             <button class="logout-btn" id="logoutBtn">
@@ -66,35 +51,27 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar" id="adminSidebar">
             <nav class="sidebar-nav">
-                <a href="superadmin-dashboard.html" class="nav-item">
+                <a href="agencyadmin-dashboard.html" class="nav-item">
                     <i class="ri-dashboard-3-line"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="agencies.html" class="nav-item active">
-                    <i class="ri-building-line"></i>
-                    <span>Agencies</span>
-                </a>
-                <a href="responders.html" class="nav-item">
+                <a href="agency-responders.html" class="nav-item active">
                     <i class="ri-user-star-line"></i>
-                    <span>Responders</span>
+                    <span>My Responders</span>
                 </a>
-                <a href="incidents.html" class="nav-item">
+                <a href="agency-incidents.html" class="nav-item">
                     <i class="ri-alarm-warning-line"></i>
-                    <span>Incidents</span>
+                    <span>Assigned Incidents</span>
                 </a>
-                <a href="users.html" class="nav-item">
-                    <i class="ri-group-line"></i>
-                    <span>Users</span>
+                <a href="agency-profile.html" class="nav-item">
+                    <i class="ri-building-line"></i>
+                    <span>Agency Profile</span>
                 </a>
-                <a href="send-notification.html" class="nav-item">
-                    <i class="ri-notification-2-line"></i>
-                    <span>Send Notifications</span>
-                </a>
-                <a href="reports.html" class="nav-item">
+                <a href="agency-reports.html" class="nav-item">
                     <i class="ri-file-chart-line"></i>
                     <span>Reports</span>
                 </a>
-                <a href="settings.html" class="nav-item">
+                <a href="agency-settings.html" class="nav-item">
                     <i class="ri-settings-3-line"></i>
                     <span>Settings</span>
                 </a>
@@ -106,12 +83,12 @@
             <!-- Page Header -->
             <div class="page-header">
                 <div>
-                    <h1><i class="ri-building-line"></i> Agencies Management</h1>
-                    <p>Create and manage emergency response agencies</p>
+                    <h1><i class="ri-user-star-line"></i> My Responders</h1>
+                    <p>Manage responders within your agency</p>
                 </div>
                 <div class="page-actions">
-                    <a href="create-agency.html" class="btn-primary">
-                        <i class="ri-add-line"></i> Create New Agency
+                    <a href="agency-create-responder.html" class="btn-primary">
+                        <i class="ri-add-line"></i> Add New Responder
                     </a>
                 </div>
             </div>
@@ -120,17 +97,16 @@
             <div class="filter-section">
                 <div class="search-box">
                     <i class="ri-search-line"></i>
-                    <input type="text" id="searchInput" placeholder="Search agencies by name, email, or phone...">
+                    <input type="text" id="searchInput" placeholder="Search responders by name or email...">
                 </div>
                 <div class="filter-group">
-                    <select id="incidentTypeFilter" class="filter-select">
-                        <option value="">All Incident Types</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Security">Security</option>
-                        <option value="Medical">Medical</option>
-                        <option value="NaturalDisaster">Natural Disaster</option>
-                        <option value="Accident">Accident</option>
-                        <option value="Other">Other</option>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Statuses</option>
+                        <option value="Available">Available</option>
+                        <option value="OnDuty">On Duty</option>
+                        <option value="Busy">Busy</option>
+                        <option value="OffDuty">Off Duty</option>
+                        <option value="Unreachable">Unreachable</option>
                     </select>
                     <button class="btn-secondary" id="resetFiltersBtn">
                         <i class="ri-filter-off-line"></i> Reset
@@ -138,12 +114,17 @@
                 </div>
             </div>
 
-            <!-- Agencies Grid -->
-            <div id="agenciesContainer" class="agencies-grid">
+            <!-- Responders Grid -->
+            <div id="respondersContainer" class="responders-grid">
                 <div class="loading-container">
                     <div class="spinner-large"></div>
-                    <p>Loading agencies...</p>
+                    <p>Loading responders...</p>
                 </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container" id="paginationContainer">
+                <!-- Pagination controls will be injected here by JavaScript -->
             </div>
         </main>
     </div>
@@ -154,9 +135,8 @@
     <script src="/assets/js/auth-utils.js"></script>
     <script src="/assets/js/ui-utils.js"></script>
     <script src="/assets/js/notification-manager.js"></script>
-    <script src="/victim/js/incident-utils.js"></script> <!-- For formatAddress, etc. -->
-    <script src="js/admin-utils.js"></script>
-    <script src="js/agencies.js"></script>
+    <script src="js/agency-admin-utils.js"></script>
+    <script src="js/agency-responders.js"></script>
 </body>
 
 </html>

@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Admin Dashboard - NaijaRescue</title>
+    <title>Incidents Management - NaijaRescue</title>
     <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="css/superadmin-dashboard.css">
+    <link rel="stylesheet" href="css/incidents.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -44,7 +45,7 @@
                         </div>
                     </div>
                     <div class="notification-footer">
-                        <a id="footer-text" href="notifications.html">View All Notifications</a>
+                        <a href="notifications.html">View All Notifications</a>
                     </div>
                 </div>
             </div>
@@ -65,7 +66,7 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar" id="adminSidebar">
             <nav class="sidebar-nav">
-                <a href="superadmin-dashboard.html" class="nav-item active">
+                <a href="superadmin-dashboard.html" class="nav-item">
                     <i class="ri-dashboard-3-line"></i>
                     <span>Dashboard</span>
                 </a>
@@ -77,7 +78,7 @@
                     <i class="ri-user-star-line"></i>
                     <span>Responders</span>
                 </a>
-                <a href="incidents.html" class="nav-item">
+                <a href="incidents.html" class="nav-item active">
                     <i class="ri-alarm-warning-line"></i>
                     <span>Incidents</span>
                 </a>
@@ -105,143 +106,111 @@
             <!-- Page Header -->
             <div class="page-header">
                 <div>
-                    <h1>Dashboard Overview</h1>
-                    <p>Welcome back! Here's what's happening with your system today.</p>
+                    <h1><i class="ri-alarm-warning-line"></i> Incidents Management</h1>
+                    <p>Monitor and manage all emergency incidents in the system</p>
                 </div>
                 <div class="page-actions">
+                    <span id="lastUpdated" style="color: #999; font-size: 0.875rem; margin-right: 1rem;">
+                        <i class="ri-time-line"></i> Just now
+                    </span>
                     <button class="btn-secondary" id="refreshBtn">
                         <i class="ri-refresh-line"></i> Refresh
                     </button>
                 </div>
             </div>
 
-            <!-- Statistics Cards -->
+            <!-- Quick Stats -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon incidents">
+                <div class="stat-card-small">
+                    <div class="stat-icon-small incidents">
                         <i class="ri-alarm-warning-fill"></i>
                     </div>
                     <div class="stat-info">
-                        <h3 id="totalIncidents">---</h3>
                         <p>Total Incidents</p>
-                    </div>
-                    <div class="stat-trend positive">
-                        <i class="ri-arrow-up-line"></i> <span id="incidentsTrend">--</span>
+                        <h3 id="totalIncidents">---</h3>
                     </div>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon active">
-                        <i class="ri-flashlight-fill"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="activeIncidents">---</h3>
-                        <p>Active Incidents</p>
-                    </div>
-                    <div class="stat-badge urgent">Needs Attention</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon responders">
-                        <i class="ri-user-star-fill"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalResponders">---</h3>
-                        <p>Total Responders</p>
-                    </div>
-                    <div class="stat-trend positive">
-                        <i class="ri-arrow-up-line"></i> <span id="respondersTrend">--</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon agencies">
-                        <i class="ri-building-fill"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalAgencies">---</h3>
-                        <p>Active Agencies</p>
-                    </div>
-                    <div class="stat-trend neutral">
-                        <i class="ri-subtract-line"></i> <span>Stable</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon users">
-                        <i class="ri-group-fill"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalUsers">---</h3>
-                        <p>Registered Users</p>
-                    </div>
-                    <div class="stat-trend positive">
-                        <i class="ri-arrow-up-line"></i> <span id="usersTrend">--</span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon response">
+                <div class="stat-card-small">
+                    <div class="stat-icon-small pending">
                         <i class="ri-time-fill"></i>
                     </div>
                     <div class="stat-info">
-                        <h3 id="avgResponseTime">---</h3>
-                        <p>Avg Response Time</p>
+                        <p>Pending</p>
+                        <h3 id="pendingIncidents">---</h3>
                     </div>
-                    <div class="stat-trend positive">
-                        <i class="ri-arrow-down-line"></i> <span>Improved</span>
+                </div>
+                <div class="stat-card-small">
+                    <div class="stat-icon-small active">
+                        <i class="ri-flashlight-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p>In Progress</p>
+                        <h3 id="activeIncidents">---</h3>
+                    </div>
+                </div>
+                <div class="stat-card-small">
+                    <div class="stat-icon-small resolved">
+                        <i class="ri-checkbox-circle-fill"></i>
+                    </div>
+                    <div class="stat-info">
+                        <p>Resolved</p>
+                        <h3 id="resolvedIncidents">---</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <h2><i class="ri-flashlight-line"></i> Quick Actions</h2>
-                <div class="actions-grid">
-                    <a href="agencies.html?action=create" class="action-card">
-                        <i class="ri-building-line"></i>
-                        <h3>Create Agency</h3>
-                        <p>Add a new emergency agency</p>
-                    </a>
-                    <a href="responders.html?action=create" class="action-card">
-                        <i class="ri-user-add-line"></i>
-                        <h3>Add Responder</h3>
-                        <p>Register a new responder</p>
-                    </a>
-                    <a href="send-notification.html" class="action-card">
-                        <i class="ri-notification-2-line"></i>
-                        <h3>Send Notification</h3>
-                        <p>Broadcast to all users</p>
-                    </a>
-                    <a href="incidents.html" class="action-card">
-                        <i class="ri-eye-line"></i>
-                        <h3>View All Incidents</h3>
-                        <p>Monitor emergency reports</p>
-                    </a>
+            <!-- Filters and Search -->
+            <div class="filters-section">
+                <div class="search-box">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="searchInput"
+                        placeholder="Search by reference number, location, or reporter...">
                 </div>
+                <div class="filter-group">
+                    <label for="statusFilter">
+                        <i class="ri-filter-line"></i> Status:
+                    </label>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Reported">Reported</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Escalated">Escalated</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Analyzed">Analyzed</option>
+                    </select>
+                </div>
+                <button class="btn-secondary" id="clearFiltersBtn">
+                    <i class="ri-close-line"></i> Clear Filters
+                </button>
             </div>
 
-            <!-- Recent Incidents -->
+            <!-- Incidents Table -->
             <div class="data-section">
                 <div class="section-header">
-                    <h2><i class="ri-alarm-warning-line"></i> Recent Incidents</h2>
-                    <a href="incidents.html" class="view-all-link">View All <i class="ri-arrow-right-line"></i></a>
+                    <h2><i class="ri-list-check"></i> All Incidents</h2>
+                    <div class="table-info">
+                        Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> incidents
+                    </div>
                 </div>
                 <div class="data-table-wrapper">
-                    <table class="data-table" id="recentIncidentsTable">
+                    <table class="data-table" id="incidentsTable">
                         <thead>
                             <tr>
-                                <th>ReferenceNumber</th>
+                                <th>Reference #</th>
+                                <th>Type</th>
                                 <th>Location</th>
                                 <th>Reporter</th>
                                 <th>Status</th>
+                                <th>Responders</th>
                                 <th>Time</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="incidentsTableBody">
                             <tr>
-                                <td colspan="6" class="loading-row">
+                                <td colspan="8" class="loading-row">
                                     <div class="spinner-small"></div>
                                     <span>Loading incidents...</span>
                                 </td>
@@ -249,18 +218,18 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 
-            <!-- System Activity -->
-            <div class="data-section">
-                <div class="section-header">
-                    <h2><i class="ri-pulse-line"></i> System Activity</h2>
-                </div>
-                <div class="activity-feed" id="activityFeed">
-                    <div class="loading-row">
-                        <div class="spinner-small"></div>
-                        <span>Loading activity...</span>
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button class="pagination-btn" id="prevBtn" disabled>
+                        <i class="ri-arrow-left-line"></i> Previous
+                    </button>
+                    <div class="pagination-info">
+                        Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
                     </div>
+                    <button class="pagination-btn" id="nextBtn">
+                        Next <i class="ri-arrow-right-line"></i>
+                    </button>
                 </div>
             </div>
         </main>
@@ -273,7 +242,7 @@
     <script src="/assets/js/ui-utils.js"></script>
     <script src="/assets/js/notification-manager.js"></script>
     <script src="js/admin-utils.js"></script>
-    <script src="js/superadmin-dashboard.js"></script>
+    <script src="js/incidents.js"></script>
 </body>
 
 </html>

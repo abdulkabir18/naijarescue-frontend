@@ -5,7 +5,7 @@ let allNotifications = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = protectPage();
-    // if (!token) return;
+    if (!token) return;
 
     if (token) {
         await window.notificationManager.initialize(token);
@@ -37,88 +37,90 @@ async function loadAllNotifications(token) {
     const emptyState = document.getElementById("emptyNotifications");
 
     // 🔴 TESTING: Extended mock data
-    const mockNotifications = {
-        succeeded: true,
-        data: [
-            {
-                id: "1",
-                title: "Report Acknowledged",
-                message: "Your fire incident report has been acknowledged by emergency services",
-                type: "System",
-                isRead: false,
-                createdAt: new Date(Date.now() - 300000).toISOString(),
-                targetId: "1",
-                targetType: "Incident"
-            },
-            {
-                id: "2",
-                title: "Responder Assigned",
-                message: "A responder has been assigned to your medical emergency",
-                type: "Alert",
-                isRead: false,
-                createdAt: new Date(Date.now() - 1800000).toISOString(),
-                targetId: "2",
-                targetType: "Incident"
-            },
-            {
-                id: "3",
-                title: "Incident Resolved",
-                message: "Your accident report has been marked as resolved",
-                type: "Success",
-                isRead: true,
-                createdAt: new Date(Date.now() - 86400000).toISOString(),
-                targetId: "3",
-                targetType: "Incident"
-            },
-            {
-                id: "4",
-                title: "System Maintenance",
-                message: "Scheduled maintenance will occur on Sunday at 2:00 AM",
-                type: "Broadcast",
-                isRead: false,
-                createdAt: new Date(Date.now() - 172800000).toISOString()
-            },
-            {
-                id: "5",
-                title: "Safety Alert",
-                message: "Heavy rainfall warning in your area. Stay safe!",
-                type: "Warning",
-                isRead: true,
-                createdAt: new Date(Date.now() - 259200000).toISOString()
-            },
-            {
-                id: "6",
-                title: "New Feature",
-                message: "You can now track your emergency reports in real-time",
-                type: "Info",
-                isRead: true,
-                createdAt: new Date(Date.now() - 345600000).toISOString()
-            },
-            {
-                id: "7",
-                title: "Emergency Response Team Arrived",
-                message: "The response team has arrived at your location",
-                type: "Success",
-                isRead: true,
-                createdAt: new Date(Date.now() - 432000000).toISOString()
-            },
-            {
-                id: "8",
-                title: "Profile Updated",
-                message: "Your profile information has been successfully updated",
-                type: "System",
-                isRead: true,
-                createdAt: new Date(Date.now() - 518400000).toISOString()
-            }
-        ]
-    };
+    // const mockNotifications = {
+    //     succeeded: true,
+    //     data: [
+    //         {
+    //             id: "1",
+    //             title: "Report Acknowledged",
+    //             message: "Your fire incident report has been acknowledged by emergency services",
+    //             type: "System",
+    //             isRead: false,
+    //             createdAt: new Date(Date.now() - 300000).toISOString(),
+    //             targetId: "1",
+    //             targetType: "Incident"
+    //         },
+    //         {
+    //             id: "2",
+    //             title: "Responder Assigned",
+    //             message: "A responder has been assigned to your medical emergency",
+    //             type: "Alert",
+    //             isRead: false,
+    //             createdAt: new Date(Date.now() - 1800000).toISOString(),
+    //             targetId: "2",
+    //             targetType: "Incident"
+    //         },
+    //         {
+    //             id: "3",
+    //             title: "Incident Resolved",
+    //             message: "Your accident report has been marked as resolved",
+    //             type: "Success",
+    //             isRead: true,
+    //             createdAt: new Date(Date.now() - 86400000).toISOString(),
+    //             targetId: "3",
+    //             targetType: "Incident"
+    //         },
+    //         {
+    //             id: "4",
+    //             title: "System Maintenance",
+    //             message: "Scheduled maintenance will occur on Sunday at 2:00 AM",
+    //             type: "Broadcast",
+    //             isRead: false,
+    //             createdAt: new Date(Date.now() - 172800000).toISOString()
+    //         },
+    //         {
+    //             id: "5",
+    //             title: "Safety Alert",
+    //             message: "Heavy rainfall warning in your area. Stay safe!",
+    //             type: "Warning",
+    //             isRead: true,
+    //             createdAt: new Date(Date.now() - 259200000).toISOString()
+    //         },
+    //         {
+    //             id: "6",
+    //             title: "New Feature",
+    //             message: "You can now track your emergency reports in real-time",
+    //             type: "Info",
+    //             isRead: true,
+    //             createdAt: new Date(Date.now() - 345600000).toISOString()
+    //         },
+    //         {
+    //             id: "7",
+    //             title: "Emergency Response Team Arrived",
+    //             message: "The response team has arrived at your location",
+    //             type: "Success",
+    //             isRead: true,
+    //             createdAt: new Date(Date.now() - 432000000).toISOString()
+    //         },
+    //         {
+    //             id: "8",
+    //             title: "Profile Updated",
+    //             message: "Your profile information has been successfully updated",
+    //             type: "System",
+    //             isRead: true,
+    //             createdAt: new Date(Date.now() - 518400000).toISOString()
+    //         }
+    //     ]
+    // };
 
-    setTimeout(() => {
-        const data = mockNotifications;
+    setTimeout(async () => {
+        // const data = mockNotifications;
 
-        /* 🟢 PRODUCTION: Uncomment this when connected to backend
+        const userId = getId(token);
+
+        // 🟢 PRODUCTION: Uncomment this when connected to backend
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Notification/all", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/user/${userId}?pageNumber=1&pageSize=100`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Accept": "application/json"
@@ -130,22 +132,21 @@ async function loadAllNotifications(token) {
             }
 
             const data = await response.json();
-        */
 
-        container.innerHTML = "";
+            container.innerHTML = "";
 
-        if (!data.succeeded || !data.data || data.data.length === 0) {
-            emptyState.style.display = "block";
-            document.getElementById("paginationContainer").style.display = "none";
-            updateFilterCounts(0, 0);
-            return;
-        }
+            if (!data.succeeded || !data.data || data.data.length === 0) {
+                emptyState.style.display = "block";
+                document.getElementById("paginationContainer").style.display = "none";
+                updateFilterCounts(0, 0);
+                return;
+            }
 
-        allNotifications = data.data;
-        updateFilterCounts(allNotifications.length, allNotifications.filter(n => !n.isRead).length);
-        displayNotifications(allNotifications);
+            allNotifications = data.data;
+            updateFilterCounts(allNotifications.length, allNotifications.filter(n => !n.isRead).length);
+            displayNotifications(allNotifications);
 
-        /* 🟢 PRODUCTION: Uncomment error handling
+            // 🟢 PRODUCTION: Uncomment error handling
         } catch (error) {
             console.error("Failed to load notifications:", error);
             container.innerHTML = `
@@ -156,7 +157,6 @@ async function loadAllNotifications(token) {
                 </div>
             `;
         }
-        */
     }, 1000);
 }
 

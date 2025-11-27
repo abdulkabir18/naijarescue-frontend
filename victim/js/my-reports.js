@@ -380,7 +380,7 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = protectPage();
-    // if (!token) return;
+    if (!token) return;
 
     if (token) {
         await window.notificationManager.initialize(token);
@@ -410,136 +410,136 @@ async function loadReports(token) {
     const emptyState = document.getElementById("emptyState");
 
     // 🔴 TESTING: Mock data matching your DTO
-    const mockData = {
-        succeeded: true,
-        data: [
-            {
-                id: "550e8400-e29b-41d4-a716-446655440001",
-                title: "Fire outbreak at residential building",
-                type: "Fire",
-                confidence: 0.95,
-                status: "InProgress",
-                coordinates: { latitude: 6.5244, longitude: 3.3792 },
-                address: {
-                    street: "15 Admiralty Way",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Eti-Osa",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date().toISOString(),
-                userId: "user-123",
-                media: [{ url: "https://example.com/fire.jpg", type: "Image" }],
-                assignedResponders: [{
-                    id: "resp-1",
-                    role: "Primary",
-                    responderName: "Fire Team Alpha"
-                }]
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440002",
-                title: "Medical emergency - cardiac arrest",
-                type: "Medical",
-                confidence: 0.88,
-                status: "Resolved",
-                coordinates: { latitude: 6.4541, longitude: 3.3947 },
-                address: {
-                    street: "Allen Avenue",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Ikeja",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 86400000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440003",
-                title: "Road accident at Lekki toll gate",
-                type: "Accident",
-                confidence: 0.92,
-                status: "Resolved",
-                coordinates: { latitude: 6.4474, longitude: 3.5405 },
-                address: {
-                    street: "Lekki-Epe Expressway",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Eti-Osa",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 172800000).toISOString(),
-                userId: "user-123",
-                media: [{ url: "https://example.com/accident.jpg", type: "Image" }],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440004",
-                title: "Security threat reported",
-                type: "Security",
-                confidence: 0.75,
-                status: "Pending",
-                coordinates: { latitude: 6.5027, longitude: 3.3700 },
-                address: {
-                    street: "Herbert Macaulay Way",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Yaba",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 259200000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440005",
-                title: "Fire at commercial complex",
-                type: "Fire",
-                confidence: 0.89,
-                status: "Pending",
-                coordinates: { latitude: 6.4969, longitude: 3.3614 },
-                address: {
-                    street: "Adeniran Ogunsanya Street",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Surulere",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 345600000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            },
-            {
-                id: "550e8400-e29b-41d4-a716-446655440006",
-                title: "Medical emergency - multiple injuries",
-                type: "Medical",
-                confidence: 0.91,
-                status: "InProgress",
-                coordinates: { latitude: 6.4698, longitude: 3.5852 },
-                address: {
-                    street: "Lekki-Epe Expressway",
-                    city: "Lagos",
-                    state: "Lagos",
-                    lga: "Ajah",
-                    country: "Nigeria"
-                },
-                occurredAt: new Date(Date.now() - 432000000).toISOString(),
-                userId: "user-123",
-                media: [],
-                assignedResponders: []
-            }
-        ]
-    };
+    // const mockData = {
+    //     succeeded: true,
+    //     data: [
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440001",
+    //             title: "Fire outbreak at residential building",
+    //             type: "Fire",
+    //             confidence: 0.95,
+    //             status: "InProgress",
+    //             coordinates: { latitude: 6.5244, longitude: 3.3792 },
+    //             address: {
+    //                 street: "15 Admiralty Way",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Eti-Osa",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date().toISOString(),
+    //             userId: "user-123",
+    //             media: [{ url: "https://example.com/fire.jpg", type: "Image" }],
+    //             assignedResponders: [{
+    //                 id: "resp-1",
+    //                 role: "Primary",
+    //                 responderName: "Fire Team Alpha"
+    //             }]
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440002",
+    //             title: "Medical emergency - cardiac arrest",
+    //             type: "Medical",
+    //             confidence: 0.88,
+    //             status: "Resolved",
+    //             coordinates: { latitude: 6.4541, longitude: 3.3947 },
+    //             address: {
+    //                 street: "Allen Avenue",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Ikeja",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 86400000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440003",
+    //             title: "Road accident at Lekki toll gate",
+    //             type: "Accident",
+    //             confidence: 0.92,
+    //             status: "Resolved",
+    //             coordinates: { latitude: 6.4474, longitude: 3.5405 },
+    //             address: {
+    //                 street: "Lekki-Epe Expressway",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Eti-Osa",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 172800000).toISOString(),
+    //             userId: "user-123",
+    //             media: [{ url: "https://example.com/accident.jpg", type: "Image" }],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440004",
+    //             title: "Security threat reported",
+    //             type: "Security",
+    //             confidence: 0.75,
+    //             status: "Pending",
+    //             coordinates: { latitude: 6.5027, longitude: 3.3700 },
+    //             address: {
+    //                 street: "Herbert Macaulay Way",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Yaba",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 259200000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440005",
+    //             title: "Fire at commercial complex",
+    //             type: "Fire",
+    //             confidence: 0.89,
+    //             status: "Pending",
+    //             coordinates: { latitude: 6.4969, longitude: 3.3614 },
+    //             address: {
+    //                 street: "Adeniran Ogunsanya Street",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Surulere",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 345600000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         },
+    //         {
+    //             id: "550e8400-e29b-41d4-a716-446655440006",
+    //             title: "Medical emergency - multiple injuries",
+    //             type: "Medical",
+    //             confidence: 0.91,
+    //             status: "InProgress",
+    //             coordinates: { latitude: 6.4698, longitude: 3.5852 },
+    //             address: {
+    //                 street: "Lekki-Epe Expressway",
+    //                 city: "Lagos",
+    //                 state: "Lagos",
+    //                 lga: "Ajah",
+    //                 country: "Nigeria"
+    //             },
+    //             occurredAt: new Date(Date.now() - 432000000).toISOString(),
+    //             userId: "user-123",
+    //             media: [],
+    //             assignedResponders: []
+    //         }
+    //     ]
+    // };
 
-    setTimeout(() => {
+    setTimeout(async () => {
         loadingState.style.display = "none";
 
-        /* 🟢 PRODUCTION: Uncomment for real API
+        // 🟢 PRODUCTION: Uncomment for real API
         try {
-            const response = await fetch("https://localhost:7288/api/v1/Incident/my-reports", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Incident/me?pageNumber=1&pageSize=50`, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Accept": "application/json"
@@ -548,34 +548,33 @@ async function loadReports(token) {
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
-            
+
             if (!data.data || data.data.length === 0) {
                 emptyState.style.display = "block";
                 return;
             }
 
             allReports = data.data;
-        */
 
-        if (!mockData.data || mockData.data.length === 0) {
-            emptyState.style.display = "block";
-            return;
-        }
 
-        allReports = mockData.data;
-        filteredReports = [...allReports];
+            // if (!mockData.data || mockData.data.length === 0) {
+            //     emptyState.style.display = "block";
+            //     return;
+            // }
 
-        updateStats();
-        displayReports();
+            // allReports = mockData.data;
+            filteredReports = [...allReports];
 
-        /* } catch (error) {
+            updateStats();
+            displayReports();
+
+        } catch (error) {
             console.error("Failed to load reports:", error);
             loadingState.innerHTML = `
                 <i class="ri-error-warning-line"></i>
                 <p>Failed to load reports. Please refresh the page.</p>
             `;
         }
-        */
     }, 1000);
 }
 

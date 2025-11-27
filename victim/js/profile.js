@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const token = protectPage();
-    // if (!token) return;
+    if (!token) return;
 
     if (token) {
         await window.notificationManager.initialize(token);
@@ -22,26 +22,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadUserProfile(token) {
     // 🔴 TESTING: Mock user data
-    const mockUser = {
-        fullName: "John Doe",
-        email: "john.doe@example.com",
-        gender: "1",
-        profilePictureUrl: null,
-        address: {
-            street: "123 Main Street",
-            city: "Lagos",
-            state: "Lagos",
-            lga: "Ikeja",
-            postalCode: "100001",
-            country: "Nigeria"
-        }
-    };
+    // const mockUser = {
+    //     fullName: "John Doe",
+    //     email: "john.doe@example.com",
+    //     gender: "1",
+    //     profilePictureUrl: null,
+    //     address: {
+    //         street: "123 Main Street",
+    //         city: "Lagos",
+    //         state: "Lagos",
+    //         lga: "Ikeja",
+    //         postalCode: "100001",
+    //         country: "Nigeria"
+    //     }
+    // };
 
-    populateUserData(mockUser);
+    // populateUserData(mockUser);
 
-    /* 🟢 PRODUCTION: Uncomment for real API
+    // 🟢 PRODUCTION: Uncomment for real API
     try {
-        const response = await fetch("https://localhost:7288/api/v1/User/profile", {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/json"
@@ -58,7 +58,6 @@ async function loadUserProfile(token) {
         console.error("Failed to load profile:", error);
         showFeedback("personalInfoFeedback", "Failed to load profile data.", "error");
     }
-    */
 }
 
 function populateUserData(user) {
@@ -69,12 +68,14 @@ function populateUserData(user) {
     document.getElementById("firstName").value = firstName;
     document.getElementById("lastName").value = lastName;
     document.getElementById("email").value = user.email || "";
-    document.getElementById("gender").value = user.gender || "";
+    document.getElementById("gender").value = user.gender || "Not specified";
 
     const preview = document.getElementById("profilePicturePreview");
 
+    console.log(user.profilePictureUrl);
+
     if (user.profilePictureUrl && user.profilePictureUrl.trim() !== "") {
-        preview.src = user.profilePictureUrl;
+        preview.src = `${AppConfig.API_BASE_URL}${user.profilePictureUrl}`;
     } else {
         preview.src = generateInitialsAvatar(user.fullName || "");
     }
@@ -125,7 +126,6 @@ function initializeProfilePicture(token) {
 
     removeBtn.addEventListener("click", async () => {
         if (confirm("Are you sure you want to remove your profile picture?")) {
-            // Generate initials avatar instead of using a non-existent file
             const fullName = `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim();
             preview.src = generateInitialsAvatar(fullName);
             showFeedback("pictureFeedback", "Profile picture removed successfully.", "success");
@@ -136,16 +136,16 @@ function initializeProfilePicture(token) {
 
 async function uploadProfilePicture(token, file) {
     const formData = new FormData();
-    formData.append("Image", file);
+    formData.append("image", file);
 
     // 🔴 TESTING: Mock upload
-    setTimeout(() => {
-        showFeedback("pictureFeedback", "✅ Profile picture updated successfully!", "success");
-    }, 1000);
+    // setTimeout(() => {
+    //     showFeedback("pictureFeedback", "✅ Profile picture updated successfully!", "success");
+    // }, 1000);
 
-    /* 🟢 PRODUCTION: Uncomment for real API
+    // 🟢 PRODUCTION: Uncomment for real API
     try {
-        const response = await fetch("https://localhost:7288/api/v1/User/set-profile-image", {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile-image`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -164,10 +164,8 @@ async function uploadProfilePicture(token, file) {
         console.error("Upload error:", error);
         showFeedback("pictureFeedback", "⚠️ Network error. Please try again.", "error");
     }
-    */
 }
 
-// === PERSONAL INFO FORM ===
 function initializePersonalInfoForm(token) {
     const form = document.getElementById("personalInfoForm");
     const submitBtn = document.getElementById("updatePersonalInfoBtn");
@@ -178,7 +176,6 @@ function initializePersonalInfoForm(token) {
         const firstName = document.getElementById("firstName").value.trim();
         const lastName = document.getElementById("lastName").value.trim();
 
-        // Validation
         if (!firstName || firstName.length < 2) {
             showFieldError("firstNameError", "First name must be at least 2 characters.");
             return;
@@ -195,15 +192,15 @@ function initializePersonalInfoForm(token) {
         submitBtn.classList.add("loading");
 
         // 🔴 TESTING: Mock update
-        setTimeout(() => {
-            showFeedback("personalInfoFeedback", "✅ Personal information updated successfully!", "success");
-            submitBtn.disabled = false;
-            submitBtn.classList.remove("loading");
-        }, 1500);
+        // setTimeout(() => {
+        //     showFeedback("personalInfoFeedback", "✅ Personal information updated successfully!", "success");
+        //     submitBtn.disabled = false;
+        //     submitBtn.classList.remove("loading");
+        // }, 1500);
 
-        /* 🟢 PRODUCTION: Uncomment for real API
+        // 🟢 PRODUCTION: Uncomment for real API
         try {
-            const response = await fetch("https://localhost:7288/api/v1/User/update-fullname", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/details`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -231,11 +228,9 @@ function initializePersonalInfoForm(token) {
             submitBtn.disabled = false;
             submitBtn.classList.remove("loading");
         }
-        */
     });
 }
 
-// === ADDRESS FORM ===
 function initializeAddressForm(token) {
     const form = document.getElementById("addressForm");
     const submitBtn = document.getElementById("updateAddressBtn");
@@ -256,15 +251,15 @@ function initializeAddressForm(token) {
         submitBtn.classList.add("loading");
 
         // 🔴 TESTING: Mock update
-        setTimeout(() => {
-            showFeedback("addressFeedback", "✅ Address updated successfully!", "success");
-            submitBtn.disabled = false;
-            submitBtn.classList.remove("loading");
-        }, 1500);
+        // setTimeout(() => {
+        //     showFeedback("addressFeedback", "✅ Address updated successfully!", "success");
+        //     submitBtn.disabled = false;
+        //     submitBtn.classList.remove("loading");
+        // }, 1500);
 
-        /* 🟢 PRODUCTION: Uncomment for real API
+        // 🟢 PRODUCTION: Uncomment for real API
         try {
-            const response = await fetch("https://localhost:7288/api/v1/User/update-address", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/update-address`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -287,16 +282,13 @@ function initializeAddressForm(token) {
             submitBtn.disabled = false;
             submitBtn.classList.remove("loading");
         }
-        */
     });
 }
 
-// === PASSWORD FORM ===
 function initializePasswordForm(token) {
     const form = document.getElementById("passwordForm");
     const submitBtn = document.getElementById("changePasswordBtn");
 
-    // Password toggle
     document.querySelectorAll(".toggle-password").forEach(btn => {
         btn.addEventListener("click", () => {
             const targetId = btn.dataset.target;
@@ -320,7 +312,6 @@ function initializePasswordForm(token) {
         const newPassword = document.getElementById("newPassword").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        // Validation
         clearFieldError("currentPasswordError");
         clearFieldError("newPasswordError");
         clearFieldError("confirmPasswordError");
@@ -351,16 +342,16 @@ function initializePasswordForm(token) {
         submitBtn.classList.add("loading");
 
         // 🔴 TESTING: Mock password change
-        setTimeout(() => {
-            showFeedback("passwordFeedback", "✅ Password changed successfully!", "success");
-            form.reset();
-            submitBtn.disabled = false;
-            submitBtn.classList.remove("loading");
-        }, 1500);
+        // setTimeout(() => {
+        //     showFeedback("passwordFeedback", "✅ Password changed successfully!", "success");
+        //     form.reset();
+        //     submitBtn.disabled = false;
+        //     submitBtn.classList.remove("loading");
+        // }, 1500);
 
-        /* 🟢 PRODUCTION: Uncomment for real API
+        // 🟢 PRODUCTION: Uncomment for real API
         try {
-            const response = await fetch("https://localhost:7288/api/v1/User/reset-password", {
+            const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/reset-password`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -390,11 +381,9 @@ function initializePasswordForm(token) {
             submitBtn.disabled = false;
             submitBtn.classList.remove("loading");
         }
-        */
     });
 }
 
-// === ACCOUNT ACTIONS ===
 function initializeAccountActions() {
     const deactivateBtn = document.getElementById("deactivateAccountBtn");
 
@@ -406,7 +395,6 @@ function initializeAccountActions() {
     });
 }
 
-// === UTILITY FUNCTIONS ===
 function showFieldError(errorId, message) {
     const element = document.getElementById(errorId);
     if (element) {

@@ -137,7 +137,7 @@ class NotificationManager {
 
             //  🟢 PRODUCTION: Uncomment this when connected to backend
             try {
-                const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/user/${userId}`, {
+                const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Notification/user/${userId}?pageNumber=1&pageSize=100`, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Accept": "application/json"
@@ -424,9 +424,19 @@ class NotificationManager {
                 this.updateNotificationBadge();
             }
 
-            // Navigate to target if applicable
-            if (notification.targetType === "Incident" && notification.targetId) {
-                window.location.href = `my-reports.html#${notification.targetId}`;
+            if (notification.targetType === "incident" && notification.targetId) {
+                const token = sessionStorage.getItem("authToken");
+                const userRole = getRole(token); // Assumes getRole() is in auth-utils.js
+
+                if (userRole === "SuperAdmin") {
+                    window.location.href = `incident-details.html?id=${notification.targetId}`;
+                }
+                else if (userRole === "Victim") {
+                    window.location.href = `report-details.html?id=${notification.targetId}`;
+                }
+                else {
+                    window.location.href = "*";
+                }
             }
         });
 
@@ -440,7 +450,6 @@ class NotificationManager {
         if (!badge || !bell) return;
 
         if (count === undefined) {
-            // Recalculate from DOM
             count = document.querySelectorAll(".notification-item.unread").length;
         }
 
@@ -527,5 +536,4 @@ class NotificationManager {
     }
 }
 
-// Create global instance
 window.notificationManager = new NotificationManager();

@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agencies Management - NaijaRescue</title>
+    <title>Incident Details - NaijaRescue</title>
     <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="css/superadmin-dashboard.css">
-    <link rel="stylesheet" href="css/agencies.css">
+    <link rel="stylesheet" href="css/incident-details.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -70,7 +70,7 @@
                     <i class="ri-dashboard-3-line"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="agencies.html" class="nav-item active">
+                <a href="agencies.html" class="nav-item">
                     <i class="ri-building-line"></i>
                     <span>Agencies</span>
                 </a>
@@ -78,7 +78,7 @@
                     <i class="ri-user-star-line"></i>
                     <span>Responders</span>
                 </a>
-                <a href="incidents.html" class="nav-item">
+                <a href="incidents.html" class="nav-item active">
                     <i class="ri-alarm-warning-line"></i>
                     <span>Incidents</span>
                 </a>
@@ -103,46 +103,95 @@
 
         <!-- Main Content -->
         <main class="admin-main">
-            <!-- Page Header -->
             <div class="page-header">
                 <div>
-                    <h1><i class="ri-building-line"></i> Agencies Management</h1>
-                    <p>Create and manage emergency response agencies</p>
-                </div>
-                <div class="page-actions">
-                    <a href="create-agency.html" class="btn-primary">
-                        <i class="ri-add-line"></i> Create New Agency
-                    </a>
+                    <a href="incidents.html" class="back-link"><i class="ri-arrow-left-line"></i> Back to Incidents</a>
+                    <h1>Incident Details</h1>
+                    <p>Viewing details for incident <strong id="incidentRef">...</strong></p>
                 </div>
             </div>
 
-            <!-- Search and Filter -->
-            <div class="filter-section">
-                <div class="search-box">
-                    <i class="ri-search-line"></i>
-                    <input type="text" id="searchInput" placeholder="Search agencies by name, email, or phone...">
-                </div>
-                <div class="filter-group">
-                    <select id="incidentTypeFilter" class="filter-select">
-                        <option value="">All Incident Types</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Security">Security</option>
-                        <option value="Medical">Medical</option>
-                        <option value="NaturalDisaster">Natural Disaster</option>
-                        <option value="Accident">Accident</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <button class="btn-secondary" id="resetFiltersBtn">
-                        <i class="ri-filter-off-line"></i> Reset
-                    </button>
-                </div>
+            <div id="detailsContainer" class="details-loading">
+                <div class="spinner-large"></div>
+                <p>Loading incident details...</p>
             </div>
 
-            <!-- Agencies Grid -->
-            <div id="agenciesContainer" class="agencies-grid">
-                <div class="loading-container">
-                    <div class="spinner-large"></div>
-                    <p>Loading agencies...</p>
+            <div id="incidentContent" class="incident-layout" style="display: none;">
+                <!-- Left Column -->
+                <div class="incident-main-col">
+                    <!-- Incident Summary -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-file-text-line"></i> Incident Summary</h2>
+                        </div>
+                        <div id="incidentSummary" class="summary-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Incident Description -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-chat-1-line"></i> Description</h2>
+                        </div>
+                        <p id="incidentDescription" class="description-text">
+                            <!-- Populated by JS -->
+                        </p>
+                    </div>
+
+                    <!-- Media Gallery -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-gallery-line"></i> Media Evidence</h2>
+                        </div>
+                        <div id="mediaGallery" class="media-gallery">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-history-line"></i> Activity Log</h2>
+                        </div>
+                        <div id="activityLog" class="activity-log">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="incident-side-col">
+                    <!-- Map -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-map-pin-line"></i> Location</h2>
+                        </div>
+                        <div id="map" class="map-container"></div>
+                        <div id="address" class="address-info"></div>
+                    </div>
+
+                    <!-- Reporter Info -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-user-line"></i> Reporter</h2>
+                        </div>
+                        <div id="reporterInfo" class="info-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Assigned Responders -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-user-star-line"></i> Assigned Responders</h2>
+                            <a href="#" id="assignResponderLink" class="view-all-link">Assign <i
+                                    class="ri-arrow-right-line"></i></a>
+                        </div>
+                        <div id="assignedResponders" class="responder-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -154,9 +203,9 @@
     <script src="/assets/js/auth-utils.js"></script>
     <script src="/assets/js/ui-utils.js"></script>
     <script src="/assets/js/notification-manager.js"></script>
-    <script src="/victim/js/incident-utils.js"></script> <!-- For formatAddress, etc. -->
+    <script src="/victim/js/incident-utils.js"></script> <!-- Reusing victim utils -->
     <script src="js/admin-utils.js"></script>
-    <script src="js/agencies.js"></script>
+    <script src="js/incident-details.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,146 @@
+/* Override default padding for the map layout */
+.admin-main.map-layout {
+    padding: 0;
+    display: flex;
+    height: calc(100vh - 70px);
+    overflow: hidden;
+}
+
+/* Sidebar for filters and list */
+.map-sidebar {
+    width: 380px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebar-header h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    color: #111827;
+}
+
+.sidebar-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.sidebar-filters {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sidebar-filters .form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-filters select {
+    width: 100%;
+}
+
+/* Responder list in the sidebar */
+.responder-list-container {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.responder-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s ease;
+}
+
+.responder-list-item:hover {
+    background-color: #f9fafb;
+}
+
+.responder-list-item.active {
+    background-color: #eef2ff;
+    border-left: 4px solid var(--primary-color);
+    padding-left: calc(1.5rem - 4px);
+}
+
+.responder-list-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.responder-list-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #111827;
+}
+
+.responder-list-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Map container */
+.map-container {
+    flex-grow: 1;
+    height: 100%;
+}
+
+/* Custom InfoWindow for Google Maps */
+.gm-style-iw-d {
+    overflow: hidden !important;
+}
+
+.info-window-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.info-window-content img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.info-window-content h5 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+.info-window-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+@media (max-width: 992px) {
+    .map-sidebar {
+        width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .map-sidebar {
+        display: none;
+        /* Hide sidebar on smaller screens for a map-first experience */
+    }
+}
