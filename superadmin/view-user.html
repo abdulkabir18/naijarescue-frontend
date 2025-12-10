@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users Management - NaijaRescue</title>
+    <title>View User - NaijaRescue</title>
     <link rel="stylesheet" href="/assets/css/notification-manager.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="css/superadmin-dashboard.css"> <!-- This file contains the filter styles -->
-    <link rel="stylesheet" href="css/users.css">
+    <link rel="stylesheet" href="css/superadmin-dashboard.css">
+    <link rel="stylesheet" href="css/view-user.css">
     <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -62,79 +62,68 @@
 
         <!-- Main Content -->
         <main class="admin-main">
-            <!-- Page Header -->
             <div class="page-header">
                 <div>
-                    <h1><i class="ri-group-line"></i> Users Management</h1>
-                    <p>Manage all users of the platform</p>
+                    <a href="users.html" class="back-link"><i class="ri-arrow-left-line"></i> Back to Users</a>
+                    <h1>User Details</h1>
+                    <p>View user information and manage their account</p>
                 </div>
             </div>
 
-            <!-- Filters and Search -->
-            <div class="filters-section">
-                <div class="search-box">
-                    <i class="ri-search-line"></i>
-                    <input type="text" id="searchInput" placeholder="Search by name, email, or phone...">
-                </div>
-                <div class="filter-group">
-                    <label for="statusFilter"><i class="ri-filter-line"></i> Status:</label>
-                    <select id="statusFilter" class="filter-select">
-                        <option value="">All</option>
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
-                </div>
-                <button class="btn-secondary" id="clearFiltersBtn">
-                    <i class="ri-close-line"></i> Clear Filters
-                </button>
+            <div id="loadingState" class="data-section" style="text-align: center; padding: 3rem;">
+                <div class="spinner-large"></div>
+                <p style="margin-top: 1rem; color: #64748b;">Loading user details...</p>
             </div>
 
-            <!-- Users Table -->
-            <div class="data-section">
-                <div class="section-header">
-                    <h2><i class="ri-list-check"></i> All Users</h2>
-                    <div class="table-info">
-                        Showing <span id="showingCount" data-showing-count>0</span> of <span id="totalCount" data-total-count>0</span> users
+            <div id="errorState" class="data-section" style="display: none; text-align: center; padding: 3rem;">
+                <i class="ri-error-warning-line" style="font-size: 3rem; color: #e63946;"></i>
+                <h3 style="margin-top: 1rem;">Could Not Load User</h3>
+                <p id="errorMessage" style="color: #64748b;">The requested user could not be found or an error
+                    occurred.</p>
+            </div>
+
+            <div id="contentArea" class="details-grid" style="display: none;">
+                <!-- Left Column: Profile Card -->
+                <div class="data-section profile-card">
+                    <img src="" alt="User Avatar" class="profile-avatar" id="userAvatar">
+                    <h2 class="profile-name" id="userName"></h2>
+                    <p class="profile-email" id="userEmail"></p>
+                    <span class="profile-role" id="userRole"></span>
+                    <div class="profile-status">
+                        <span class="status-indicator" id="statusIndicator"></span>
+                        <span id="statusText"></span>
                     </div>
-                </div>
-                <div class="data-table-wrapper">
-                    <table class="data-table" id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Contact</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Joined Date</th>
-                                <th class="actions-column">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            <tr>
-                                <td colspan="6" class="loading-row">
-                                    <div class="spinner-small"></div>
-                                    <span>Loading users...</span>
-                                </td>
-                            </tr>
-                            <tr id="noUsersRow" style="display: none;">
-                                <td colspan="6" class="no-data-row">
-                                    <span><i class="ri-information-line"></i> No users found.</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
 
-                <div class="pagination" id="pagination">
-                    <button class="pagination-btn" id="prevBtn" disabled>
-                        <i class="ri-arrow-left-s-line"></i><span>Previous</span>
-                    </button>
-                    <div class="pagination-info" data-pagination-info>
-                        Page <span id="currentPage" data-current-page>1</span> of <span id="totalPages" data-total-pages>1</span>
+                <!-- Right Column: Details and Actions -->
+                <div class="data-section details-section">
+                    <h3><i class="ri-information-line"></i> Additional Information</h3>
+                    <div class="details-list">
+                        <div class="detail-item">
+                            <label>Phone Number</label>
+                            <p id="userPhone"></p>
+                        </div>
+                        <!-- <div class="detail-item">
+                            <label>User ID</label>
+                            <p id="userId"></p>
+                        </div> -->
+                        <div class="detail-item">
+                            <label>Date Joined</label>
+                            <p id="userJoinedDate"></p>
+                        </div>
                     </div>
-                    <button class="pagination-btn" id="nextBtn" data-next-btn>
-                        <span>Next</span><i class="ri-arrow-right-s-line"></i>
-                    </button>
+
+                    <div class="actions-section">
+                        <h3><i class="ri-settings-3-line"></i> Account Actions</h3>
+                        <div id="formFeedback"></div>
+                        <div class="action-buttons">
+                            <button class="btn-secondary" id="toggleStatusBtn">
+                            </button>
+                            <!-- <button class="btn-danger" id="deleteBtn">
+                                <i class="ri-delete-bin-line"></i> Delete User
+                            </button> -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -147,7 +136,7 @@
     <script src="/assets/js/ui-utils.js"></script>
     <script src="/assets/js/notification-manager.js"></script>
     <script src="js/admin-utils.js"></script>
-    <script src="js/users.js"></script>
+    <script src="js/view-user.js"></script>
 </body>
 
 </html>

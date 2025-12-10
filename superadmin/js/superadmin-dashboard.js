@@ -654,8 +654,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const data = await response.json();
 
-            if (response.ok && data.succeeded) {
-                displayIncidents(data.data);
+            if (response.ok) {
+                displayIncidents(data);
             } else {
                 throw new Error(data.message || 'Failed to load incidents');
             }
@@ -678,20 +678,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function displayIncidents(paginatedData) {
-        const incidents = paginatedData?.data || paginatedData;
+        const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+
+        if (loadingRow) loadingRow.style.display = 'none';
+
+        const incidents = paginatedData.data;
 
         if (!incidents || incidents.length === 0) {
-            incidentsTableBody.innerHTML = `
-                <tr>
-                    <td colspan="6" style="text-align: center; color: #999; padding: 2rem;">
-                        <i class="ri-information-line" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-                        No recent incidents
-                    </td>
-                </tr>
-            `;
+            incidentsTableBody.innerHTML = ''; // Clear any existing rows
+            incidentsTableBody.appendChild(noIncidentsRow);
+            noIncidentsRow.style.display = 'table-row';
             return;
         }
 
+        noIncidentsRow.style.display = 'none';
+
+        // Create and append new incident rows
         incidentsTableBody.innerHTML = incidents.map(incident => {
             const location = formatLocation(incident);
             const timeAgo = formatTimeAgo(incident.occurredAt || incident.createdAt);
@@ -766,18 +769,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function showIncidentsError() {
-        incidentsTableBody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align: center; color: #e63946; padding: 2rem;">
-                    <i class="ri-error-warning-line" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-                    Failed to load incidents
-                    <br>
-                    <button class="btn-secondary" onclick="location.reload()" style="margin-top: 1rem;">
-                        <i class="ri-refresh-line"></i> Retry
-                    </button>
-                </td>
-            </tr>
-        `;
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+        const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
+
+        if (loadingRow) loadingRow.style.display = 'none';
+
+        incidentsTableBody.innerHTML = ''; // Clear table
+        incidentsTableBody.appendChild(noIncidentsRow);
+        noIncidentsRow.querySelector('span').innerHTML = `<i class="ri-error-warning-line"></i> Failed to load incidents.`;
+        noIncidentsRow.style.display = 'table-row';
     }
 
     // ==================== LOAD SYSTEM ACTIVITY ====================

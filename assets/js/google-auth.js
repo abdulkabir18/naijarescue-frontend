@@ -32,19 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
                         const role = getRole(json.data.token);
 
                         if (role === "Victim") {
-                            setTimeout(() => window.location.href = "/victim-dashboard.html", 3000);
+                            setTimeout(() => window.location.href = "victim/victim-dashboard.html", 3000);
                             return;
                         }
                         else if (role === "SuperAdmin") {
-                            setTimeout(() => window.location.href = "assets/admin/html/admin-dashboard.html", 3000);
+                            setTimeout(() => window.location.href = "superadmin/superadmin-dashboard.html", 3000);
                             return;
                         }
                         else if (role === "AgencyAdmin") {
-                            setTimeout(() => window.location.href = "/agencyadmin-dashboard.html", 3000);
+                            setTimeout(() => window.location.href = "agencyadmin/agencyadmin-dashboard.html", 3000);
                             return;
                         }
                         else if (role === "Responder") {
-                            setTimeout(() => window.location.href = "/responder-dashboard.html", 3000);
+                            setTimeout(() => window.location.href = "responder/responder-dashboard.html", 3000);
                             return;
                         }
                         else {

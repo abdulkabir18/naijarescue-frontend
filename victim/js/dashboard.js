@@ -656,7 +656,7 @@ async function loadReports(token) {
 
             if (data.message === "No incidents found.") {
                 console.info("No incidents found.");
-                loadingState.innerHTML = $`
+                loadingState.innerHTML = `
                 <i class="ri-error-warning-line" style="display:block;font-size:3rem;color:#ddd;margin-bottom:1rem"></i>
                 <p>{data.message}</p>
             `;

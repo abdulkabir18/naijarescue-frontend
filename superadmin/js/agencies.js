@@ -328,11 +328,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
 
             if (result.succeeded && result.data) {
-                allAgencies = result.data; // Handle nested paginated data
-                // Fetch supported incidents for each agency
+                allAgencies = result.data || []; 
                 const incidentPromises = allAgencies.map(agency =>
                     fetch(`${AppConfig.API_BASE_URL}/api/v1/Agency/${agency.id}/supported-incidents`, {
-                        headers: { "Authorization": `Bearer ` }
+                        headers: { "Authorization": `Bearer ${token}` }
                     }).then(res => res.json())
                 );
 

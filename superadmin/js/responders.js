@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const respondersResult = await respondersRes.json();
 
             if (respondersResult.succeeded) {
-                allResponders = respondersResult.data || []; // Correctly access the nested array
-                totalPages = respondersResult.data.totalPages; // Correctly access totalPages
+                allResponders = respondersResult.data || []; // Safely access the nested data array
+                totalPages = respondersResult.data.totalPages || 1; // Safely access totalPages, default to 1
                 displayResponders(allResponders);
                 renderPagination();
             } else {

@@ -1,0 +1,134 @@
+/* view-user.css */
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .details-grid {
+        grid-template-columns: 350px 1fr;
+    }
+}
+
+.profile-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.profile-role {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.profile-status .status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.profile-status .status-indicator.active {
+    background: #2e7d32;
+}
+
+.profile-status .status-indicator.inactive {
+    background: #c62828;
+}
+
+.details-section {
+    padding: 1.5rem;
+}
+
+.details-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-item {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #e5e5e5;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.detail-item p {
+    font-size: 1rem;
+    color: #1e293b;
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.actions-section {
+    border-top: 1px solid #e5e5e5;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.actions-section h3 {
+    font-size: 1.2rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.btn-danger {
+    background-color: #e63946;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c62828;
+}

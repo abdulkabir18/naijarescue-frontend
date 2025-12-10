@@ -1,0 +1,174 @@
+/* Styles for User Management Page */
+
+/* User Cell in Table */
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+
+.actions-column {
+    width: 100px;
+    text-align: center;
+}
+
+.actions-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.actions-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-color-secondary);
+}
+
+.actions-btn:hover {
+    background-color: var(--background-color-light);
+    border-color: var(--primary-color);
+}
+
+.actions-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--background-color-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 160px;
+    list-style: none;
+    padding: 5px 0;
+    margin-top: 5px;
+}
+
+.actions-dropdown.show {
+    display: block;
+}
+
+.actions-dropdown li {
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-dropdown li:hover {
+    background-color: var(--background-color-hover);
+}
+
+.user-cell div {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-cell strong {
+    font-weight: 600;
+    color: #374151;
+    line-height: 1.2;
+}
+
+.user-cell small {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.filters-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #e63946;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.filter-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #e63946;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; 
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #fdecec;
+    border-color: #f18a92;
+}

@@ -146,7 +146,7 @@ async function uploadProfilePicture(token, file) {
     // 🟢 PRODUCTION: Uncomment for real API
     try {
         const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/profile-image`, {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -201,7 +201,7 @@ function initializePersonalInfoForm(token) {
         // 🟢 PRODUCTION: Uncomment for real API
         try {
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/details`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
@@ -260,7 +260,7 @@ function initializeAddressForm(token) {
         // 🟢 PRODUCTION: Uncomment for real API
         try {
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/User/update-address`, {
-                method: "PUT",
+                method: "pATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"

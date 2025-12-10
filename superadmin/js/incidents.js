@@ -98,8 +98,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const data = await response.json();
 
-            if (response.ok && data.succeeded) {
-                allIncidents = data.data?.data || data.data || [];
+            if (response.ok) {
+                allIncidents = data.data ;
                 filteredIncidents = [...allIncidents];
                 updateQuickStats();
                 filterAndDisplay();
@@ -140,15 +140,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ==================== DISPLAY INCIDENTS ====================
     function displayIncidents() {
+        const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+
+        if (loadingRow) loadingRow.style.display = 'none';
+
         if (filteredIncidents.length === 0) {
-            incidentsTableBody.innerHTML = `
-                <tr>
-                    <td colspan="8" style="text-align: center; color: #999; padding: 2rem;">
-                        <i class="ri-information-line" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-                        No incidents found
-                    </td>
-                </tr>
-            `;
+            incidentsTableBody.innerHTML = ''; // Clear any old incident rows
+            incidentsTableBody.appendChild(noIncidentsRow);
+            noIncidentsRow.style.display = 'table-row';
             updatePagination(0, 0);
             return;
         }
@@ -324,29 +324,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function showLoadingState() {
-        incidentsTableBody.innerHTML = `
-            <tr>
-                <td colspan="8" class="loading-row">
-                    <div class="spinner-small"></div>
-                    <span>Loading incidents...</span>
-                </td>
-            </tr>
-        `;
+        const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+
+        incidentsTableBody.innerHTML = ''; // Clear previous content
+        incidentsTableBody.appendChild(loadingRow);
+        incidentsTableBody.appendChild(noIncidentsRow); // Keep it in the DOM but hidden
+
+        if (loadingRow) loadingRow.style.display = 'table-row';
+        if (noIncidentsRow) noIncidentsRow.style.display = 'none';
     }
 
     function showErrorState() {
-        incidentsTableBody.innerHTML = `
-            <tr>
-                <td colspan="8" style="text-align: center; color: #e63946; padding: 2rem;">
-                    <i class="ri-error-warning-line" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-                    Failed to load incidents
-                    <br>
-                    <button class="btn-secondary" onclick="location.reload()" style="margin-top: 1rem;">
-                        <i class="ri-refresh-line"></i> Retry
-                    </button>
-                </td>
-            </tr>
-        `;
+        const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+
+        if (loadingRow) loadingRow.style.display = 'none';
+
+        incidentsTableBody.innerHTML = ''; // Clear table
+        incidentsTableBody.appendChild(noIncidentsRow);
+        noIncidentsRow.querySelector('span').innerHTML = `<i class="ri-error-warning-line"></i> Failed to load incidents. Click refresh to try again.`;
+        noIncidentsRow.style.display = 'table-row';
     }
 
     function updateLastRefreshedTime() {
