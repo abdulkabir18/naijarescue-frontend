@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = protectPage();
+    const token = protectPage('AgencyAdmin');
     if (!token) return;
+
+    const profile = await loadAgencyAdminProfile(token);
+    if (!profile) {
+        console.error("Could not load profile.");
+        return;
+    }
 
     if (token) {
         await window.notificationManager.initialize(token);
     }
-    await loadAdminProfile(token);
 
     // DOM Elements
     const menuToggle = document.getElementById("menuToggle");
@@ -27,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const incidentId = urlParams.get('id');
 
     if (!incidentId) {
-        detailsContainer.innerHTML = `<div class="error-state"><i class="ri-error-warning-line"></i><p>No incident ID provided.</p><a href="incidents.html" class="btn-primary">Back to Incidents</a></div>`;
+        detailsContainer.innerHTML = `<div class="error-state"><i class="ri-error-warning-line"></i><p>No incident ID provided.</p><a href="agency-incidents.html" class="btn-primary">Back to Incidents</a></div>`;
         return;
     }
 
@@ -175,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderAssignedResponders(incident) {
         const responderContainer = document.getElementById('assignedResponders');
         const assignLink = document.getElementById('assignResponderLink');
-        assignLink.href = `assign-responder.html?incident=${incident.id}`;
+        assignLink.href = `agency-assign-responder.html?id=${incident.id}`;
 
         if (!incident.assignedResponders || incident.assignedResponders.length === 0) {
             responderContainer.innerHTML = `<div class="empty-state-small"><i class="ri-user-unfollow-line"></i><p>No responders assigned yet.</p></div>`;
@@ -187,7 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <i class="${getResponderRoleIcon(responder.role)}"></i>
                 <div class="responder-info">
                     <strong>${escapeHtml(responder.responderName)}</strong>
-                    <span>${escapeHtml(responder.agencyName)}</span>
+                    <span>${escapeHtml(responder.agencyName) || 'Your Agency'}</span>
                 </div>
             </div>
         `).join('');

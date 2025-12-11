@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Details - NaijaRescue</title>
+    <link rel="stylesheet" href="/assets/css/notification-manager.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="css/agency-admin-dashboard.css">
+    <link rel="stylesheet" href="css/agency-incident-details.css">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="logo">
+                <img src="/assets/images/logo/logo.png" alt="NaijaRescue Logo">
+                <span>NaijaRescue <span class="admin-badge">Agency Admin</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="notification-wrapper">
+                <button class="notification-bell" id="notificationBell">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read" id="markAllRead">
+                            <i class="ri-check-double-line"></i> Mark all as read
+                        </button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="loading-notifications">
+                            <div class="spinner-small"></div>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a id="footer-text" href="notifications.html">View All Notifications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-profile">
+                <img alt="Admin" id="adminAvatar">
+                <div class="profile-info">
+                    <span class="admin-name" id="adminName">Agency Admin</span>
+                    <span class="admin-role">Agency Administrator</span>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="ri-logout-box-line"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <nav class="sidebar-nav">
+                <a href="agency-admin-dashboard.html" class="nav-item">
+                    <i class="ri-dashboard-3-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="agency-responders.html" class="nav-item">
+                    <i class="ri-user-star-line"></i>
+                    <span>Responders</span>
+                </a>
+                <a href="agency-incidents.html" class="nav-item active">
+                    <i class="ri-alarm-warning-line"></i>
+                    <span>Incidents</span>
+                </a>
+                <a href="agency-create-responder.html" class="nav-item">
+                    <i class="ri-user-add-line"></i>
+                    <span>Add Responder</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header">
+                <div>
+                    <a href="agency-incidents.html" class="back-link"><i class="ri-arrow-left-line"></i> Back to Incidents</a>
+                    <h1>Incident Details</h1>
+                    <p>Viewing details for incident <strong id="incidentRef">...</strong></p>
+                </div>
+            </div>
+
+            <div id="detailsContainer" class="details-loading">
+                <div class="spinner-large"></div>
+                <p>Loading incident details...</p>
+            </div>
+
+            <div id="incidentContent" class="incident-layout" style="display: none;">
+                <!-- Left Column -->
+                <div class="incident-main-col">
+                    <!-- Incident Summary -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-file-text-line"></i> Incident Summary</h2>
+                        </div>
+                        <div id="incidentSummary" class="summary-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Incident Description -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-chat-1-line"></i> Description</h2>
+                        </div>
+                        <p id="incidentDescription" class="description-text">
+                            <!-- Populated by JS -->
+                        </p>
+                    </div>
+
+                    <!-- Media Gallery -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-gallery-line"></i> Media Evidence</h2>
+                        </div>
+                        <div id="mediaGallery" class="media-gallery">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-history-line"></i> Activity Log</h2>
+                        </div>
+                        <div id="activityLog" class="activity-log">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="incident-side-col">
+                    <!-- Map -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-map-pin-line"></i> Location</h2>
+                        </div>
+                        <div id="map" class="map-container"></div>
+                        <div id="address" class="address-info"></div>
+                    </div>
+
+                    <!-- Reporter Info -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-user-line"></i> Reporter</h2>
+                        </div>
+                        <div id="reporterInfo" class="info-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Assigned Responders -->
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2><i class="ri-user-star-line"></i> Assigned Responders</h2>
+                            <a href="#" id="assignResponderLink" class="view-all-link">Assign <i
+                                    class="ri-arrow-right-line"></i></a>
+                        </div>
+                        <div id="assignedResponders" class="responder-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/auth-utils.js"></script>
+    <script src="/assets/js/ui-utils.js"></script>
+    <script src="/assets/js/notification-manager.js"></script>
+    <script src="/victim/js/incident-utils.js"></script>
+    <script src="js/agency-admin-utils.js"></script>
+    <script src="js/agency-incident-details.js"></script>
+</body>
+
+</html>

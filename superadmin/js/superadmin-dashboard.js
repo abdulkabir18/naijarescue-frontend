@@ -366,31 +366,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let statisticsCache = null;
     let lastStatisticsFetch = 0;
     const CACHE_DURATION = 30000; // 30 seconds
-    let autoRefreshInterval = null;
-    let isUserActive = true;
-    let lastActivityTime = Date.now();
     let isRefreshing = false;
-
-    // Track user activity for smart auto-refresh
-    ['mousedown', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-        document.addEventListener(event, () => {
-            lastActivityTime = Date.now();
-            if (!isUserActive) {
-                isUserActive = true;
-                startAutoRefresh();
-            }
-        }, true);
-    });
-
-    // Check for inactivity every minute
-    setInterval(() => {
-        const inactiveTime = Date.now() - lastActivityTime;
-        if (inactiveTime > 300000 && isUserActive) { // 5 minutes
-            isUserActive = false;
-            stopAutoRefresh();
-            console.log('User inactive - pausing auto-refresh');
-        }
-    }, 60000);
 
     menuToggle.addEventListener("click", () => {
         adminSidebar.classList.toggle("collapsed");
@@ -460,30 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         timestampEl.innerHTML = `<i class="ri-time-line"></i> Updated ${timeString}`;
     }
 
-    function startAutoRefresh() {
-        stopAutoRefresh(); // Clear any existing interval
 
-        // Statistics refresh every 60 seconds
-        autoRefreshInterval = setInterval(() => {
-            if (isUserActive && !isRefreshing) {
-                loadStatistics(true); // silent refresh
-            }
-        }, 60000);
-
-        // Active incidents refresh every 30 seconds
-        setInterval(() => {
-            if (isUserActive && !isRefreshing) {
-                loadRecentIncidents(true); // silent refresh
-            }
-        }, 30000);
-    }
-
-    function stopAutoRefresh() {
-        if (autoRefreshInterval) {
-            clearInterval(autoRefreshInterval);
-            autoRefreshInterval = null;
-        }
-    }
 
     // ==================== LOAD STATISTICS ====================
     async function loadStatistics(silent = false) {
@@ -685,14 +638,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const incidents = paginatedData.data;
 
+        console.log('Recent Incidents:', incidents);
+
         if (!incidents || incidents.length === 0) {
-            incidentsTableBody.innerHTML = ''; // Clear any existing rows
-            incidentsTableBody.appendChild(noIncidentsRow);
-            noIncidentsRow.style.display = 'table-row';
+            // Clear the table while preserving noIncidentsRow
+            while (incidentsTableBody.firstChild) {
+                incidentsTableBody.removeChild(incidentsTableBody.firstChild);
+            }
+            // Re-query to ensure we have the element in the DOM
+            const noIncidentsRowRefresh = document.getElementById('noIncidentsRow');
+            if (noIncidentsRowRefresh) {
+                noIncidentsRowRefresh.style.display = 'table-row';
+            }
             return;
         }
 
-        noIncidentsRow.style.display = 'none';
+        // Hide noIncidentsRow if it exists
+        if (noIncidentsRow) {
+            noIncidentsRow.style.display = 'none';
+        }
 
         // Create and append new incident rows
         incidentsTableBody.innerHTML = incidents.map(incident => {
@@ -769,15 +733,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function showIncidentsError() {
-        const noIncidentsRow = document.getElementById('noIncidentsRow');
         const loadingRow = document.querySelector('#incidentsTableBody .loading-row');
 
         if (loadingRow) loadingRow.style.display = 'none';
 
-        incidentsTableBody.innerHTML = ''; // Clear table
-        incidentsTableBody.appendChild(noIncidentsRow);
-        noIncidentsRow.querySelector('span').innerHTML = `<i class="ri-error-warning-line"></i> Failed to load incidents.`;
-        noIncidentsRow.style.display = 'table-row';
+        // Clear table by removing all children
+        while (incidentsTableBody.firstChild) {
+            incidentsTableBody.removeChild(incidentsTableBody.firstChild);
+        }
+
+        // Re-query noIncidentsRow to ensure it's in the DOM
+        const noIncidentsRow = document.getElementById('noIncidentsRow');
+        if (noIncidentsRow) {
+            // Clone and append to ensure it's properly attached
+            const errorRow = noIncidentsRow.cloneNode(true);
+            const span = errorRow.querySelector('span');
+            if (span) {
+                span.innerHTML = `<i class="ri-error-warning-line"></i> Failed to load incidents.`;
+            }
+            incidentsTableBody.appendChild(errorRow);
+            errorRow.style.display = 'table-row';
+        }
     }
 
     // ==================== LOAD SYSTEM ACTIVITY ====================
@@ -924,11 +900,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ==================== INITIALIZE ====================
     loadDashboardData();
-    startAutoRefresh();
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-        stopAutoRefresh();
-    });
 
 });
