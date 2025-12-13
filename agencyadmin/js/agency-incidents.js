@@ -254,10 +254,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedStatus = statusFilter.value;
 
         // Assuming the backend filters incidents for the authenticated agency admin
-        let url = `${AppConfig.API_BASE_URL}/api/v1/Incident/agency/${agencyId}/incidents`;
+        let url = new URL(`${AppConfig.API_BASE_URL}/api/v1/Incident/agency/${agencyId}/incidents`);
+        url.searchParams.append('pageNumber', currentPage);
+        url.searchParams.append('pageSize', pageSize);
+        if (searchTerm) url.searchParams.append('keyword', searchTerm);
+        if (selectedStatus) url.searchParams.append('status', selectedStatus);
 
         try {
-            const response = await fetch(url, { headers: { "Authorization": `Bearer ${token}` } });
+            const response = await fetch(url.toString(), { headers: { "Authorization": `Bearer ${token}` } });
             const result = await response.json();
 
             if (result.succeeded && result.data) {

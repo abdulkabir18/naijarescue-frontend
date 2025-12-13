@@ -522,38 +522,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function renderMedia(mediaList) {
+    function renderMedia(media) {
         const preview = document.getElementById("mediaPreview");
         preview.innerHTML = "";
 
-        if (!mediaList || mediaList.length === 0) {
+        // Accept either a single media object or an array of media objects
+        if (!media || (Array.isArray(media) && media.length === 0)) {
             preview.innerHTML = '<p class="no-media">No evidence uploaded</p>';
             return;
         }
 
-        mediaList.forEach(media => {
+        const items = Array.isArray(media) ? media : [media];
+
+        items.forEach(item => {
+            if (!item || !item.url) return;
+
             const mediaEl = document.createElement("div");
             mediaEl.className = "media-item";
 
-            if (media.type === "Image") {
+            if (item.type === "Image") {
                 const img = document.createElement("img");
-                img.src = media.url;
+                img.src = item.url;
                 img.alt = "Evidence image";
                 img.className = "proof-image";
                 mediaEl.appendChild(img);
-            } else if (media.type === "Video") {
+            } else if (item.type === "Video") {
                 const video = document.createElement("video");
                 video.controls = true;
-                video.src = media.url;
+                video.src = item.url;
                 video.className = "proof-video";
                 video.setAttribute("title", "Evidence video");
                 mediaEl.appendChild(video);
-            } else if (media.type === "Audio") {
+            } else if (item.type === "Audio") {
                 const audio = document.createElement("audio");
                 audio.controls = true;
-                audio.src = media.url;
+                audio.src = item.url;
                 audio.className = "proof-audio";
                 mediaEl.appendChild(audio);
+            } else {
+                // Unknown type - show a link
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.textContent = 'Open attachment';
+                mediaEl.appendChild(a);
             }
 
             preview.appendChild(mediaEl);

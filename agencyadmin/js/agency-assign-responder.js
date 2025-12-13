@@ -80,15 +80,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
 
             if (result.succeeded && result.data) {
-                // Filter responders by availability
-                allResponders = result.data.filter(r =>
-                    r.status === 'Available' || r.status === 'available'
-                );
-                
-                if (allResponders.length === 0) {
-                    allResponders = result.data;
+                // Filter responders to only include truly available responders.
+                // Exclude any "OnDuty" (case-insensitive) responders.
+                allResponders = result.data.filter(r => {
+                    if (!r || !r.status) return false;
+                    const s = String(r.status).toLowerCase();
+                    return s === 'available';
+                });
+
+                // If none are available, show an empty state and skip listing on-duty responders
+                if (!allResponders || allResponders.length === 0) {
+                    respondersListContainer.innerHTML = `<div class="empty-state"><i class="ri-user-search-line"></i><p>No available responders at the moment.</p></div>`;
+                    return;
                 }
-                
+
                 filterAndDisplayResponders();
             } else {
                 throw new Error(result.message || 'Could not load responders');
@@ -155,8 +160,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        const confirmed = confirm('Are you sure you want to assign this responder to the incident?');
-        if (!confirmed) return;
+        // Using a more modern confirmation dialog is recommended over confirm()
+        // For example, using a library like SweetAlert2:
+        // const result = await Swal.fire({ title: 'Are you sure?', text: "Assign this responder to the incident?", icon: 'warning', showCancelButton: true });
+        // if (!result.isConfirmed) return;
+        if (!confirm('Are you sure you want to assign this responder to the incident?')) return;
 
         button.disabled = true;
         button.innerHTML = '<div class="spinner-small"></div> Assigning...';
@@ -179,12 +187,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
 
             if (response.ok && result.succeeded) {
-                alert('Responder assigned successfully!');
+                // Using a non-blocking notification is better than alert()
+                // For example: showToast('Responder assigned successfully!', 'success');
+                alert('Responder assigned successfully!'); // Replace with a better notification
                 window.location.href = `agency-incident-details.html?id=${incidentId}`;
             } else {
                 throw new Error(result.message || 'Failed to assign responder.');
             }
         } catch (error) {
+            // Using a non-blocking notification is better than alert()
+            // For example: showToast(`Error: ${error.message}`, 'error');
             console.error('Assignment error:', error);
             alert(`Error: ${error.message}`);
             button.disabled = false;
