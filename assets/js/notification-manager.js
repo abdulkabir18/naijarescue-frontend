@@ -545,6 +545,17 @@
 
 // window.notificationManager = new NotificationManager();
 
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe
+        .toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 const notificationSound = new Audio(
     "https://cdn.freesound.org/previews/320/320655_5260872-lq.mp3"
 );
@@ -589,38 +600,32 @@ class NotificationManager {
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 
-            // Listen for new notifications
             this.connection.on("ReceiveNotification", (notification) => {
                 console.log("New notification received:", notification);
                 this.handleNewNotification(notification);
             });
 
-            // Listen for broadcast notifications
             this.connection.on("ReceiveBroadcast", (notification) => {
                 console.log("Broadcast notification received:", notification);
                 this.handleNewNotification(notification);
             });
 
-            // Handle reconnecting
             this.connection.onreconnecting((error) => {
                 console.log("SignalR reconnecting:", error);
                 this.showConnectionStatus("Reconnecting...", "warning");
             });
 
-            // Handle reconnected
             this.connection.onreconnected((connectionId) => {
                 console.log("SignalR reconnected:", connectionId);
                 this.showConnectionStatus("Connected", "success");
                 setTimeout(() => this.hideConnectionStatus(), 2000);
             });
 
-            // Handle disconnected
             this.connection.onclose((error) => {
                 console.log("SignalR disconnected:", error);
                 this.showConnectionStatus("Disconnected", "error");
             });
 
-            // Start connection
             await this.connection.start();
             console.log("SignalR connected successfully");
             this.showConnectionStatus("Connected", "success");
@@ -630,7 +635,6 @@ class NotificationManager {
             console.error("SignalR connection failed:", error);
             this.showConnectionStatus("Connection failed", "error");
 
-            // Retry connection after 5 seconds
             setTimeout(() => this.initializeSignalR(token), 5000);
         }
     }
@@ -674,20 +678,17 @@ class NotificationManager {
             return;
         }
 
-        // Toggle dropdown
         bell.addEventListener("click", (e) => {
             e.stopPropagation();
             dropdown.classList.toggle("show");
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener("click", (e) => {
             if (!dropdown.contains(e.target) && !bell.contains(e.target)) {
                 dropdown.classList.remove("show");
             }
         });
 
-        // Mark all as read
         if (markAllRead) {
             markAllRead.addEventListener("click", async () => {
                 const token = sessionStorage.getItem("authToken");
@@ -697,21 +698,16 @@ class NotificationManager {
     }
 
     handleNewNotification(notification) {
-        // Play notification sound (optional)
         this.playNotificationSound();
 
-        // Show browser notification if permitted
         this.showBrowserNotification(notification);
 
-        // Add to notification list
         this.addNotificationToList(notification);
 
-        // Update badge count
         const badge = document.getElementById("notificationBadge");
         const currentCount = parseInt(badge?.textContent || "0");
         this.updateNotificationBadge(currentCount + 1);
 
-        // Show toast notification
         this.showToastNotification(notification);
     }
 
@@ -719,34 +715,27 @@ class NotificationManager {
         const notificationList = document.getElementById("notificationList");
         if (!notificationList) return;
 
-        // Remove empty state if present
         const emptyState = notificationList.querySelector(".empty-notifications");
         if (emptyState) {
             emptyState.remove();
         }
 
-        // Remove loading state if present
         const loadingState = notificationList.querySelector(".loading-notifications");
         if (loadingState) {
             loadingState.remove();
         }
 
-        // Create and prepend new notification
         const notificationElement = this.createNotificationElement(notification);
         notificationList.insertBefore(notificationElement, notificationList.firstChild);
 
-        // Keep only the 10 most recent
         const items = notificationList.querySelectorAll(".notification-item");
         if (items.length > 10) {
             items[items.length - 1].remove();
         }
-
-        // Animate the new notification
         notificationElement.style.animation = "slideIn 0.3s ease";
     }
 
     showToastNotification(notification) {
-        // Create toast container if it doesn't exist
         let toastContainer = document.getElementById("toastContainer");
         if (!toastContainer) {
             toastContainer = document.createElement("div");
@@ -755,7 +744,6 @@ class NotificationManager {
             document.body.appendChild(toastContainer);
         }
 
-        // Create toast element
         const toast = document.createElement("div");
         toast.className = `toast toast-${this.getNotificationTypeClass(notification.type)}`;
 
@@ -783,7 +771,6 @@ class NotificationManager {
 
         toastContainer.appendChild(toast);
 
-        // Auto remove after 5 seconds
         setTimeout(() => {
             toast.style.animation = "slideOut 0.3s ease";
             setTimeout(() => toast.remove(), 300);
@@ -791,12 +778,11 @@ class NotificationManager {
     }
 
     playNotificationSound() {
-        // Try to play the primary notification sound
         const playSound = (soundSrc, index = 0) => {
             const audio = index === 0 ? notificationSound : new Audio(soundSrc);
             
             audio.currentTime = 0;
-            audio.volume = 0.4;
+            audio.volume = 0.5;
             
             const playPromise = audio.play();
             
@@ -808,7 +794,6 @@ class NotificationManager {
                     .catch(error => {
                         console.warn(`Failed to play sound ${index}:`, error.message);
                         
-                        // Try fallback sounds
                         if (index < fallbackSounds.length) {
                             playSound(fallbackSounds[index], index + 1);
                         } else {
@@ -887,7 +872,6 @@ class NotificationManager {
             return;
         }
 
-        // Show most recent 10
         notifications.slice(0, 10).forEach(notification => {
             const item = this.createNotificationElement(notification);
             notificationList.appendChild(item);
@@ -944,7 +928,6 @@ class NotificationManager {
             </div>
         `;
 
-        // Mark as read when clicked
         div.addEventListener("click", async () => {
             const token = sessionStorage.getItem("authToken");
             
