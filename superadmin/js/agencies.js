@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
 
             if (result.succeeded && result.data) {
-                allAgencies = result.data || []; 
+                allAgencies = result.data || [];
                 const incidentPromises = allAgencies.map(agency =>
                     fetch(`${AppConfig.API_BASE_URL}/api/v1/Agency/${agency.id}/supported-incidents`, {
                         headers: { "Authorization": `Bearer ${token}` }
@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 filterAndDisplayAgencies();
             } else {
-                throw new Error(result.message || 'Could not load agencies');
+                throw new Error(result.message || 'No agency in the system');
             }
         } catch (error) {
             console.error("Error loading agencies:", error);
