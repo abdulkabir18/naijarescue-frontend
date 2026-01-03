@@ -65,7 +65,7 @@
 
 //     // Event Listeners
 //     menuToggle.addEventListener("click", () => responderSidebar.classList.toggle("active"));
-    
+
 //     logoutBtn.addEventListener("click", (e) => {
 //         e.preventDefault();
 //         logoutUser();
@@ -117,7 +117,7 @@
 //     async function updateStatus(newStatus) {
 //         try {
 //             const statusValue = newStatus === 'Available' ? 1 : 3;
-            
+
 //             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
 //                 method: 'PATCH',
 //                 headers: {
@@ -226,7 +226,7 @@
 //     function renderActionButtons(incident) {
 //         const container = document.getElementById("actionButtons");
 //         const isAssignedToMe = incident.assignedResponders?.some(r => r.responderId === responderId);
-        
+
 //         let buttonsHtml = '';
 
 //         if (!isAssignedToMe && (incident.status === 'Pending' || incident.status === 'Dispatched')) {
@@ -250,7 +250,7 @@
 //                     </button>
 //                 `;
 //             }
-            
+
 //             // Add escalate button for any active incident
 //             if (incident.status !== 'Resolved' && incident.status !== 'Closed') {
 //                 buttonsHtml += `
@@ -278,9 +278,9 @@
 //     function renderMedia(media) {
 //         const mediaCard = document.getElementById("mediaCard");
 //         const mediaGrid = document.getElementById("mediaGrid");
-        
+
 //         mediaCard.style.display = 'block';
-        
+
 //         mediaGrid.innerHTML = media.map(item => {
 //             const isVideo = item.type?.toLowerCase() === 'video';
 //             return `
@@ -298,9 +298,9 @@
 //     function renderResponders(responders) {
 //         const respondersCard = document.getElementById("respondersCard");
 //         const respondersList = document.getElementById("respondersList");
-        
+
 //         respondersCard.style.display = 'block';
-        
+
 //         respondersList.innerHTML = responders.map(responder => `
 //             <div class="responder-item">
 //                 <div class="responder-item-avatar">
@@ -319,9 +319,9 @@
 
 //     function renderTimeline(incident) {
 //         const timeline = document.getElementById("timeline");
-        
+
 //         const events = [];
-        
+
 //         events.push({
 //             title: 'Incident Reported',
 //             time: incident.occurredAt
@@ -438,7 +438,7 @@
 //         directionsService.route(request, (result, status) => {
 //             if (status === 'OK') {
 //                 directionsRenderer.setDirections(result);
-                
+
 //                 // Display route info
 //                 const route = result.routes[0].legs[0];
 //                 document.getElementById("routeDistance").textContent = route.distance.text;
@@ -679,7 +679,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event Listeners
     menuToggle.addEventListener("click", () => responderSidebar.classList.toggle("active"));
-    
+
     logoutBtn.addEventListener("click", (e) => {
         e.preventDefault();
         logoutUser();
@@ -710,7 +710,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("agencyName").textContent = responder.agencyName;
 
             if (responder.profilePictureUrl) {
-                document.getElementById("responderAvatar").src = `${AppConfig.API_BASE_URL}/${responder.profilePictureUrl}`;
+                document.getElementById("responderAvatar").src = `${responder.profilePictureUrl}`;
             } else {
                 document.getElementById("responderAvatar").src = generateInitialsAvatar(responder.userFullName);
             }
@@ -731,7 +731,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function updateStatus(newStatus) {
         try {
             const statusValue = newStatus === 'Available' ? 1 : 3;
-            
+
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
                 method: 'PATCH',
                 headers: {
@@ -808,7 +808,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Location
         const address = formatAddress(incident.address) || 'Address not available';
         document.getElementById("incidentAddress").textContent = address;
-        document.getElementById("incidentCoordinates").textContent = 
+        document.getElementById("incidentCoordinates").textContent =
             `${incident.coordinates.latitude.toFixed(6)}, ${incident.coordinates.longitude.toFixed(6)}`;
 
         // Reporter Information
@@ -820,7 +820,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Check if reporter has avatar
         const reporterAvatar = document.getElementById("reporterAvatar");
         if (incident.userProfilePicture) {
-            reporterAvatar.innerHTML = `<img src="${AppConfig.API_BASE_URL}/${incident.userProfilePicture}" alt="${incident.userName}">`;
+            reporterAvatar.innerHTML = `<img src="${incident.userProfilePicture}" alt="${incident.userName}">`;
+        } else {
+            reporterAvatar.innerHTML = `<img src="${generateInitialsAvatar(incident.userName)}" alt="${incident.userName}">`;
         }
 
         // Media
@@ -840,7 +842,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderActionButtons(incident) {
         const container = document.getElementById("actionButtons");
         const isAssignedToMe = incident.assignedResponders?.some(r => r.responderId === responderId);
-        
+
         let buttonsHtml = '';
 
         if (!isAssignedToMe && (incident.status === 'Pending' || incident.status === 'Dispatched')) {
@@ -864,7 +866,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </button>
                 `;
             }
-            
+
             // Add escalate button for any active incident
             if (incident.status !== 'Resolved' && incident.status !== 'Closed') {
                 buttonsHtml += `
@@ -892,17 +894,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderMedia(media) {
         const mediaCard = document.getElementById("mediaCard");
         const mediaGrid = document.getElementById("mediaGrid");
-        
+
         mediaCard.style.display = 'block';
-        
+
         mediaGrid.innerHTML = media.map(item => {
             const isVideo = item.type?.toLowerCase() === 'video';
             return `
                 <div class="media-item">
-                    ${isVideo ? 
-                        `<video src="$${item.url}" controls></video>` :
-                        `<img src="${item.url}" alt="Evidence">`
-                    }
+                    ${isVideo ?
+                    `<video src="$${item.url}" controls></video>` :
+                    `<img src="${item.url}" alt="Evidence">`
+                }
                     <span class="media-type-badge">${isVideo ? 'Video' : 'Image'}</span>
                 </div>
             `;
@@ -912,16 +914,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderResponders(responders) {
         const respondersCard = document.getElementById("respondersCard");
         const respondersList = document.getElementById("respondersList");
-        
+
         respondersCard.style.display = 'block';
-        
+
         respondersList.innerHTML = responders.map(responder => `
             <div class="responder-item">
                 <div class="responder-item-avatar">
-                    ${responder.profilePicture ? 
-                        `<img src="${AppConfig.API_BASE_URL}/${responder.profilePicture}" alt="${responder.responderName}">` :
-                        `<img src="${generateInitialsAvatar(responder.responderName)}" alt="${responder.responderName}">`
-                    }
+                    ${responder.profilePicture ?
+                `<img src="${responder.profilePicture}" alt="${responder.responderName}">` :
+                `<img src="${generateInitialsAvatar(responder.responderName)}" alt="${responder.responderName}">`
+            }
                 </div>
                 <div class="responder-item-info">
                     <div class="responder-item-name">${escapeHtml(responder.responderName)}</div>
@@ -933,9 +935,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function renderTimeline(incident) {
         const timeline = document.getElementById("timeline");
-        
+
         const events = [];
-        
+
         events.push({
             title: 'Incident Reported',
             time: incident.occurredAt
@@ -1066,7 +1068,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         directionsService.route(request, (result, status) => {
             if (status === 'OK') {
                 directionsRenderer.setDirections(result);
-                
+
                 // Display route info
                 const route = result.routes[0].legs[0];
                 document.getElementById("routeDistance").textContent = route.distance.text;

@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         respondersListContainer.innerHTML = responders.map(responder => {
-            const avatarSrc = responder.profilePictureUrl ? `${AppConfig.API_BASE_URL}${responder.profilePictureUrl}` : generateInitialsAvatar(responder.userFullName);
+            const avatarSrc = responder.profilePictureUrl ? `${responder.profilePictureUrl}` : generateInitialsAvatar(responder.userFullName);
             return `
                 <div class="responder-card">
                     <div class="responder-info">

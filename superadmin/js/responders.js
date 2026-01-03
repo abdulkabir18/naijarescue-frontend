@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         respondersContainer.innerHTML = responders.map(responder => {
             const statusClass = responder.status.toLowerCase().replace(/ /g, '');
-            const avatarSrc = responder.profilePictureUrl ? `${AppConfig.API_BASE_URL}${responder.profilePictureUrl}` : generateInitialsAvatar(responder.userFullName);
+            const avatarSrc = responder.profilePictureUrl ? `${responder.profilePictureUrl}` : generateInitialsAvatar(responder.userFullName);
             return `
                 <div class="responder-card" data-responder-id="${responder.id}">
                     <div class="responder-card-header">

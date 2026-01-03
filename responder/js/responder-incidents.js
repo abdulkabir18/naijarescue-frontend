@@ -45,7 +45,7 @@
 
 //     // Event Listeners
 //     menuToggle.addEventListener("click", () => responderSidebar.classList.toggle("active"));
-    
+
 //     logoutBtn.addEventListener("click", (e) => {
 //         e.preventDefault();
 //         logoutUser();
@@ -59,11 +59,11 @@
 //     tabBtns.forEach(btn => {
 //         btn.addEventListener("click", () => {
 //             const tabName = btn.dataset.tab;
-            
+
 //             // Update active states
 //             tabBtns.forEach(b => b.classList.remove("active"));
 //             btn.classList.add("active");
-            
+
 //             tabContents.forEach(content => {
 //                 content.classList.remove("active");
 //                 if (content.id === `${tabName}-tab`) {
@@ -136,7 +136,7 @@
 //     async function updateStatus(newStatus) {
 //         try {
 //             const statusValue = newStatus === 'Available' ? 1 : 3;
-            
+
 //             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
 //                 method: 'PATCH',
 //                 headers: {
@@ -189,7 +189,7 @@
 
 //             if (result.succeeded && result.data) {
 //                 const incidents = result.data.data || result.data;
-                
+
 //                 // Filter for available incidents (not assigned to this responder yet)
 //                 allIncidents = incidents.filter(incident => {
 //                     const isPendingOrDispatched = incident.status === 'Pending' || incident.status === 'Dispatched';
@@ -416,7 +416,7 @@
 //     function showAcceptModal(incidentId) {
 //         selectedIncidentId = incidentId;
 //         const incident = allIncidents.find(i => i.id === incidentId);
-        
+
 //         if (!incident) return;
 
 //         const location = formatAddress(incident.address) || 'Location unavailable';
@@ -576,7 +576,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event Listeners
     menuToggle.addEventListener("click", () => responderSidebar.classList.toggle("active"));
-    
+
     logoutBtn.addEventListener("click", (e) => {
         e.preventDefault();
         logoutUser();
@@ -590,11 +590,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     tabBtns.forEach(btn => {
         btn.addEventListener("click", () => {
             const tabName = btn.dataset.tab;
-            
+
             // Update active states
             tabBtns.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
-            
+
             tabContents.forEach(content => {
                 content.classList.remove("active");
                 if (content.id === `${tabName}-tab`) {
@@ -646,7 +646,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("agencyName").textContent = responder.agencyName;
 
             if (responder.profilePictureUrl) {
-                document.getElementById("responderAvatar").src = `${AppConfig.API_BASE_URL}/${responder.profilePictureUrl}`;
+                document.getElementById("responderAvatar").src = `${responder.profilePictureUrl}`;
             } else {
                 document.getElementById("responderAvatar").src = generateInitialsAvatar(responder.userFullName);
             }
@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function updateStatus(newStatus) {
         try {
             const statusValue = newStatus === 'Available' ? 1 : 3;
-            
+
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
                 method: 'PATCH',
                 headers: {
@@ -720,7 +720,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (result.succeeded && result.data) {
                 const incidents = result.data.data || result.data;
-                
+
                 // Filter for available incidents (not assigned to this responder yet)
                 allIncidents = incidents.filter(incident => {
                     const isPendingOrDispatched = incident.status === 'Pending' || incident.status === 'Dispatched';
@@ -751,7 +751,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (result.succeeded && result.data) {
                 // Filter for active incidents only (exclude Resolved, Cancelled, Invalid)
-                myIncidents = result.data.filter(i => 
+                myIncidents = result.data.filter(i =>
                     i.status !== 'Resolved' && i.status !== 'Cancelled' && i.status !== 'Invalid'
                 );
 
@@ -947,7 +947,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function showAcceptModal(incidentId) {
         selectedIncidentId = incidentId;
         const incident = allIncidents.find(i => i.id === incidentId);
-        
+
         if (!incident) return;
 
         const location = formatAddress(incident.address) || 'Location unavailable';

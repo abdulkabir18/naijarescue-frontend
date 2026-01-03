@@ -20,7 +20,7 @@ async function loadAgencyAdminProfile(token) {
 
             if (adminAvatarEl) {
                 if (profile.profilePictureUrl) {
-                    adminAvatarEl.src = `${AppConfig.API_BASE_URL}/${profile.profilePictureUrl}`;
+                    adminAvatarEl.src = `${profile.profilePictureUrl}`;
                 } else {
                     adminAvatarEl.src = generateInitialsAvatar(profile.fullName);
                 }

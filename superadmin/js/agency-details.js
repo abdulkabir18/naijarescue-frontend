@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function renderAgencyHeader(agency) {
-        const logoUrl = agency.logoUrl ? `${AppConfig.API_BASE_URL}${agency.logoUrl}` : generateInitialsAvatar(agency.name);
+        const logoUrl = agency.logoUrl ? `${agency.logoUrl}` : generateInitialsAvatar(agency.name);
         document.getElementById('agencyHeader').innerHTML = `
             <img src="${logoUrl}" alt="${agency.name} Logo" class="agency-logo-large">
             <div class="agency-title-main">
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             container.innerHTML = `<div class="empty-state-small"><p>No administrator assigned.</p></div>`;
             return;
         }
-        const avatarSrc = admin.profilePictureUrl ? `${AppConfig.API_BASE_URL}${admin.profilePictureUrl}` : generateInitialsAvatar(admin.fullName);
+        const avatarSrc = admin.profilePictureUrl ? `${admin.profilePictureUrl}` : generateInitialsAvatar(admin.fullName);
         container.innerHTML = `
             <img src="${avatarSrc}" alt="${admin.fullName}" class="admin-avatar">
             <div class="admin-details">

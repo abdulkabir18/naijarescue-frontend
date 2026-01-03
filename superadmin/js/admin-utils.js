@@ -39,7 +39,7 @@ async function loadAdminProfile(token) {
         if (result.succeeded && result.data) {
             const profile = result.data;
             adminNameEl.textContent = profile.fullName || "Super Admin";
-            adminAvatarEl.src = profile.profilePictureUrl ? `${AppConfig.API_BASE_URL}${profile.profilePictureUrl}` : generateInitialsAvatar(profile.fullName);
+            adminAvatarEl.src = profile.profilePictureUrl ? `${profile.profilePictureUrl}` : generateInitialsAvatar(profile.fullName);
         }
     } catch (error) {
         console.error("Failed to load admin profile:", error);

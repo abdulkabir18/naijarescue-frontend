@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         usersTableBody.innerHTML = users.map(user => {
             const statusClass = user.isActive ? 'resolved' : 'cancelled';
             const statusText = user.isActive ? 'Active' : 'Inactive';
-            const avatarSrc = user.profilePictureUrl ? `${AppConfig.API_BASE_URL}${user.profilePictureUrl}` : generateInitialsAvatar(user.fullName);
+            const avatarSrc = user.profilePictureUrl ? `${user.profilePictureUrl}` : generateInitialsAvatar(user.fullName);
 
             return `
                 <tr>

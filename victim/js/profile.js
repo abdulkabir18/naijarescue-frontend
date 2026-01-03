@@ -75,7 +75,7 @@ function populateUserData(user) {
     console.log(user.profilePictureUrl);
 
     if (user.profilePictureUrl && user.profilePictureUrl.trim() !== "") {
-        preview.src = `${AppConfig.API_BASE_URL}${user.profilePictureUrl}`;
+        preview.src = `${user.profilePictureUrl}`;
     } else {
         preview.src = generateInitialsAvatar(user.fullName || "");
     }

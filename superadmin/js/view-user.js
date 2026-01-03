@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         userName.textContent = user.fullName;
         userEmail.textContent = user.email;
-        userAvatar.src = user.profilePictureUrl ? `${AppConfig.API_BASE_URL}${user.profilePictureUrl}` : generateInitialsAvatar(user.fullName);
+        userAvatar.src = user.profilePictureUrl ? `${user.profilePictureUrl}` : generateInitialsAvatar(user.fullName);
         userAvatar.onerror = () => { userAvatar.src = generateInitialsAvatar(user.fullName); };
 
         userRole.textContent = user.role || 'User';
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (!response.ok) throw new Error('Failed to update user status.');
-            
+
             // Re-fetch user data to get the latest state
             await loadUser();
             showFeedback('formFeedback', `User successfully ${action}d.`, 'success');
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //             headers: { "Authorization": `Bearer ${token}` }
     //         });
     //         if (!response.ok) throw new Error('Failed to delete user.');
-            
+
     //         alert('User deleted successfully. You will be redirected to the users list.');
     //         window.location.href = 'users.html';
 

@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 welcomeName.textContent = profile.fullName.split(' ')[0];
 
                 if (profile.profilePictureUrl) {
-                    document.getElementById("adminAvatar").src = `${AppConfig.API_BASE_URL}/${profile.profilePictureUrl}`;
+                    document.getElementById("adminAvatar").src = `${profile.profilePictureUrl}`;
                 } else {
                     document.getElementById("adminAvatar").src = generateInitialsAvatar(profile.fullName);
                 }
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (activeResponders.length > 0) {
                     container.innerHTML = activeResponders.map(responder => {
                         const avatarSrc = responder.profilePictureUrl
-                            ? `${AppConfig.API_BASE_URL}/${responder.profilePictureUrl}`
+                            ? `${responder.profilePictureUrl}`
                             : generateInitialsAvatar(responder.userFullName);
 
                         const statusClass = responder.status.toLowerCase();

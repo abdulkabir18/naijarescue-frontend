@@ -89,7 +89,7 @@
 //     async function updateResponderStatus(newStatus) {
 //         try {
 //             const statusValue = newStatus === 'Available' ? 1 : 3; // 1=Available, 3=Offline
-            
+
 //             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
 //                 method: 'PATCH',
 //                 headers: {
@@ -191,7 +191,7 @@
 
 //             if (result.succeeded && result.data) {
 //                 const allIncidents = result.data.data || result.data;
-                
+
 //                 // Filter incidents assigned to this responder
 //                 const myIncidents = allIncidents.filter(incident => 
 //                     incident.assignedResponders?.some(r => r.responderId === responderId)
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event Listeners
     menuToggle.addEventListener("click", () => responderSidebar.classList.toggle("active"));
-    
+
     logoutBtn.addEventListener("click", (e) => {
         e.preventDefault();
         logoutUser();
@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("agencyName").textContent = responder.agencyName;
 
             if (responder.profilePictureUrl) {
-                document.getElementById("responderAvatar").src = `${AppConfig.API_BASE_URL}/${responder.profilePictureUrl}`;
+                document.getElementById("responderAvatar").src = `${responder.profilePictureUrl}`;
             } else {
                 document.getElementById("responderAvatar").src = generateInitialsAvatar(responder.userFullName);
             }
@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function updateResponderStatus(newStatus) {
         try {
             const statusValue = newStatus === 'Available' ? 1 : 3; // 1=Available, 3=Offline
-            
+
             const response = await fetch(`${AppConfig.API_BASE_URL}/api/v1/Responder/${responderId}/status`, {
                 method: 'PATCH',
                 headers: {
@@ -424,12 +424,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (result.succeeded && result.data) {
                 const incidents = result.data;
-                
+
                 // Calculate stats
                 const assigned = incidents.length;
                 const inProgress = incidents.filter(i => i.status === 'InProgress').length;
                 const today = new Date().toDateString();
-                const resolvedToday = incidents.filter(i => 
+                const resolvedToday = incidents.filter(i =>
                     i.status === 'Resolved' && new Date(i.occurredAt).toDateString() === today
                 ).length;
                 const totalResolved = incidents.filter(i => i.status === 'Resolved').length;
@@ -463,9 +463,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (result.succeeded && result.data) {
                 const allIncidents = result.data;
-                
+
                 // Get active incidents (not resolved or closed)
-                const activeIncidents = allIncidents.filter(i => 
+                const activeIncidents = allIncidents.filter(i =>
                     i.status !== 'Resolved' && i.status !== 'Closed' && i.status !== 'Cancelled'
                 ).slice(0, 5);
 

@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         agenciesContainer.innerHTML = agencies.map(agency => {
-            const logoUrl = agency.logoUrl ? `${AppConfig.API_BASE_URL}${agency.logoUrl}` : generateInitialsAvatar(agency.name);
+            const logoUrl = agency.logoUrl ? `${agency.logoUrl}` : generateInitialsAvatar(agency.name);
             const address = formatAddress(agency.address) || 'No address provided';
 
             return `
