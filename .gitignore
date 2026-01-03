@@ -1,6 +1,6 @@
 # Sensitive configuration
 # This file contains API keys and should never be committed.
-config.js
+# config.js
 
 # Environment variables
 .env*
